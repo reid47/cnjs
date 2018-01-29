@@ -179,6 +179,32 @@ test('identical class deduplication', () => {
     '@media (max-width: 400px){.sc4{color:green;}}');
 });
 
+describe('weird edge cases', () => {
+  test('undefined value', () => {
+    expect(classify({
+      color: undefined
+    })).toBe('');
+    expectCss('')
+  });
+
+  test('null value', () => {
+    expect(classify({
+      color: null
+    })).toBe('');
+    expectCss('')
+  });
+
+  test('empty style object', () => {
+    expect(classify({})).toBe('');
+    expectCss('');
+  });
+
+  test('undefined style object', () => {
+    expect(classify()).toBe('');
+    expectCss('');
+  });
+});
+
 describe('configuration', () => {
   test('setting a class prefix', () => {
     configure({ prefix: 'test-' });

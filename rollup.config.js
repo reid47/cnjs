@@ -6,9 +6,9 @@ import fileSize from 'rollup-plugin-filesize';
 import replace from 'rollup-plugin-replace';
 
 export default {
-  input: 'index.js',
+  input: 'src.js',
   output: {
-    file: 'stilo.js',
+    file: 'dist.js',
     format: 'umd',
     name: 'Stilo'
   },
