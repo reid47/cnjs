@@ -6,11 +6,13 @@ import fileSize from 'rollup-plugin-filesize';
 import replace from 'rollup-plugin-replace';
 
 export default {
-  input: 'src.js',
+  input: 'src2.js',
+  // input: 'src.js',
   output: {
-    file: 'dist.js',
+    file: 'dist2.js',
+    // file: 'dist.js',
     format: 'umd',
-    name: 'Stilo'
+    name: '_'
   },
   plugins: [
     replace({
