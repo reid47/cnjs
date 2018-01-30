@@ -1,5 +1,5 @@
-const cache = {};
-const rules = [];
+let cache = {};
+let rules = [];
 
 // we can determine the classname much earlier
 // (outside of props->) by just using a counter
@@ -15,13 +15,16 @@ export const rule = obj => {
   let isStatic = true;
   let staticDefs;
 
-  Object.keys(obj).sort().map(key => {
+  Object.keys(obj).map(key => {
     const val = obj[key];
     const cssKey = key.replace(/[A-Z]/g, '-$&').toLowerCase();
 
-    if (typeof val === 'function') {
+    const type = typeof val;
+    if (type === 'function') {
       isStatic = false;
       defs.push(props => cssKey + ':' + val(props) + ';');
+    } else if (type === 'object') {
+
     } else {
       defs.push(cssKey + ':' + val + ';');
     }
@@ -31,7 +34,7 @@ export const rule = obj => {
     staticDefs = defs.join('');
   }
 
-  return props => {
+  const func = props => {
     const ruleDefs = isStatic ? staticDefs :
       defs.map(def =>
         typeof def === 'function' ? def(props) : def)
@@ -44,6 +47,13 @@ export const rule = obj => {
 
     return cache[ruleDefs] = className;
   };
+
+  return isStatic ? func() : func;
 };
 
 export const css = () => rules.sort().join('\n');
+
+export const reset = () => {
+  rules = [];
+  cache = {};
+}

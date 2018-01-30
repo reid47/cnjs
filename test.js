@@ -1,4 +1,4 @@
-import { classify, css, configure, reset } from './index';
+import { rule, css, reset } from './src2';
 
 const expectCss = (...rules) => {
   expect(css()).toBe(rules.join('\n'));
@@ -6,215 +6,69 @@ const expectCss = (...rules) => {
 
 beforeEach(() => {
   reset();
-  configure({
-    prefix: 'sc'
-  });
 });
 
-test('simple cases', () => {
-  expect(
-    classify({
-      color: 'green'
-    })
-  ).toBe('sc0');
-
-  expect(
-    classify({
-      color: 'blue'
-    })
-  ).toBe('sc1');
-
-  expect(
-    classify({
-      color: 'red',
-      'background-color': 'yellow'
-    })
-  ).toBe('sc2 sc3');
-
-  expectCss(
-    '.sc0{color:green;}',
-    '.sc1{color:blue;}',
-    '.sc2{color:red;}',
-    '.sc3{background-color:yellow;}');
-});
-
-test('pseudoselectors', () => {
-  expect(
-    classify({
-      color: 'green',
-      '&:hover': {
-        color: 'blue'
-      },
-      '&:focus': {
-        color: 'red',
-        border: '2px solid yellow'
-      }
-    })
-  ).toBe('sc0 sc1 sc2 sc3');
-
-  expectCss(
-    '.sc0{color:green;}',
-    '.sc1:hover{color:blue;}',
-    '.sc2:focus{color:red;}',
-    '.sc3:focus{border:2px solid yellow;}');
-});
-
-test('nested pseudoselectors', () => {
-  expect(classify({
-    '&:focus': {
-      color: 'yellow',
-      '&:hover': {
-        background: 'blue'
-      },
-      '&:first-child:last-child': {
-        '&:before': {
-          content: '""'
-        }
-      }
-    }
-  })).toBe('sc0 sc1 sc2');
-
-  expectCss(
-    '.sc0:focus{color:yellow;}',
-    '.sc1:focus:hover{background:blue;}',
-    '.sc2:focus:first-child:last-child:before{content:"";}'
-  );
-});
-
-test('media queries', () => {
-  expect(
-    classify({
-      color: 'green',
-      '@media print': {
-        color: 'blue'
-      },
-      '@media (max-width: 700px)': {
-        color: 'red',
-        'text-transform': 'uppercase'
-      }
-    })
-  ).toBe('sc0 sc1 sc2 sc3');
-
-  expectCss(
-    '.sc0{color:green;}',
-    '@media print{.sc1{color:blue;}}',
-    '@media (max-width: 700px){.sc2{color:red;}}',
-    '@media (max-width: 700px){.sc3{text-transform:uppercase;}}'
-  );
-});
-
-test('nested media queries', () => {
-  expect(classify({
-    width: 10,
-    '@media (max-width: 1000px)': {
-      width: 47,
-      '@media (max-width: 2000px)': {
-        width: 100
-      }
-    }
-  })).toBe('sc0 sc1 sc2');
-
-  expectCss(
-    '.sc0{width:10px;}',
-    '@media (max-width: 1000px){.sc1{width:47px;}}',
-    '@media (max-width: 1000px) and (max-width: 2000px){.sc2{width:100px;}}'
-  );
-});
-
-test('pseudoselectors within media queries', () => {
-  expect(classify({
-    width: 10,
-    '@media (max-width: 1000px)': {
-      background: 'green',
-      '&:hover': {
-        background: 'purple'
-      }
-    }
-  })).toBe('sc0 sc1 sc2');
-
-  expectCss(
-    '.sc0{width:10px;}',
-    '@media (max-width: 1000px){.sc1{background:green;}}',
-    '@media (max-width: 1000px){.sc2:hover{background:purple;}}'
-  );
-});
-
-test('default number units', () => {
-  classify({ 'font-size': 2, width: 0 });
-  expectCss(
-    '.sc0{font-size:2px;}',
-    '.sc1{width:0;}');
-});
-
-test('identical class deduplication', () => {
-  expect(
-    classify({
-      color: 'green'
-    })
-  ).toBe('sc0');
-
-  expect(classify({
+test('static rules', () => {
+  const cn0 = rule({
     color: 'green',
-    width: '100px',
-    '@media (max-width: 500px)': {
-      width: '50px'
-    }
-  })).toBe('sc0 sc1 sc2');
+    fontSize: '47px'
+  });
 
-  expect(classify({
-    width: '470px',
-    '@media (max-width: 500px)': {
-      width: '50px'
-    },
-    '@media (max-width: 400px)': {
-      color: 'green'
-    }
-  })).toBe('sc3 sc2 sc4');
+  const cn1 = rule({
+    border: '2px solid red',
+    marginLeft: '16px',
+    display: 'inline'
+  });
+
+  const cn2 = rule({
+    color: 'green',
+    fontSize: '47px'
+  });
+
+  expect(cn0).toBe('cls_0');
+  expect(cn1).toBe('cls_1');
+  expect(cn2).toBe('cls_0');
 
   expectCss(
-    '.sc0{color:green;}',
-    '.sc1{width:100px;}',
-    '@media (max-width: 500px){.sc2{width:50px;}}',
-    '.sc3{width:470px;}',
-    '@media (max-width: 400px){.sc4{color:green;}}');
+    '.cls_0{color:green;font-size:47px;}',
+    '.cls_1{border:2px solid red;margin-left:16px;display:inline;}'
+  );
 });
 
-describe('weird edge cases', () => {
-  test('undefined value', () => {
-    expect(classify({
-      color: undefined
-    })).toBe('');
-    expectCss('')
+test('dynamic rules', () => {
+  const rule0 = rule({
+    color: 'green',
+    fontSize: p => (p.size * 2) + 'px'
   });
 
-  test('null value', () => {
-    expect(classify({
-      color: null
-    })).toBe('');
-    expectCss('')
-  });
+  expect(typeof rule0).toBe('function');
+  expectCss('');
 
-  test('empty style object', () => {
-    expect(classify({})).toBe('');
-    expectCss('');
-  });
+  const cn0 = rule0({ size: 10 });
+  const cn1 = rule0({ size: 20 });
+  const cn2 = rule0({ size: 10 });
 
-  test('undefined style object', () => {
-    expect(classify()).toBe('');
-    expectCss('');
-  });
+  expect(cn0).toBe('cls_0');
+  expect(cn1).toBe('cls_1');
+  expect(cn2).toBe('cls_0');
+
+  expectCss(
+    '.cls_0{color:green;font-size:20px;}',
+    '.cls_1{color:green;font-size:40px;}'
+  );
 });
 
-describe('configuration', () => {
-  test('setting a class prefix', () => {
-    configure({ prefix: 'test-' });
-    const cn = classify({ color: 'green' });
-    expect(cn).toBe('test-0');
+test('nested rules w/pseudoselectors', () => {
+  const cn0 = rule({
+    color: 'red',
+    '&:hover': {
+      color: 'green'
+    }
   });
 
-  test('setting a different default unit', () => {
-    configure({ unit: 'em' });
-    classify({ 'font-size': 2 });
-    expectCss('.sc0{font-size:2em;}');
-  });
+  expect(cn0).toBe('cls_0');
+  expectCss(
+    '.cls_0{color:red;}',
+    '.cls_0:hover{color:green;}'
+  );
 });
