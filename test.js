@@ -1,4 +1,4 @@
-import { rule, css, reset } from './src2';
+import { rule, css, reset } from './src';
 
 const expectCss = (...rules) => {
   expect(css()).toBe(rules.join('\n'));

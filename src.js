@@ -1,67 +1,96 @@
-// let rules = [];
-// let cache = {};
-// let onNewRule = rule => rules.push(rule);
+let rules = [];
+let cache = {};
 
-// const options = {
-//   prefix: 'sc',
-//   unit: 'px'
-// };
+const mergeKey = (oldKey, newKey) =>
+  oldKey + (oldKey.indexOf('@media') > -1
+    ? newKey.replace('@media', ' and')
+    : newKey.replace(/&:/g, ':'));
 
-// const insertRule = (rule, stylesheet) =>
-//   stylesheet.insertRule(rule, stylesheet.cssRules.length)
+const newClassName = () =>
+  'cls_' + rules.length;
 
-// const objectToCss = (styleObj = {}, ruleSuffix = '', ruleWrapper = '') => {
-//   return Object.entries(styleObj).map(([key, val]) => {
-//     if (val == null) return '';
+const sortedKeys = obj =>
+  Object.keys(obj).sort((a, b) => a.length - b.length);
 
-//     switch (typeof val) {
-//       case 'object':
-//         const c0 = key.charAt(0);
-//         return objectToCss(
-//           val,
-//           ruleSuffix + (c0 === '&' ? key.substr(1) : ''),
-//           ruleWrapper + (c0 !== '@' ? '' :
-//             (ruleWrapper && ruleWrapper.indexOf('@media') > -1)
-//               ? key.replace('@media', ' and')
-//               : key));
+const collectDefs = (obj, defs, level = '', cacheKey = '') => {
+  let isStatic = true;
 
-//       case 'number':
-//         val = val ? val + options.unit : val;
-//     }
+  Object.keys(obj).map(key => {
+    defs[level] = defs[level] || [];
+    const val = obj[key];
+    const cssKey = key.replace(/[A-Z]/g, '-$&').toLowerCase();
 
-//     const cacheKey = ruleWrapper + ruleSuffix + key + ':' + val;
+    const type = typeof val;
+    if (type === 'function') {
+      isStatic = false;
+      defs[level].push(props => cssKey + ':' + val(props) + ';');
+      cacheKey += key + ':<func>;';
+    } else if (type === 'object') {
+      const { isStatic: nestedIsStatic, cacheKey: nestedCacheKey } = collectDefs(val, defs, mergeKey(level, key));
+      isStatic = isStatic && nestedIsStatic;
+      cacheKey += nestedCacheKey;
+    } else {
+      defs[level].push(cssKey + ':' + val + ';');
+      cacheKey += defs[level];
+    }
 
-//     if (cache[cacheKey]) return cache[cacheKey];
+    if (!defs[level].length) delete defs[level];
+  });
 
-//     const className = options.prefix + rules.length;
-//     onNewRule((ruleWrapper ? ruleWrapper + '{' : '') +
-//       `.${className}${ruleSuffix}{${key}:${val};}` +
-//       (ruleWrapper ? '}' : ''));
+  return { defs, isStatic, cacheKey };
+};
 
-//     return cache[cacheKey] = className;
-//   }).join(' ');
-// };
+export const rule = obj => {
+  const { defs, isStatic, cacheKey } = collectDefs(obj, {});
 
-// export const classify = styleObj => objectToCss(styleObj);
+  if (isStatic) {
+    if (cache[cacheKey]) return cache[cacheKey];
+    const cn = cache[cacheKey] = newClassName();
 
-// export const configure = ({ prefix, unit }) => {
-//   options.prefix = prefix || options.prefix;
-//   options.unit = unit || options.unit;
-// };
+    sortedKeys(defs).forEach(key => {
+      const values = defs[key].join('');
 
-// export const css = () => rules.join('\n');
+      const formattedRule = key.indexOf('@') > -1
+        ? `${key}{.${cn}{${values}}}`
+        : `.${cn}${key}{${values}}`
 
-// export const reset = () => {
-//   rules = [];
-//   cache = {};
-// };
+      rules.push(formattedRule);
+    });
 
-// if (typeof document !== 'undefined') {
-//   const style = document.head.appendChild(document.createElement('style'));
-//   style.id = 'stilo';
+    return cn;
+  }
 
-//   onNewRule = rule => {
-//     rules.push(rule);
-//     insertRule(rule, style.sheet);
-//   };
-// }
+  const ruleGenerators = sortedKeys(defs).map(key => {
+    const vals = defs[key];
+    if (key.indexOf('@') > -1) {
+      return (cn, props) => `${key}{.${cn}{${vals.map(val =>
+        typeof val === 'function' ? val(props) : val).join('')
+      }}}`;
+    }
+
+    return (cn, props) => `.${cn}${key}{${vals.map(val =>
+      typeof val === 'function' ? val(props) : val).join('')
+    }}`;
+  });
+
+  return props => {
+    const dynamicCacheKey = cacheKey + JSON.stringify(props);
+    if (cache[dynamicCacheKey]) return cache[dynamicCacheKey];
+
+    const cn = cache[dynamicCacheKey] = newClassName();
+
+    ruleGenerators.forEach(f => {
+      rules.push(f(cn, props));
+    });
+
+    return cn;
+  };
+};
+
+export const css = () =>
+  rules.join('\n');
+
+export const reset = () => {
+  rules = [];
+  cache = {};
+}
