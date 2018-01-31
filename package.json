@@ -1,5 +1,5 @@
 {
-  "name": "stilo",
+  "name": "cnjs",
   "version": "0.1.0",
   "description": "Tiny, fast, functional CSS-in-JS library",
   "main": "dist2.js",
