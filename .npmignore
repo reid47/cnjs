@@ -1,9 +1,10 @@
 node_modules/
 coverage/
 ignored/
-*.html
+test/
 
 .babelrc
 .gitignore
+.travis.yml
 rollup.config.js
 yarn.lock
