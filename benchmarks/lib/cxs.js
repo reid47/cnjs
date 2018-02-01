@@ -1,8 +1,8 @@
-const h = require('react').createElement
-const { render } = require('react-dom')
-const cxs = require('cxs/component')
+const { createElement } = require('react');
+const { render } = require('react-dom');
+const app = document.createElement('div');
 
-const app = document.createElement('div')
+const cxs = require('cxs/component');
 
 module.exports = () => {
   const Button = cxs('button')(props => ({
@@ -19,10 +19,10 @@ module.exports = () => {
     ':hover': {
       backgroundColor: 'black'
     }
-  }))
+  }));
 
   const button = render(
-    h(Button, { color: 'tomato' }, 'Hello'),
+    createElement(Button, { color: 'tomato' }, 'Hello'),
     app
-  )
+  );
 }

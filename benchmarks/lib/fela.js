@@ -1,11 +1,10 @@
-const h = require('react').createElement
-const { render } = require('react-dom')
-const { createRenderer } = require('fela')
-const { createComponent, Provider } = require('react-fela')
+const { createElement } = require('react');
+const { render } = require('react-dom');
+const app = document.createElement('div');
 
-const app = document.createElement('div')
-
-const renderer = createRenderer()
+const { createRenderer } = require('fela');
+const { createComponent, Provider } = require('react-fela');
+const renderer = createRenderer();
 
 module.exports = () => {
   const Button = createComponent(props => ({
@@ -25,9 +24,9 @@ module.exports = () => {
   }), 'button')
 
   const button = render(
-    h(Provider, { renderer },
-      h(Button, { color: 'tomato' }, 'Hello')
+    createElement(Provider, { renderer },
+      createElement(Button, { color: 'tomato' }, 'Hello')
     ),
     app
-  )
-}
+  );
+};

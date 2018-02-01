@@ -1,11 +1,11 @@
-const h = require('react').createElement;
+const { createElement } = require('react');
 const { render } = require('react-dom');
+const app = document.createElement('div');
+
 const { rule } = require('../../dist/cnjs');
 
-const app = document.createElement('div')
-
 module.exports = () => {
-  const cn = rule({
+  const fn = rule({
     fontFamily: 'inherit',
     fontSize: 'inherit',
     display: 'inline-block',
@@ -22,11 +22,14 @@ module.exports = () => {
   });
 
   const Button = props => {
-    return h('button', { ...props, className: cn(props) });
+    return createElement('button', {
+      ...props,
+      className: fn(props)
+    });
   };
 
   const button = render(
-    h(Button, { color: 'tomato' }, 'Hello'),
+    createElement(Button, { color: 'tomato' }, 'Hello'),
     app
-  )
+  );
 }

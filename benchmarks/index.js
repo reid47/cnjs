@@ -7,37 +7,63 @@ const styledComponents = require('./lib/styled-components');
 const glamorous = require('./lib/glamorous');
 const inlineStyles = require('./lib/inline-styles');
 const cnjs = require('./lib/cnjs');
+require('babel-register')({
+  plugins: [[ require('emotion/babel'), { inline: true }]]
+});
+const emotion = require('./lib/emotion');
 
-// must be imported after others to prevent globbering other libraries
-// require('babel-register')({
-//   plugins: [
-//     [ require('emotion/babel'), { inline: true } ]
-//   ]
-// })
-const emotion = require('./lib/emotion')
+const padRight = (s, len) => s + ' '.repeat(Math.max(len - s.length, 0));
+const padLeft = (s, len) => ' '.repeat(Math.max(len - s.length, 0)) + s;
 
 const createSuite = name => new Benchmark.Suite(name)
   .on('start', () => {
     console.log(
-      chalk.blue.bold('\n\nBeginning benchmarks...'));
+      chalk.cyanBright(`\n\nBeginning suite: ${name}...\n`));
   })
   .on('cycle', e => {
     console.log(
-      chalk.green('Completed test:'),
-      chalk.green.bold(e.target.name));
+      chalk.yellow('Completed test:'),
+      chalk.green(e.target.name));
   })
   .on('complete', function() {
-    console.log(this.join('\n'));
-    const top = this.filter('fastest').map('name');
-    console.log(chalk.blue(`Fastest is ${top}`));
-  });
+    console.log();
 
-createSuite('button rendering')
+    console.log(this.join('\n') + '\n\n');
+
+    let maxNameLength = 0;
+    let maxOpsLength = 0;
+    const results = this.map(result => {
+      const opsSec = Math.round(result.hz).toLocaleString();
+      maxNameLength = result.name.length > maxNameLength ? result.name.length : maxNameLength;
+      maxOpsLength = opsSec.length + 8 > maxOpsLength ? opsSec.length + 8 : maxOpsLength
+      return {
+        name: result.name,
+        hz: result.hz,
+        opsSec: opsSec
+      };
+    }).sort((a, b) => b.hz - a.hz).forEach(result => {
+      console.log(
+        chalk.green(padRight(result.name, maxNameLength)),
+        '|',
+        chalk.cyan(padLeft(result.opsSec + ' ops/sec', maxOpsLength)),
+      );
+    });
+
+    console.log();
+    console.log(
+      chalk.yellow('Fastest:'),
+      chalk.green(this.filter('fastest').map('name').join(', ')));
+    console.log(
+      chalk.yellow('Slowest:'),
+      chalk.green(this.filter('slowest').map('name').join(', ')));
+    console.log();
+  })
   .add('inline-styles', inlineStyles)
   .add('cxs', cxs)
   .add('fela', fela)
   .add('emotion', emotion)
   .add('glamorous', glamorous)
   .add('styled-components', styledComponents)
-  .add('cnjs', cnjs)
-  .run({ async: true })
+  .add('cnjs', cnjs);
+
+createSuite('button rendering').run({ async: true });

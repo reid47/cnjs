@@ -1,8 +1,8 @@
-const h = require('react').createElement
-const { render } = require('react-dom')
-const styled = require('emotion/react').default
+const { createElement } = require('react');
+const { render } = require('react-dom');
+const app = document.createElement('div');
 
-const app = document.createElement('div')
+const styled = require('emotion/react').default;
 
 module.exports = () => {
   const Button = styled('button')`
@@ -19,10 +19,10 @@ module.exports = () => {
     &:hover: {
       background-color: black;
     }
-  `
+  `;
 
   const button = render(
-    h(Button, { color: 'tomato' }, 'Hello'),
+    createElement(Button, { color: 'tomato' }, 'Hello'),
     app
-  )
-}
+  );
+};
