@@ -1,4 +1,4 @@
-# CSS-in-JS benchmarks
+# :watch: benchmarks
 
 A handful of benchmark tests that compare the performance of `cnjs` to various other CSS-in-JS libraries (currently: `cxs`, `emotion`, `fela`, `glamorous`, `inline-styles`, `styled-components`).
 
