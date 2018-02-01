@@ -1,5 +1,7 @@
 # :zap: cnjs
 
+[![Build Status](https://travis-ci.org/reid47/cnjs.svg?branch=master)](https://travis-ci.org/reid47/cnjs)
+
 a tiny, fast, simple CSS-in-JS library
 
 ## :wrench: developing
