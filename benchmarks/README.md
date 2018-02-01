@@ -35,9 +35,9 @@ glamorous         | 2,210 ops/sec
 inline-styles     | 2,198 ops/sec
 styled-components | 1,744 ops/sec
 
-:rocket: fastest: **fela**
+:rocket: **fastest:** fela
 
-:turtle: slowest: styled-components
+:turtle: **slowest:** styled-components
 
 <!--RESULTS_PLACEHOLDER-->
 
