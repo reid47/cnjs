@@ -1,6 +1,4 @@
-# :zap: cnjs
-
-[![Build Status](https://travis-ci.org/reid47/cnjs.svg?branch=master)](https://travis-ci.org/reid47/cnjs)
+# :zap: cnjs [![Build Status](https://travis-ci.org/reid47/cnjs.svg?branch=master)](https://travis-ci.org/reid47/cnjs) [![Bundle Size](http://img.badgesize.io/reid47/cnjs/blob/master/dist/cnjs.js)](https://github.com/reid47/cnjs/blob/master/dist/cnjs.js) [![Bundle Size](http://img.badgesize.io/reid47/cnjs/blob/master/dist/cnjs.js?compression=gzip)](https://github.com/reid47/cnjs/blob/master/dist/cnjs.js)
 
 a tiny, fast, simple CSS-in-JS library
 
