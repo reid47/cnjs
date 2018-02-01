@@ -1,4 +1,4 @@
-import { rule, css, reset } from './src';
+import { rule, css, reset } from '../src/cnjs';
 
 const expectCss = (...rules) => {
   expect(css()).toBe(rules.join('\n'));

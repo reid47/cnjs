@@ -8,10 +8,10 @@
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",
-    "watch": "rollup -c -w",
+    "build-watch": "rollup -c -w",
     "test": "jest --watch",
-    "test-ci": "jest",
-    "coverage": "jest --coverage"
+    "test-all": "jest",
+    "test-coverage": "jest --coverage"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -19,7 +19,6 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "jest": "^22.1.4",
-    "prettier": "1.10.2",
     "rollup": "^0.55.0",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.2.6",

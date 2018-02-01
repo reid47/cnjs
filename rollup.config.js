@@ -6,11 +6,11 @@ import fileSize from 'rollup-plugin-filesize';
 import replace from 'rollup-plugin-replace';
 
 export default {
-  input: 'src.js',
+  input: 'src/cnjs.js',
   output: {
-    file: 'dist.js',
+    file: 'dist/cnjs.js',
     format: 'umd',
-    name: '_'
+    name: 'cnjs'
   },
   plugins: [
     replace({

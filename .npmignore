@@ -1,0 +1,9 @@
+node_modules/
+coverage/
+ignored/
+*.html
+
+.babelrc
+.gitignore
+rollup.config.js
+yarn.lock
