@@ -1,5 +1,6 @@
 const Benchmark = require('benchmark')
 const chalk = require('chalk');
+const replace = require('replace-in-file');
 require('browser-env')();
 const cxs = require('./lib/cxs');
 const fela = require('./lib/fela');
@@ -15,10 +16,19 @@ const emotion = require('./lib/emotion');
 const padRight = (s, len) => s + ' '.repeat(Math.max(len - s.length, 0));
 const padLeft = (s, len) => ' '.repeat(Math.max(len - s.length, 0)) + s;
 
+const placeholder = '<!--RESULTS_PLACEHOLDER-->';
+const lines = [];
+const headerLines = [
+  'name | ops/sec',
+  '---- | -------'
+];
+
 const createSuite = name => new Benchmark.Suite(name)
   .on('start', () => {
-    console.log(
-      chalk.cyanBright(`\n\nBeginning suite: ${name}...\n`));
+    lines.push(`#### suite: ${name}`);
+    lines.push(`###### *${new Date().toString()}*`);
+    lines.push(...headerLines);
+    console.log(chalk.cyanBright(`\n\nBeginning suite: ${name}...\n`));
   })
   .on('cycle', e => {
     console.log(
@@ -27,8 +37,7 @@ const createSuite = name => new Benchmark.Suite(name)
   })
   .on('complete', function() {
     console.log();
-
-    console.log(this.join('\n') + '\n\n');
+    // console.log('\n' + this.join('\n') + '\n\n');
 
     let maxNameLength = 0;
     let maxOpsLength = 0;
@@ -42,21 +51,30 @@ const createSuite = name => new Benchmark.Suite(name)
         opsSec: opsSec
       };
     }).sort((a, b) => b.hz - a.hz).forEach(result => {
-      console.log(
-        chalk.green(padRight(result.name, maxNameLength)),
-        '|',
-        chalk.cyan(padLeft(result.opsSec + ' ops/sec', maxOpsLength)),
-      );
+      const name = padRight(result.name, maxNameLength);
+      const ops = padLeft(result.opsSec + ' ops/sec', maxOpsLength);
+      lines.push(name + ' | ' + ops);
+      console.log(chalk.green(name), '|', chalk.cyan(ops));
     });
 
-    console.log();
-    console.log(
-      chalk.yellow('Fastest:'),
-      chalk.green(this.filter('fastest').map('name').join(', ')));
-    console.log(
-      chalk.yellow('Slowest:'),
-      chalk.green(this.filter('slowest').map('name').join(', ')));
-    console.log();
+    const fastest = this.filter('fastest').map('name').join(', ');
+    const slowest = this.filter('slowest').map('name').join(', ');
+    console.log('\n'
+      + chalk.yellow('Fastest: ')
+      + chalk.green(fastest) + '\n'
+      + chalk.yellow('Slowest: ')
+      + chalk.green(slowest) + '\n');
+    lines.push(`\n:rocket: fastest: **${fastest}**`);
+    lines.push(`\n:turtle: slowest: ${slowest}`);
+    lines.push('\n' + placeholder);
+
+    replace({
+      files: 'README.md',
+      from: placeholder,
+      to: lines.join('\n')
+    }).then(changes => {
+      console.log('Updated file: ' + changes.join(' '));
+    });
   })
   .add('inline-styles', inlineStyles)
   .add('cxs', cxs)
@@ -67,3 +85,4 @@ const createSuite = name => new Benchmark.Suite(name)
   .add('cnjs', cnjs);
 
 createSuite('button rendering').run({ async: true });
+
