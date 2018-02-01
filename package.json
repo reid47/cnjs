@@ -14,12 +14,17 @@
   "module": "src/cnjs.js",
   "author": "Reid Mitchell",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reid47/cnjs"
+  },
   "scripts": {
     "build": "rollup -c",
     "build-watch": "rollup -c -w",
     "test": "jest",
     "test-watch": "jest --watch",
     "test-coverage": "jest --coverage",
+    "test-ci": "npm run test-coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "prepublish": "npm run build"
   },
   "devDependencies": {
@@ -27,6 +32,7 @@
     "babel-jest": "^22.1.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "coveralls": "^3.0.0",
     "jest": "^22.1.4",
     "rollup": "^0.55.0",
     "rollup-plugin-babel": "^3.0.3",
