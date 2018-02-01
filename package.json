@@ -1,7 +1,15 @@
 {
   "name": "cnjs",
   "version": "0.1.0",
-  "description": "Tiny, fast, functional CSS-in-JS library",
+  "description": "Tiny, fast, simple CSS-in-JS library",
+  "keywords": [
+    "css",
+    "javascript",
+    "css-in-js",
+    "react",
+    "styles",
+    "stylesheets"
+  ],
   "main": "dist/cnjs.js",
   "module": "src/cnjs.js",
   "author": "Reid Mitchell",
