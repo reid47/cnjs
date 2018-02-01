@@ -2,6 +2,7 @@ node_modules/
 coverage/
 ignored/
 test/
+benchmarks/
 
 .babelrc
 .gitignore
