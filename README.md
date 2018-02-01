@@ -2,14 +2,14 @@
 
 a tiny, fast, simple CSS-in-JS library
 
-## development
+## :wrench: developing
 
-Generate a production build: `yarn build`
+To generate a production build: `yarn build`
 
-Watch for changes & rebuild: `yarn build-watch`
+To watch for changes & rebuild: `yarn build-watch`
 
-Start the test watcher: `yarn test`
+To start the test watcher: `yarn test`
 
-Run all the tests: `yarn test-all`
+To run all the tests: `yarn test-all`
 
-Analyze test coverage: `yarn test-coverage`
+To analyze test coverage: `yarn test-coverage`
