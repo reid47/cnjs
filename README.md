@@ -8,8 +8,8 @@ To generate a production build: `yarn build`
 
 To watch for changes & rebuild: `yarn build-watch`
 
-To start the test watcher: `yarn test`
+To run all the tests: `yarn test`
 
-To run all the tests: `yarn test-all`
+To start the test watcher: `yarn test-watch`
 
 To analyze test coverage: `yarn test-coverage`

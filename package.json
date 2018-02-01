@@ -9,8 +9,8 @@
   "scripts": {
     "build": "rollup -c",
     "build-watch": "rollup -c -w",
-    "test": "jest --watch",
-    "test-all": "jest",
+    "test": "jest",
+    "test-watch": "jest --watch",
     "test-coverage": "jest --coverage"
   },
   "devDependencies": {
