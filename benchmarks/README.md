@@ -1,17 +1,11 @@
 # CSS-in-JS benchmarks
 
-some benchmark tests that compare the performance of `cnjs` to various other CSS-in-JS libraries:
-- `cxs`
-- `emotion`
-- `fela`
-- `glamorous`
-- `inline-styles`
-- `styled-components`
+A handful of benchmark tests that compare the performance of `cnjs` to various other CSS-in-JS libraries (currently: `cxs`, `emotion`, `fela`, `glamorous`, `inline-styles`, `styled-components`).
 
 ## Latest results (last 10 runs)
 
-#### suite: button rendering
-###### *Thu Feb 01 2018 13:27:10 GMT-0800 (Pacific Standard Time)*
+### suite: button rendering
+> *Thu Feb 01 2018 13:27:10 GMT-0800 (Pacific Standard Time)*
 name | ops/sec,---- | -------
 cnjs              | 3,125 ops/sec
 fela              | 3,073 ops/sec
