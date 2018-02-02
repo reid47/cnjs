@@ -15,14 +15,17 @@ const emotion = require('./lib/emotion');
 const padRight = (s, len) => s + ' '.repeat(Math.max(len - s.length, 0));
 const padLeft = (s, len) => ' '.repeat(Math.max(len - s.length, 0)) + s;
 const placeholder = '<!--RESULTS_PLACEHOLDER-->';
-const headerLines = [ 'name | ops/sec', '---- | -------' ];
+const headerLines = [
+  'name                      | ops/sec',
+  '------------------------- | -------'
+];
 const lines = [];
 
 const runSuite = (name, description) => {
   const suite = new Benchmark.Suite(name)
     .on('start', () => {
       lines.push(`### suite: ${name}`);
-      lines.push(`*timestamp: ${new Date().toString()}*`);
+      lines.push(`*timestamp: ${new Date().toString()}*\n`);
       lines.push(...headerLines);
       console.log(chalk.cyanBright(`\n\nBeginning suite: ${name}...\n`));
     })
@@ -33,7 +36,6 @@ const runSuite = (name, description) => {
     })
     .on('complete', function() {
       console.log();
-      // console.log('\n' + this.join('\n') + '\n\n');
 
       let maxNameLength = 0;
       let maxOpsLength = 0;
@@ -77,22 +79,14 @@ const runSuite = (name, description) => {
     .add('emotion', emotion[name])
     .add('glamorous', glamorous[name])
     .add('styled-components', styledComponents[name])
-    .add('cnjs', {
-      fn: cnjs[name],
-      onStart: () => console.log('starting cnjs!')
-    })
-    .add('react (w/ inline styles)', inlineStyles[name])
-    .add('react (no styles)', unstyled[name])
-    .run({ async: true });
-  }
+    .add('cnjs', cnjs[name])
+    .add('react (with inline styles)', inlineStyles[name])
+    .add('react (unstyled)', unstyled[name])
+    .run({ async: false });
 
   return suite;
-}
+};
 
-runSuite(
-  'simple-button-static'
-);
+runSuite('simple-button-static');
 
-// runSuite(
-//   'simple-button-dynamic'
-// );
+runSuite('simple-button-dynamic');

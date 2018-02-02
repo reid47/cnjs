@@ -1,64 +1,32 @@
+import { collectDefs } from './collect-defs';
+
 let rules = [];
 let cache = {};
 
 let addRule = rule => rules.push(rule);
-
-const m = '@media';
-
-const mergeKey = (oldKey, newKey) =>
-  oldKey + (oldKey.indexOf(m) > -1
-    ? newKey.replace(m, ' and')
-    : newKey.replace(/&:/g, ':'));
-
 const newClassName = () => 'cls_' + rules.length;
 
 const callMeMaybe = (f, arg) => typeof f === 'function' ? f(arg) : f;
-
-const collectDefs = (obj, defs, level) => {
-  defs[level] = defs[level] || [];
-  let st = true, cacheKey = '';
-
-  for (let key in obj) {
-    const val = obj[key];
-    const cssKey = key.replace(/[A-Z]/g, '-$&').toLowerCase();
-
-    const type = typeof val;
-    if (type === 'function') {
-      st = false;
-      defs[level].push(props => cssKey + ':' + val(props) + ';');
-      cacheKey += key + ':<func>;';
-    } else if (type === 'object') {
-      const { st: st2, cacheKey: nestedCacheKey } = collectDefs(val, defs, mergeKey(level, key));
-      st = st && st2;
-      cacheKey += nestedCacheKey;
-    } else {
-      defs[level].push(cssKey + ':' + val + ';');
-      cacheKey += defs[level];
-    }
-
-    if (!defs[level].length) delete defs[level];
-  }
-
-  return { defs, st, cacheKey };
-};
+const formatValues = (vals, props) =>
+  vals.map(val => callMeMaybe(val, props)).join('');
 
 export const rule = obj => {
   if (!obj) return '';
 
-  const { defs, st, cacheKey } = collectDefs(obj, {}, '');
+  const { defs, st, ck } = collectDefs(obj, {}, '');
+  if (cache[ck]) return cache[ck];
 
   if (st) {
-    if (cache[cacheKey]) return cache[cacheKey];
-    const cn = cache[cacheKey] = newClassName();
+    const cn = cache[ck] = newClassName();
 
     for (let key in defs) {
       const values = defs[key].join('');
 
-      const formattedRule = key.indexOf('@') > -1
-        ? `${key}{.${cn}{${values}}}`
-        : `.${cn}${key}{${values}}`
-
-      addRule(formattedRule);
+      if (key.indexOf('@') > -1) {
+        addRule(`${key}{.${cn}{${values}}}`);
+      } else {
+        addRule(`.${cn}${key}{${values}}`);
+      }
     }
 
     return cn;
@@ -66,29 +34,24 @@ export const rule = obj => {
 
   const ruleGenerators = [];
   for (let key in defs) {
-    const vals = defs[key];
-
     if (key.indexOf('@') > -1) {
-      ruleGenerators.push((cn, props) => `${key}{.${cn}{${
-        vals.map(val => callMeMaybe(val, props)).join('')
-      }}}`);
+      ruleGenerators.push((cn, props) =>
+        `${key}{.${cn}{${formatValues(defs[key], props)}}}`);
       continue;
     }
 
-    ruleGenerators.push((cn, props) => `.${cn}${key}{${
-    vals.map(val => callMeMaybe(val, props)).join('')
-    }}`);
+    ruleGenerators.push((cn, props) =>
+      `.${cn}${key}{${formatValues(defs[key], props)}}`);
   }
 
   return props => {
-    const dynamicCacheKey = cacheKey + JSON.stringify(props);
+    const dynamicCacheKey = ck + JSON.stringify(props);
     if (cache[dynamicCacheKey]) return cache[dynamicCacheKey];
-
     const cn = cache[dynamicCacheKey] = newClassName();
 
-    ruleGenerators.forEach(f => {
-      addRule(f(cn, props));
-    });
+    for (let i in ruleGenerators) {
+      addRule(ruleGenerators[i](cn, props));
+    }
 
     return cn;
   };
