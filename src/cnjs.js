@@ -3,21 +3,22 @@ let cache = {};
 
 let addRule = rule => rules.push(rule);
 
+const m = '@media';
+
 const mergeKey = (oldKey, newKey) =>
-  oldKey + (oldKey.indexOf('@media') > -1
-    ? newKey.replace('@media', ' and')
+  oldKey + (oldKey.indexOf(m) > -1
+    ? newKey.replace(m, ' and')
     : newKey.replace(/&:/g, ':'));
 
-const newClassName = () =>
-  'cls_' + rules.length;
+const newClassName = () => 'cls_' + rules.length;
 
 const callMeMaybe = (f, arg) => typeof f === 'function' ? f(arg) : f;
 
-const collectDefs = (obj, defs, level = '', cacheKey = '') => {
+const collectDefs = (obj, defs, level, cacheKey = '') => {
+  defs[level] = defs[level] || [];
   let isStatic = true;
 
   for (let key in obj) {
-    defs[level] = defs[level] || [];
     const val = obj[key];
     const cssKey = key.replace(/[A-Z]/g, '-$&').toLowerCase();
 
@@ -43,7 +44,7 @@ const collectDefs = (obj, defs, level = '', cacheKey = '') => {
 
 export const rule = obj => {
   if (!obj) return '';
-  const { defs, isStatic, cacheKey } = collectDefs(obj, {});
+  const { defs, isStatic, cacheKey } = collectDefs(obj, {}, '');
 
   if (isStatic) {
     if (cache[cacheKey]) return cache[cacheKey];
@@ -92,16 +93,16 @@ export const rule = obj => {
   };
 };
 
-export const css = () =>
-  rules.sort().join('\n');
+export const css = () => rules.sort().join('\n');
 
 export const reset = () => {
   rules = [];
   cache = {};
-}
+};
 
-if (typeof document !== 'undefined') {
-  const sheet = document.head.appendChild(document.createElement('style')).sheet;
+const d = document;
+if (typeof d !== 'undefined') {
+  const sheet = d.head.appendChild(d.createElement('style')).sheet;
   addRule = rule => {
     rules.push(rule);
     sheet.insertRule(rule, sheet.cssRules.length);
