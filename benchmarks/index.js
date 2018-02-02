@@ -88,3 +88,7 @@ const runSuite = (name, description) => new Benchmark.Suite(name)
 runSuite(
   'simple-button-static'
 );
+
+// runSuite(
+//   'simple-button-dynamic'
+// );

@@ -62,6 +62,7 @@ export const rule = obj => {
 
   const ruleGenerators = sortedKeys(defs).map(key => {
     const vals = defs[key];
+
     if (key.indexOf('@') > -1) {
       return (cn, props) => `${key}{.${cn}{${vals.map(val =>
         typeof val === 'function' ? val(props) : val).join('')

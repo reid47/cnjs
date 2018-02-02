@@ -21,6 +21,22 @@ styled-components | 1,744 ops/sec
 
 :turtle: **slowest:** styled-components
 
+### suite: simple-button-static
+*timestamp: Thu Feb 01 2018 16:18:58 GMT-0800 (Pacific Standard Time)*
+name | ops/sec
+---- | -------
+fela              | 1,397 ops/sec
+cnjs              | 1,371 ops/sec
+emotion           | 1,255 ops/sec
+cxs               | 1,120 ops/sec
+glamorous         |   929 ops/sec
+inline-styles     |   760 ops/sec
+styled-components |   662 ops/sec
+
+:rocket: **fastest:** cnjs, fela, emotion
+
+:turtle: **slowest:** styled-components
+
 <!--RESULTS_PLACEHOLDER-->
 
 ## Acknowledgements
