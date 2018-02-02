@@ -26,8 +26,6 @@ export const collectDefs = (obj, defs, level) => {
       defs[level].push(cssKey + ':' + val + ';');
       ck += defs[level];
     }
-
-    if (!defs[level].length) delete defs[level];
   }
 
   return { defs, st, ck };
