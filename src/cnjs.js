@@ -1,6 +1,8 @@
 let rules = [];
 let cache = {};
 
+let addRule = rule => rules.push(rule);
+
 const mergeKey = (oldKey, newKey) =>
   oldKey + (oldKey.indexOf('@media') > -1
     ? newKey.replace('@media', ' and')
@@ -9,13 +11,12 @@ const mergeKey = (oldKey, newKey) =>
 const newClassName = () =>
   'cls_' + rules.length;
 
-const sortedKeys = obj =>
-  Object.keys(obj).sort((a, b) => a.length - b.length);
+const callMeMaybe = (f, arg) => typeof f === 'function' ? f(arg) : f;
 
 const collectDefs = (obj, defs, level = '', cacheKey = '') => {
   let isStatic = true;
 
-  Object.keys(obj).map(key => {
+  for (let key in obj) {
     defs[level] = defs[level] || [];
     const val = obj[key];
     const cssKey = key.replace(/[A-Z]/g, '-$&').toLowerCase();
@@ -35,44 +36,47 @@ const collectDefs = (obj, defs, level = '', cacheKey = '') => {
     }
 
     if (!defs[level].length) delete defs[level];
-  });
+  }
 
   return { defs, isStatic, cacheKey };
 };
 
 export const rule = obj => {
+  if (!obj) return '';
   const { defs, isStatic, cacheKey } = collectDefs(obj, {});
 
   if (isStatic) {
     if (cache[cacheKey]) return cache[cacheKey];
     const cn = cache[cacheKey] = newClassName();
 
-    sortedKeys(defs).forEach(key => {
+    for (let key in defs) {
       const values = defs[key].join('');
 
       const formattedRule = key.indexOf('@') > -1
         ? `${key}{.${cn}{${values}}}`
         : `.${cn}${key}{${values}}`
 
-      rules.push(formattedRule);
-    });
+      addRule(formattedRule);
+    }
 
     return cn;
   }
 
-  const ruleGenerators = sortedKeys(defs).map(key => {
+  const ruleGenerators = [];
+  for (let key in defs) {
     const vals = defs[key];
 
     if (key.indexOf('@') > -1) {
-      return (cn, props) => `${key}{.${cn}{${vals.map(val =>
-        typeof val === 'function' ? val(props) : val).join('')
-      }}}`;
+      ruleGenerators.push((cn, props) => `${key}{.${cn}{${
+        vals.map(val => callMeMaybe(val, props)).join('')
+      }}}`);
+      continue;
     }
 
-    return (cn, props) => `.${cn}${key}{${vals.map(val =>
-      typeof val === 'function' ? val(props) : val).join('')
-    }}`;
-  });
+    ruleGenerators.push((cn, props) => `.${cn}${key}{${
+    vals.map(val => callMeMaybe(val, props)).join('')
+    }}`);
+  }
 
   return props => {
     const dynamicCacheKey = cacheKey + JSON.stringify(props);
@@ -81,7 +85,7 @@ export const rule = obj => {
     const cn = cache[dynamicCacheKey] = newClassName();
 
     ruleGenerators.forEach(f => {
-      rules.push(f(cn, props));
+      addRule(f(cn, props));
     });
 
     return cn;
@@ -89,9 +93,17 @@ export const rule = obj => {
 };
 
 export const css = () =>
-  rules.join('\n');
+  rules.sort().join('\n');
 
 export const reset = () => {
   rules = [];
   cache = {};
+}
+
+if (typeof document !== 'undefined') {
+  const sheet = document.head.appendChild(document.createElement('style')).sheet;
+  addRule = rule => {
+    rules.push(rule);
+    sheet.insertRule(rule, sheet.cssRules.length);
+  };
 }

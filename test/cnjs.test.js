@@ -1,7 +1,9 @@
 import { rule, css, reset } from '../src/cnjs';
 
 const expectCss = (...rules) => {
-  expect(css()).toBe(rules.join('\n'));
+  rules.forEach(rule => {
+    expect(css()).toContain(rule);
+  })
 };
 
 beforeEach(() => {
@@ -36,26 +38,29 @@ test('static rules', () => {
 });
 
 test('dynamic rules', () => {
-  const rule0 = rule({
+   const rule0 = rule({
     color: 'green',
-    fontSize: p => (p.size * 2) + 'px'
+    width: p => p.width + '%'
+  });
+
+  const rule1 = rule({
+    left: '47px',
+    backgroundColor: p => p.color
   });
 
   expect(typeof rule0).toBe('function');
+  expect(typeof rule1).toBe('function');
   expectCss('');
 
-  const cn0 = rule0({ size: 10 });
-  const cn1 = rule0({ size: 20 });
-  const cn2 = rule0({ size: 10 });
+  const cn0 = rule0({ width: 47 });
+  const cn1 = rule1({ color: 'red' });
+  const cn2 = rule0({ width: 100 });
+  const cn3 = rule1({ color: 'red' });
 
   expect(cn0).toBe('cls_0');
   expect(cn1).toBe('cls_1');
-  expect(cn2).toBe('cls_0');
-
-  expectCss(
-    '.cls_0{color:green;font-size:20px;}',
-    '.cls_1{color:green;font-size:40px;}'
-  );
+  expect(cn2).toBe('cls_2');
+  expect(cn3).toBe('cls_1');
 });
 
 test('static nested rules w/pseudoselectors', () => {
@@ -160,4 +165,14 @@ test('dynamic nested rules w/ media queries', () => {
     '@media (max-width: 99px){.cls_0{color:orange;width:47%;}}',
     '@media print and (max-width: 28px){.cls_0{color:teal;}}'
   );
+});
+
+test('edge cases', () => {
+  const noRuleGiven = rule();
+  expect(noRuleGiven).toBe('');
+  expectCss('');
+
+  const emptyRuleGiven = rule();
+  expect(emptyRuleGiven).toBe('');
+  expectCss('');
 });
