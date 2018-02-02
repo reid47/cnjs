@@ -4,21 +4,9 @@ A handful of benchmark tests that compare the performance of `cnjs` to various o
 
 ## Latest results (last 10 runs)
 
-### suite: button rendering
-> *Thu Feb 01 2018 13:27:10 GMT-0800 (Pacific Standard Time)*
-name | ops/sec,---- | -------
-cnjs              | 3,125 ops/sec
-fela              | 3,073 ops/sec
-emotion           | 2,831 ops/sec
-cxs               | 2,291 ops/sec
-glamorous         | 2,254 ops/sec
-styled-components | 1,758 ops/sec
-inline-styles     | 1,306 ops/sec
-
-fastest: **cnjs, fela**, slowest: inline-styles
-
 #### suite: button rendering
-###### *Thu Feb 01 2018 13:30:07 GMT-0800 (Pacific Standard Time)*
+*Thu Feb 01 2018 13:30:07 GMT-0800 (Pacific Standard Time)*
+
 name | ops/sec
 ---- | -------
 fela              | 4,173 ops/sec
