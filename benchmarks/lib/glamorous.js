@@ -4,7 +4,7 @@ const app = document.createElement('div');
 
 const glamorous = require('glamorous');
 
-module.exports = () => {
+module.exports['simple-button-static'] = () => {
   const Button = glamorous('button')(props => ({
     fontFamily: 'inherit',
     fontSize: 'inherit',

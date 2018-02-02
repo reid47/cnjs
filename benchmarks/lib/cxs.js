@@ -4,7 +4,7 @@ const app = document.createElement('div');
 
 const cxs = require('cxs/component');
 
-module.exports = () => {
+module.exports['simple-button-static'] = () => {
   const Button = cxs('button')(props => ({
     fontFamily: 'inherit',
     fontSize: 'inherit',

@@ -4,7 +4,7 @@ const app = document.createElement('div');
 
 const { rule } = require('../../dist/cnjs');
 
-module.exports = () => {
+module.exports['simple-button-static'] = () => {
   const fn = rule({
     fontFamily: 'inherit',
     fontSize: 'inherit',

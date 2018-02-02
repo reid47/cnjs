@@ -23,10 +23,10 @@ const headerLines = [
   '---- | -------'
 ];
 
-const createSuite = name => new Benchmark.Suite(name)
+const runSuite = (name, description) => new Benchmark.Suite(name)
   .on('start', () => {
-    lines.push(`#### suite: ${name}`);
-    lines.push(`###### *${new Date().toString()}*`);
+    lines.push(`### suite: ${name}`);
+    lines.push(`*timestamp: ${new Date().toString()}*`);
     lines.push(...headerLines);
     console.log(chalk.cyanBright(`\n\nBeginning suite: ${name}...\n`));
   })
@@ -64,8 +64,8 @@ const createSuite = name => new Benchmark.Suite(name)
       + chalk.green(fastest) + '\n'
       + chalk.yellow('Slowest: ')
       + chalk.green(slowest) + '\n');
-    lines.push(`\n:rocket: fastest: **${fastest}**`);
-    lines.push(`\n:turtle: slowest: ${slowest}`);
+    lines.push(`\n:rocket: **fastest:** ${fastest}`);
+    lines.push(`\n:turtle: **slowest:** ${slowest}`);
     lines.push('\n' + placeholder);
 
     replace({
@@ -76,13 +76,15 @@ const createSuite = name => new Benchmark.Suite(name)
       console.log('Updated file: ' + changes.join(' '));
     });
   })
-  .add('inline-styles', inlineStyles)
-  .add('cxs', cxs)
-  .add('fela', fela)
-  .add('emotion', emotion)
-  .add('glamorous', glamorous)
-  .add('styled-components', styledComponents)
-  .add('cnjs', cnjs);
+  .add('inline-styles', inlineStyles[name])
+  .add('cxs', cxs[name])
+  .add('fela', fela[name])
+  .add('emotion', emotion[name])
+  .add('glamorous', glamorous[name])
+  .add('styled-components', styledComponents[name])
+  .add('cnjs', cnjs[name])
+  .run({ async: true });
 
-createSuite('button rendering').run({ async: true });
-
+runSuite(
+  'simple-button-static'
+);

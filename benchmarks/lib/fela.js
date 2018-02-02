@@ -6,7 +6,7 @@ const { createRenderer } = require('fela');
 const { createComponent, Provider } = require('react-fela');
 const renderer = createRenderer();
 
-module.exports = () => {
+module.exports['simple-button-static'] = () => {
   const Button = createComponent(props => ({
     fontFamily: 'inherit',
     fontSize: 'inherit',

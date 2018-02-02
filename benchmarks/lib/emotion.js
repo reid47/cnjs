@@ -4,7 +4,7 @@ const app = document.createElement('div');
 
 const styled = require('emotion/react').default;
 
-module.exports = () => {
+module.exports['simple-button-static'] = () => {
   const Button = styled('button')`
     font-family: inherit;
     font-size: inherit;

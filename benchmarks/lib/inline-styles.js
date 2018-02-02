@@ -2,7 +2,7 @@ const { createElement } = require('react');
 const { render } = require('react-dom');
 const app = document.createElement('div');
 
-module.exports = () => {
+module.exports['simple-button-static'] = () => {
   const Button = props => createElement('button', {
     ...props,
     style: {
