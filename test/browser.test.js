@@ -67,7 +67,7 @@ describe('browser', () => {
     const cn0 = rule0({ width: 47 });
     const cn1 = rule1({ color: 'red' });
     const cn2 = rule0({ width: 100 });
-    const cn3 = rule1({ color: 'red '});
+    const cn3 = rule1({ color: 'red' });
 
     expect(cn0).toBe('cls_0');
     expect(cn1).toBe('cls_1');
