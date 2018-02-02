@@ -4,7 +4,7 @@ a tiny, fast, simple CSS-in-JS library
 
 ## :star2: features
 
-- :heavy_check_mark: Media queries and pseudoselectors (e.g. `:hover`)
+- :heavy_check_mark: Media queries (e.g. `@media (max-width: 768px)` and pseudoselectors (e.g. `:hover`)
 - :heavy_check_mark: Framework independent, but easy to use with React
 - :heavy_check_mark: Support for server-side rendering
 - :heavy_check_mark: Small bundle size
