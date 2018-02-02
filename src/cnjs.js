@@ -14,9 +14,9 @@ const newClassName = () => 'cls_' + rules.length;
 
 const callMeMaybe = (f, arg) => typeof f === 'function' ? f(arg) : f;
 
-const collectDefs = (obj, defs, level, cacheKey = '') => {
+const collectDefs = (obj, defs, level) => {
   defs[level] = defs[level] || [];
-  let isStatic = true;
+  let st = true, cacheKey = '';
 
   for (let key in obj) {
     const val = obj[key];
@@ -24,12 +24,12 @@ const collectDefs = (obj, defs, level, cacheKey = '') => {
 
     const type = typeof val;
     if (type === 'function') {
-      isStatic = false;
+      st = false;
       defs[level].push(props => cssKey + ':' + val(props) + ';');
       cacheKey += key + ':<func>;';
     } else if (type === 'object') {
-      const { isStatic: nestedIsStatic, cacheKey: nestedCacheKey } = collectDefs(val, defs, mergeKey(level, key));
-      isStatic = isStatic && nestedIsStatic;
+      const { st: st2, cacheKey: nestedCacheKey } = collectDefs(val, defs, mergeKey(level, key));
+      st = st && st2;
       cacheKey += nestedCacheKey;
     } else {
       defs[level].push(cssKey + ':' + val + ';');
@@ -39,14 +39,15 @@ const collectDefs = (obj, defs, level, cacheKey = '') => {
     if (!defs[level].length) delete defs[level];
   }
 
-  return { defs, isStatic, cacheKey };
+  return { defs, st, cacheKey };
 };
 
 export const rule = obj => {
   if (!obj) return '';
-  const { defs, isStatic, cacheKey } = collectDefs(obj, {}, '');
 
-  if (isStatic) {
+  const { defs, st, cacheKey } = collectDefs(obj, {}, '');
+
+  if (st) {
     if (cache[cacheKey]) return cache[cacheKey];
     const cn = cache[cacheKey] = newClassName();
 

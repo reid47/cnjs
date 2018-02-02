@@ -1,6 +1,13 @@
 {
   "presets": [
-    [ "env", { "modules": false } ]
+    [
+      "env", {
+        "modules": false,
+        "exclude": [
+          "transform-es2015-typeof-symbol"
+        ]
+      }
+    ]
   ],
   "plugins": [
     "transform-object-rest-spread"
