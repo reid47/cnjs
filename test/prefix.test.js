@@ -1,4 +1,4 @@
-import { rule, css, reset } from '../src/cnjs';
+import { rule, css, reset } from '../src/turnstyle';
 
 // NOTE:
 // These test cases were generated using https://autoprefixer.github.io/

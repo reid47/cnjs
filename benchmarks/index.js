@@ -8,7 +8,7 @@ const styledComponents = require('./lib/styled-components');
 const glamorous = require('./lib/glamorous');
 const inlineStyles = require('./lib/react-inline-styles');
 const unstyled = require('./lib/react-unstyled');
-const cnjs = require('./lib/cnjs');
+const turnstyle = require('./lib/turnstyle');
 require('babel-register')({plugins: [[require('emotion/babel'), {inline: true}]]});
 const emotion = require('./lib/emotion');
 
@@ -79,7 +79,7 @@ const runSuite = (name, description) => {
     .add('emotion', emotion[name])
     .add('glamorous', glamorous[name])
     .add('styled-components', styledComponents[name])
-    .add('cnjs', cnjs[name])
+    .add('turnstyle', turnstyle[name])
     .add('react (with inline styles)', inlineStyles[name])
     .add('react (unstyled)', unstyled[name])
     .run({ async: false });

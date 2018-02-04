@@ -2,7 +2,7 @@ const { createElement } = require('react');
 const { render } = require('react-dom');
 const app = document.createElement('div');
 
-const { rule } = require('../../dist/cnjs');
+const { rule } = require('../../dist/turnstyle');
 
 module.exports['simple-button-dynamic'] = () => {
   const fn = rule({

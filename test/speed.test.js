@@ -1,4 +1,4 @@
-import { rule, css, reset } from '../src/cnjs';
+import { rule, css, reset } from '../src/turnstyle';
 
 xdescribe('speed', () => {
   beforeEach(() => {

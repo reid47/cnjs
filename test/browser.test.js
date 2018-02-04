@@ -1,21 +1,21 @@
 import { JSDOM } from 'jsdom';
 import fs from 'fs';
-const cnjs = fs.readFileSync('./dist/cnjs.js', 'UTF-8');
+const turnstyle = fs.readFileSync('./dist/turnstyle.js', 'UTF-8');
 
 describe('browser', () => {
   let window;
   beforeEach(() => {
     window = (new JSDOM(``, { runScripts: 'dangerously' })).window;
     const scriptEl = window.document.createElement('script');
-    scriptEl.textContent = cnjs;
+    scriptEl.textContent = turnstyle;
     window.document.body.appendChild(scriptEl);
   });
 
   test('library added to browser context', () => {
-    expect(window.cnjs).toBeDefined();
-    expect(typeof window.cnjs.rule).toBe('function');
-    expect(typeof window.cnjs.css).toBe('function');
-    expect(typeof window.cnjs.reset).toBe('function');
+    expect(window.turnstyle).toBeDefined();
+    expect(typeof window.turnstyle.rule).toBe('function');
+    expect(typeof window.turnstyle.css).toBe('function');
+    expect(typeof window.turnstyle.reset).toBe('function');
   });
 
   test('creates an empty style tag in the document head', () => {
@@ -25,12 +25,12 @@ describe('browser', () => {
   });
 
   test('static rules insert CSS into stylesheet', () => {
-    const cn0 = window.cnjs.rule({
+    const cn0 = window.turnstyle.rule({
       color: 'green',
       fontSize: '48px'
     });
 
-    const cn1 = window.cnjs.rule({
+    const cn1 = window.turnstyle.rule({
       position: 'absolute',
       left: '47px',
       top: '470px'
@@ -48,12 +48,12 @@ describe('browser', () => {
   });
 
   test('dynamic rules insert CSS into stylesheet', () => {
-    const rule0 = window.cnjs.rule({
+    const rule0 = window.turnstyle.rule({
       color: 'green',
       width: p => p.width + '%'
     });
 
-    const rule1 = window.cnjs.rule({
+    const rule1 = window.turnstyle.rule({
       left: '47px',
       backgroundColor: p => p.color
     });

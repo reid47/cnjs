@@ -1,4 +1,4 @@
-import { rule, css, reset } from '../src/cnjs';
+import { rule, css, reset } from '../src/turnstyle';
 
 const expectCss = (...rules) => {
   rules.forEach(rule => {
