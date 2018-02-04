@@ -33,6 +33,21 @@ fdescribe('vendor prefixing', () => {
       }`);
   });
 
+  test('box-sizing', () => {
+    rule({ boxSizing: 'border-box' });
+    rule({ boxSizing: 'content-box' });
+
+    expectCss(
+      `.cls_0 {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+      }`,
+      `.cls_1 {
+        -webkit-box-sizing: content-box;
+        box-sizing: content-box;
+      }`);
+  });
+
   test('flex', () => {
     rule({ flex: '0 1 auto' });
     rule({ flex: '1 1 0' });
@@ -472,6 +487,47 @@ fdescribe('vendor prefixing', () => {
         -webkit-writing-mode: vertical-rl;
         -ms-writing-mode: tb-rl;
         writing-mode: vertical-rl;
+      }`);
+  });
+
+  test('animation-*', () => {
+    rule({
+      animation: 'myanimation 5s infinite'
+    });
+
+    rule({
+      animationDelay: '2s',
+      animationDirection: 'alternate',
+      animationDuration: '3s',
+      animationFillMode: 'forwards',
+      animationIterationCount: 2,
+      animationName: 'someanimation',
+      animationPlayState: 'paused',
+      animationTimingFunction: 'linear'
+    });
+
+    expectCss(
+      `.cls_0 {
+        -webkit-animation: myanimation 5s infinite;
+        animation: myanimation 5s infinite;
+      }`,
+      `.cls_1 {
+        -webkit-animation-delay: 2s;
+        animation-delay: 2s;
+        -webkit-animation-direction: alternate;
+        animation-direction: alternate;
+        -webkit-animation-duration: 3s;
+        animation-duration: 3s;
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+        -webkit-animation-iteration-count: 2;
+        animation-iteration-count: 2;
+        -webkit-animation-name: someanimation;
+        animation-name: someanimation;
+        -webkit-animation-play-state: paused;
+        animation-play-state: paused;
+        -webkit-animation-timing-function: linear;
+        animation-timing-function: linear;
       }`);
   });
 

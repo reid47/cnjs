@@ -5,7 +5,7 @@ const m = '@media';
 const mergeKey = (oldKey, newKey) =>
   oldKey + (oldKey.indexOf(m) > -1
     ? newKey.replace(m, ' and')
-    : newKey.replace(/&:/g, ':'));
+    : newKey.replace(/&/g, ''));
 
 export const collectDefs = (obj, defs, level) => {
   defs[level] = defs[level] || [];

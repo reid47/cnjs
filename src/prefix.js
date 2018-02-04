@@ -12,6 +12,13 @@ const writingMode = {
 };
 
 export const prefix = (key, val) => {
+  if (key === 'box-sizing') {
+    return [
+      ['-webkit-box-sizing', val],
+      ['box-sizing', val]
+    ];
+  }
+
   if (key === 'display' && val === 'flex') {
     return [
       ['display', '-webkit-box'],
@@ -136,6 +143,13 @@ export const prefix = (key, val) => {
     ];
   }
 
+  if (/^animation/.test(key)) {
+    return [
+      ['-webkit-' + key, val],
+      [key, val]
+    ];
+  }
+
   if (key === '&:fullscreen') {
     return [
       ['&:-webkit-full-screen', val],
@@ -156,54 +170,3 @@ export const prefix = (key, val) => {
 
   return [ [key, val] ];
 }
-
-// TODO?
-// animation
-// block-logical
-// border-image
-// break-props
-// cross-fade
-// filter-value
-// filter
-// gradient
-// image-rendering
-// image-set
-// inline-logical
-// intrinsic
-// mask-border
-// pixelated
-// text-emphasis-position
-// transform-decl
-
-// text-decoration
-// display-grid
-// grid-area
-// grid-column-align
-// grid-end
-// grid-row-align
-// grid-row-column
-// grid-rows-columns
-// grid-shorthand
-// grid-start
-// grid-template-areas
-// grid-template
-
-// DONE!
-// background-size (not needed, supported)
-// appearance
-// display-flex
-// flex
-// align-content
-// justify-content
-// align-items
-// align-self
-// flex-basis
-// flex-direction
-// flex-wrap
-// flex-grow
-// flex-shrink
-// flex-flow
-// order
-// writing-mode
-// fullscreen
-// placeholder

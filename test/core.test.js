@@ -167,6 +167,24 @@ test('dynamic nested rules w/ media queries', () => {
   );
 });
 
+test('attribute selectors', () => {
+  const cn = rule({
+    color: 'purple',
+    '&[disabled]': {
+      color: 'yellow'
+    },
+    '&[type="text"]': {
+      color: 'green'
+    }
+  });
+
+  expect(cn).toBe('cls_0');
+  expectCss(
+    '.cls_0{color:purple;}',
+    '.cls_0[disabled]{color:yellow;}',
+    '.cls_0[type="text"]{color:green;}')
+});
+
 describe('edge cases', () => {
   test('nothing passed to rule function', () => {
     const noRuleGiven = rule();
