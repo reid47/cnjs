@@ -145,6 +145,15 @@ export const prefix = (key, val) => {
     ];
   }
 
+  if (key === '&::placeholder') {
+    return [
+      ['&::-webkit-input-placeholder', val],
+      ['&:-ms-input-placeholder', val],
+      ['&::-ms-input-placeholder', val],
+      ['&::placeholder', val]
+    ];
+  }
+
   return [ [key, val] ];
 }
 
@@ -156,7 +165,6 @@ export const prefix = (key, val) => {
 // cross-fade
 // filter-value
 // filter
-// fullscreen
 // gradient
 // image-rendering
 // image-set
@@ -164,7 +172,6 @@ export const prefix = (key, val) => {
 // intrinsic
 // mask-border
 // pixelated
-// placeholder
 // text-emphasis-position
 // transform-decl
 
@@ -198,3 +205,5 @@ export const prefix = (key, val) => {
 // flex-flow
 // order
 // writing-mode
+// fullscreen
+// placeholder

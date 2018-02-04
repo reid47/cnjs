@@ -1,15 +1,21 @@
-# :zap: cnjs [![Coverage Status](https://coveralls.io/repos/github/reid47/cnjs/badge.svg?branch=master)](https://coveralls.io/github/reid47/cnjs?branch=master) [![Build Status](https://travis-ci.org/reid47/cnjs.svg?branch=master)](https://travis-ci.org/reid47/cnjs) [![Bundle Size](http://img.badgesize.io/reid47/cnjs/master/dist/cnjs.js)](https://github.com/reid47/cnjs/blob/master/dist/cnjs.js) [![Gzipped Size](http://img.badgesize.io/reid47/cnjs/master/dist/cnjs.js?compression=gzip)](https://github.com/reid47/cnjs/blob/master/dist/cnjs.js)
+# :cyclone: turnstyle [![Coverage Status](https://coveralls.io/repos/github/reid47/turnstyle/badge.svg?branch=master)](https://coveralls.io/github/reid47/turnstyle?branch=master) [![Build Status](https://travis-ci.org/reid47/turnstyle.svg?branch=master)](https://travis-ci.org/reid47/turnstyle) [![Bundle Size](http://img.badgesize.io/reid47/turnstyle/master/dist/turnstyle.js)](https://github.com/reid47/turnstyle/blob/master/dist/turnstyle.js) [![Gzipped Size](http://img.badgesize.io/reid47/turnstyle/master/dist/turnstyle.js?compression=gzip)](https://github.com/reid47/turnstyle/blob/master/dist/turnstyle.js)
 
 a tiny, fast, simple CSS-in-JS library
 
 ## :star2: features
 
-- :heavy_check_mark: Media queries (e.g. `@media (max-width: 768px)` and pseudoselectors (e.g. `:hover`)
-- :heavy_check_mark: Framework independent, but easy to use with React
-- :heavy_check_mark: Support for server-side rendering
-- :heavy_check_mark: Small bundle size
-- :heavy_check_mark: Fully tested
-- :heavy_check_mark: No dependencies
+- :heavy_check_mark: Automatic vendor prefixing!
+- :heavy_check_mark: Media queries! (e.g. `@media (max-width: 768px)`, pseudoclasses (e.g. `:hover`), & pseudoelements (e.g. `::after`)!
+- :heavy_check_mark: No plugins/configuration required!
+- :heavy_check_mark: No dependencies!
+- :heavy_check_mark: Framework independent!
+- :heavy_check_mark: Support for server-side rendering!
+- :heavy_check_mark: Small bundle size!
+- :heavy_check_mark: Fully tested!
+
+## :palm_tree: goals
+
+Yes, there are many CSS-in-JS libraries out there. What makes this one special? Turnstyle prioritizes **simplicity**, **development speed**, and **predictability**. You should spend your time thinking about what your app will look like, not about which packages/plugins/configuration files you'll need just to get started.
 
 ## :wrench: development
 

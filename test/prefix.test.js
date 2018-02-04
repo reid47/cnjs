@@ -496,4 +496,26 @@ fdescribe('vendor prefixing', () => {
         color: green;
       }`);
   });
+
+  test('::placeholder', () => {
+    rule({
+      '&::placeholder': {
+        color: 'purple'
+      }
+    });
+
+    expectCss(
+      `.cls_0::-webkit-input-placeholder {
+        color: purple;
+      }`,
+      `.cls_0:-ms-input-placeholder {
+        color: purple;
+      }`,
+      `.cls_0::-ms-input-placeholder {
+        color: purple;
+      }`,
+      `.cls_0::placeholder {
+        color: purple;
+      }`);
+  });
 });

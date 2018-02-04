@@ -6,11 +6,11 @@ import fileSize from 'rollup-plugin-filesize';
 import replace from 'rollup-plugin-replace';
 
 export default {
-  input: 'src/cnjs.js',
+  input: 'src/turnstyle.js',
   output: {
-    file: 'dist/cnjs.js',
+    file: 'dist/turnstyle.js',
     format: 'umd',
-    name: 'cnjs'
+    name: 'turnstyle'
   },
   plugins: [
     replace({

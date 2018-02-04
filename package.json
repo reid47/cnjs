@@ -1,5 +1,5 @@
 {
-  "name": "cnjs",
+  "name": "turnstyle",
   "version": "0.1.0",
   "description": "Tiny, fast, simple CSS-in-JS library",
   "keywords": [
@@ -15,7 +15,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/reid47/cnjs"
+    "url": "https://github.com/reid47/turnstyle"
   },
   "scripts": {
     "build": "rollup -c",
