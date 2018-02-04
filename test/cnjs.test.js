@@ -167,12 +167,16 @@ test('dynamic nested rules w/ media queries', () => {
   );
 });
 
-test('edge cases', () => {
-  const noRuleGiven = rule();
-  expect(noRuleGiven).toBe('');
-  expectCss('');
+describe('edge cases', () => {
+  test('nothing passed to rule function', () => {
+    const noRuleGiven = rule();
+    expect(noRuleGiven).toBe('');
+    expectCss('');
+  });
 
-  const emptyRuleGiven = rule();
-  expect(emptyRuleGiven).toBe('');
-  expectCss('');
+  test('empty object passed to rule function', () => {
+    const emptyRuleGiven = rule();
+    expect(emptyRuleGiven).toBe('');
+    expectCss('');
+  });
 });

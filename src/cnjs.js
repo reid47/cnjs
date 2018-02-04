@@ -4,7 +4,7 @@ let rules = [];
 let cache = {};
 
 let addRule = rule => rules.push(rule);
-const newClassName = () => 'cls_' + rules.length;
+const newClassName = () => 'cls_' + rules.length.toString(36);
 
 const callMeMaybe = (f, arg) => typeof f === 'function' ? f(arg) : f;
 const formatValues = (vals, props) =>
