@@ -1,9 +1,6 @@
 const webkit = '-webkit-';
 const moz = '-moz-';
 const ms = '-ms-';
-const full = 'full';
-const screen = 'screen';
-const placeholder = 'placeholder';
 
 const oldFlexAlignment = {
   'flex-start': 'start',
@@ -19,17 +16,11 @@ const writingMode = {
 };
 
 export const prefix = (key, val) => {
-  if (key === 'box-sizing') {
+  if (key === 'display' && (val === 'flex' || val === 'inline-flex')) {
+    const infix = val === 'inline-flex' ? 'inline-' : '';
     return [
-      [webkit + key, val],
-      [key, val]
-    ];
-  }
-
-  if (key === 'display' && val === 'flex') {
-    return [
-      [key, webkit + 'box'],
-      [key, ms + 'flexbox'],
+      [key, webkit + infix + 'box'],
+      [key, ms + infix + 'flexbox'],
       [key, val]
     ];
   }
@@ -150,27 +141,34 @@ export const prefix = (key, val) => {
     ];
   }
 
-  if (/^animation/.test(key)) {
+  if (/^mask-border/.test(key)) {
+    return [
+      [webkit + key.replace('border', 'box-image'), val],
+      [key, val]
+    ];
+  }
+
+  if (/^(box-sizing|animation|text-emphasis|mask)/.test(key)) {
     return [
       [webkit + key, val],
       [key, val]
     ];
   }
 
-  if (key === '&:' + full + screen) {
+  if (key === '&:fullscreen') {
     return [
-      ['&:' + webkit + full + '-' + screen, val],
-      ['&:' + moz + full + '-' + screen, val],
-      ['&:' + ms + full + screen, val],
+      ['&:' + webkit + 'full-screen', val],
+      ['&:' + moz + 'full-screen', val],
+      ['&:' + ms + 'fullscreen', val],
       [key, val]
     ];
   }
 
-  if (key === '&::' + placeholder) {
+  if (key === '&::placeholder') {
     return [
-      ['&::' + webkit + 'input-' + placeholder, val],
-      ['&:' + ms + 'input-' + placeholder, val],
-      ['&::' + ms + 'input-' + placeholder, val],
+      ['&::' + webkit + 'input-placeholder', val],
+      ['&:' + ms + 'input-placeholder', val],
+      ['&::' + ms + 'input-placeholder', val],
       [key, val]
     ];
   }

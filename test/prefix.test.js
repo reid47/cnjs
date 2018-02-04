@@ -1,9 +1,5 @@
 import { rule, css, reset } from '../src/turnstyle';
 
-// NOTE:
-// These test cases were generated using https://autoprefixer.github.io/
-// with the filter ">1%, last 2 versions"
-
 const expectCss = (...rules) => {
   rules.forEach(rule => {
     expect(css()).toContain(
@@ -17,9 +13,10 @@ beforeEach(() => {
   reset();
 });
 
-fdescribe('vendor prefixing', () => {
-  test('display: flex', () => {
+describe('vendor prefixing', () => {
+  test('display: flex / inline-flex', () => {
     rule({ display: 'flex' });
+    rule({ display: 'inline-flex' });
     rule({ display: 'block' });
 
     expectCss(
@@ -29,6 +26,11 @@ fdescribe('vendor prefixing', () => {
         display: flex;
       }`,
       `.cls_1 {
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+      }`,
+      `.cls_2 {
         display: block;
       }`);
   });
@@ -528,6 +530,111 @@ fdescribe('vendor prefixing', () => {
         animation-play-state: paused;
         -webkit-animation-timing-function: linear;
         animation-timing-function: linear;
+      }`);
+  });
+
+  test('text-emphasis-*', () => {
+    rule({
+      textEmphasis: 'filled purple'
+    });
+
+    rule({
+      textEmphasisStyle: 'filled',
+      textEmphasisColor: 'purple',
+      textEmphasisPosition: 'over right'
+    });
+
+    expectCss(
+      `.cls_0 {
+        -webkit-text-emphasis: filled purple;
+        text-emphasis: filled purple;
+      }`,
+      `.cls_1 {
+        -webkit-text-emphasis-style: filled;
+        text-emphasis-style: filled;
+        -webkit-text-emphasis-color: purple;
+        text-emphasis-color: purple;
+        -webkit-text-emphasis-position: over right;
+        text-emphasis-position: over right;
+      }`);
+  });
+
+  test('mask-border-*', () => {
+    rule({
+      maskBorder: 'none'
+    });
+
+    rule({
+      maskBorderOutset: 'none',
+      maskBorderSource: 'none',
+      maskBorderMode: 'none',
+      maskBorderSlice: 'none',
+      maskBorderWidth: 'none',
+      maskBorderRepeat: 'none'
+    });
+
+    expectCss(
+      `.cls_0 {
+        -webkit-mask-box-image: none;
+        mask-border: none;
+      }`,
+      `.cls_1 {
+        -webkit-mask-box-image-outset: none;
+        mask-border-outset: none;
+        -webkit-mask-box-image-source: none;
+        mask-border-source: none;
+        -webkit-mask-box-image-mode: none;
+        mask-border-mode: none;
+        -webkit-mask-box-image-slice: none;
+        mask-border-slice: none;
+        -webkit-mask-box-image-width: none;
+        mask-border-width: none;
+        -webkit-mask-box-image-repeat: none;
+        mask-border-repeat: none;
+      }`);
+  });
+
+  test('mask-*', () => {
+    rule({
+      mask: 'none'
+    });
+
+    rule({
+      maskImage: 'none',
+      maskMode: 'none',
+      maskRepeat: 'none',
+      maskPosition: 'none',
+      maskClip: 'none',
+      maskOrigin: 'none',
+      maskSize: 'none',
+      maskComposite: 'none',
+      maskType: 'none'
+    });
+
+    expectCss(
+      `.cls_0 {
+        -webkit-mask: none;
+        mask: none;
+      }`,
+      `.cls_1 {
+        -webkit-mask-image: none;
+        mask-image: none;
+        -webkit-mask-mode: none;
+        mask-mode: none;
+        -webkit-mask-repeat: none;
+        mask-repeat: none;
+        -webkit-mask-position: none;
+        mask-position: none;
+        -webkit-mask-clip: none;
+        mask-clip: none;
+        -webkit-mask-origin: none;
+        mask-origin: none;
+        -webkit-mask-size: none;
+        mask-size: none;
+        -webkit-mask-composite: none;
+        mask-composite: none;
+        -webkit-mask-type: none;
+        mask-type: none;
       }`);
   });
 
