@@ -3,7 +3,9 @@ coverage/
 ignored/
 test/
 benchmarks/
+docs/
 
+.eslintrc.js
 .babelrc
 .gitignore
 .travis.yml
