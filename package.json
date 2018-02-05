@@ -18,13 +18,14 @@
     "url": "https://github.com/reid47/turnstyle"
   },
   "scripts": {
+    "lint": "eslint src test --fix",
     "build": "rollup -c",
     "build-watch": "rollup -c -w",
     "test": "jest",
     "test-watch": "jest --watch",
     "test-coverage": "jest --coverage",
-    "prepublish": "npm run build",
-    "lint": "eslint src test --fix"
+    "test-ci": "yarn run lint && yarn run test-coverage",
+    "prepublish": "npm run build"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
