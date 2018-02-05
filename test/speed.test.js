@@ -48,7 +48,7 @@ xdescribe('speed', () => {
     });
 
     for (let i = 0; i < 10000; i++) {
-      r({height: i});
+      r({ height: i });
     }
 
     const end = performance.now();

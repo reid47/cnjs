@@ -3,7 +3,7 @@ import { rule, css, reset } from '../src/turnstyle';
 const expectCss = (...rules) => {
   rules.forEach(rule => {
     expect(css()).toContain(rule);
-  })
+  });
 };
 
 beforeEach(() => {
@@ -38,7 +38,7 @@ test('static rules', () => {
 });
 
 test('dynamic rules', () => {
-   const rule0 = rule({
+  const rule0 = rule({
     color: 'green',
     width: p => p.width + '%'
   });
@@ -66,14 +66,8 @@ test('dynamic rules', () => {
 test('static nested rules w/pseudoselectors', () => {
   const cn0 = rule({
     color: 'red',
-    '&:hover': {
-      color: 'green'
-    },
-    '&:focus': {
-      '&:before': {
-        color: 'blue'
-      }
-    }
+    '&:hover': { color: 'green' },
+    '&:focus': { '&:before': { color: 'blue' } }
   });
 
   expect(cn0).toBe('cls_0');
@@ -88,9 +82,7 @@ test('dynamic nested rules w/pseudoselectors', () => {
   const rule0 = rule({
     color: 'red',
     width: props => props.size + '%',
-    '&:hover': {
-      color: 'green'
-    },
+    '&:hover': { color: 'green' },
     '&:focus': {
       '&:before': {
         color: 'blue',
@@ -99,7 +91,10 @@ test('dynamic nested rules w/pseudoselectors', () => {
     }
   });
 
-  const cn0 = rule0({ bg: 'purple', size: 47 });
+  const cn0 = rule0({
+    bg: 'purple',
+    size: 47
+  });
 
   expect(cn0).toBe('cls_0');
   expectCss(
@@ -119,9 +114,7 @@ test('static nested rules w/ media queries', () => {
     },
     '@media print': {
       color: 'red',
-      '@media (max-width: 28px)': {
-        color: 'yellow'
-      }
+      '@media (max-width: 28px)': { color: 'yellow' }
     }
   });
 
@@ -145,9 +138,7 @@ test('dynamic nested rules w/ media queries', () => {
     },
     '@media print': {
       color: 'red',
-      '@media (max-width: 28px)': {
-        color: props => props.smallWidthColor
-      }
+      '@media (max-width: 28px)': { color: props => props.smallWidthColor }
     }
   });
 
@@ -170,19 +161,16 @@ test('dynamic nested rules w/ media queries', () => {
 test('attribute selectors', () => {
   const cn = rule({
     color: 'purple',
-    '&[disabled]': {
-      color: 'yellow'
-    },
-    '&[type="text"]': {
-      color: 'green'
-    }
+    '&[disabled]': { color: 'yellow' },
+    '&[type="text"]': { color: 'green' }
   });
 
   expect(cn).toBe('cls_0');
   expectCss(
     '.cls_0{color:purple;}',
     '.cls_0[disabled]{color:yellow;}',
-    '.cls_0[type="text"]{color:green;}')
+    '.cls_0[type="text"]{color:green;}'
+  );
 });
 
 describe('edge cases', () => {

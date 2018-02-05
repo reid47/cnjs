@@ -17,11 +17,12 @@ export const collectDefs = (obj, defs, level) => {
     const prefixed = prefix(cssKey, val);
 
     for (let i = 0; i < prefixed.length; i++) {
-      const pKey = prefixed[i][0],
-            pVal = prefixed[i][1],
-            type = typeof pVal;
-      if (!pKey) continue;
+      const pKey = prefixed[i][0], pVal = prefixed[i][1];
+      if (!pKey) {
+        continue;
+      }
 
+      const type = typeof pVal;
       if (type === 'function') {
         st = false;
         defs[level].push(props => cssKey + ':' + pVal(props) + ';');
@@ -37,5 +38,9 @@ export const collectDefs = (obj, defs, level) => {
     }
   }
 
-  return { defs, st, ck };
+  return {
+    defs,
+    st,
+    ck
+  };
 };

@@ -11,10 +11,15 @@ const formatValues = (vals, props) =>
   vals.map(val => callMeMaybe(val, props)).join('');
 
 export const rule = obj => {
-  if (!obj) return '';
+  if (!obj) {
+    return '';
+  }
 
   const { defs, st, ck } = collectDefs(obj, {}, '');
-  if (cache[ck]) return cache[ck];
+
+  if (cache[ck]) {
+    return cache[ck];
+  }
 
   if (st) {
     const cn = cache[ck] = newClassName();
@@ -46,7 +51,11 @@ export const rule = obj => {
 
   return props => {
     const dynamicCacheKey = ck + JSON.stringify(props);
-    if (cache[dynamicCacheKey]) return cache[dynamicCacheKey];
+
+    if (cache[dynamicCacheKey]) {
+      return cache[dynamicCacheKey];
+    }
+
     const cn = cache[dynamicCacheKey] = newClassName();
 
     for (let i in ruleGenerators) {

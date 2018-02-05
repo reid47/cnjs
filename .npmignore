@@ -9,3 +9,4 @@ benchmarks/
 .travis.yml
 rollup.config.js
 yarn.lock
+*.log

@@ -5,7 +5,7 @@ const turnstyle = fs.readFileSync('./dist/turnstyle.js', 'UTF-8');
 describe('browser', () => {
   let window;
   beforeEach(() => {
-    window = (new JSDOM(``, { runScripts: 'dangerously' })).window;
+    window = (new JSDOM('', { runScripts: 'dangerously' })).window;
     const scriptEl = window.document.createElement('script');
     scriptEl.textContent = turnstyle;
     window.document.body.appendChild(scriptEl);
@@ -21,7 +21,7 @@ describe('browser', () => {
   test('creates an empty style tag in the document head', () => {
     const styleTag = window.document.head.querySelector('style');
     expect(styleTag).toBeTruthy();
-    expect(styleTag.sheet.cssRules.length).toBe(0);
+    expect(styleTag.sheet.cssRules).toHaveLength(0);
   });
 
   test('static rules insert CSS into stylesheet', () => {
@@ -40,7 +40,7 @@ describe('browser', () => {
     expect(cn1).toBe('cls_1');
 
     const styleTag = window.document.head.querySelector('style');
-    expect(styleTag.sheet.cssRules.length).toBe(2);
+    expect(styleTag.sheet.cssRules).toHaveLength(2);
     expect(styleTag.sheet.cssRules[0].cssText)
       .toBe('.cls_0 {color: green; font-size: 48px;}');
     expect(styleTag.sheet.cssRules[1].cssText)
@@ -62,7 +62,7 @@ describe('browser', () => {
     expect(typeof rule1).toBe('function');
 
     const styleTag = window.document.head.querySelector('style');
-    expect(styleTag.sheet.cssRules.length).toBe(0);
+    expect(styleTag.sheet.cssRules).toHaveLength(0);
 
     const cn0 = rule0({ width: 47 });
     const cn1 = rule1({ color: 'red' });
@@ -74,7 +74,7 @@ describe('browser', () => {
     expect(cn2).toBe('cls_2');
     expect(cn3).toBe('cls_1');
 
-    expect(styleTag.sheet.cssRules.length).toBe(3);
+    expect(styleTag.sheet.cssRules).toHaveLength(3);
     expect(styleTag.sheet.cssRules[0].cssText)
       .toBe('.cls_0 {color: green; width: 47%;}');
     expect(styleTag.sheet.cssRules[1].cssText)
