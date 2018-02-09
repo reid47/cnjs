@@ -4,6 +4,7 @@ const replace = require('replace-in-file');
 require('browser-env')();
 const cxs = require('./lib/cxs');
 const fela = require('./lib/fela');
+const felaPrefixed = require('./lib/fela-prefixed');
 const styledComponents = require('./lib/styled-components');
 const glamorous = require('./lib/glamorous');
 const inlineStyles = require('./lib/react-inline-styles');
@@ -76,6 +77,7 @@ const runSuite = (name, description) => {
     })
     .add('cxs', cxs[name])
     .add('fela', fela[name])
+    .add('fela (prefixed)', felaPrefixed[name])
     .add('emotion', emotion[name])
     .add('glamorous', glamorous[name])
     .add('styled-components', styledComponents[name])

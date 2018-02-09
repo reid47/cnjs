@@ -13,6 +13,7 @@
     "chalk": "^2.3.0",
     "cxs": "^6.1.0",
     "emotion": "^6.0.3",
+    "fela-plugin-prefixer": "^5.0.16",
     "glamor": "^2.20.37",
     "glamorous": "^3.24.0",
     "jsdom-global": "^3.0.2",

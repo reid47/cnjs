@@ -35,21 +35,6 @@ describe('vendor prefixing', () => {
       }`);
   });
 
-  test('box-sizing', () => {
-    rule({ boxSizing: 'border-box' });
-    rule({ boxSizing: 'content-box' });
-
-    expectCss(
-      `.cls_0 {
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-      }`,
-      `.cls_1 {
-        -webkit-box-sizing: content-box;
-        box-sizing: content-box;
-      }`);
-  });
-
   test('flex', () => {
     rule({ flex: '0 1 auto' });
     rule({ flex: '1 1 0' });
