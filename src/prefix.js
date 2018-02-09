@@ -15,6 +15,30 @@ const writingMode = {
   'vertical-rl': 'tb-rl'
 };
 
+const prefixedCursors = {
+  'zoom-in': 1,
+  'zoom-out': 1,
+  'grab': 1,
+  'grabbing': 1
+};
+
+const intrinsicSizingProps = {
+  'max-height': true,
+  'max-width': true,
+  'width': true,
+  'height': true,
+  'min-width': true,
+  'min-height': true
+};
+
+const intrinsicSizingVals = {
+  "min-content": true,
+  "max-content": true,
+  "fill-available": true,
+  "fit-content": true,
+  "contain-floats": true
+};
+
 export const prefix = (key, val) => {
   if (key === 'display' && (val === 'flex' || val === 'inline-flex')) {
     const infix = val === 'inline-flex' ? 'inline-' : '';
@@ -148,9 +172,97 @@ export const prefix = (key, val) => {
     ];
   }
 
-  if (/^(box-sizing|animation|text-emphasis|mask)/.test(key)) {
+  if (/^(box-sizing|font-feature-settings|animation|text-emphasis|mask|transform|backface-visibility|perspective|box-decoration-break|text-decoration-|text-orientation|backdrop-filter|font-kerning|clip-path|filter|shape-image)/.test(key)) {
     return [
       [ webkit + key, val ],
+      [ key, val ]
+    ];
+  }
+
+  if (key === 'columns'
+    || key === 'column-rule'
+    || key === 'column-count'
+    || key === 'column-gap'
+    || key === 'column-width'
+    || key === 'column-span'
+    || key === 'column-fill'
+    || key === 'column-rule-width'
+    || key === 'column-rule-style'
+    || key === 'column-rule-color'
+    || key === 'wrap-flow'
+    || key === 'wrap-through'
+    || key === 'wrap-margin') {
+    return [
+      [ webkit + key, val ],
+      [ key, val ]
+    ];
+  }
+
+  if (key === 'user-select' || key === 'text-size-adjust') {
+    return [
+      [ webkit + key, val ],
+      [ moz + key, val ],
+      [ ms + key, val ],
+      [ key, val ]
+    ];
+  }
+
+  if (key === 'tab-size') {
+    return [
+      [ moz + key, val ],
+      [ key, val ]
+    ];
+  }
+
+  if (/^(scroll-snap)/.test(key) || key === 'hyphens'
+    || key === 'flow-into' || key === 'flow-from' || key === 'break-before'
+    || key === 'break-after' || key === 'break-inside' || key === 'region-fragment') {
+    return [
+      [ webkit + key, val ],
+      [ ms + key, val ],
+      [ key, val ]
+    ];
+  }
+
+  if ((''+val).indexOf('cross-fade') === 0) {
+    let pct = (val.match(/\(([\d]+\%)/) || [])[1] || '';
+    let wkVal = val.replace('cross-fade', '-webkit-cross-fade')
+    if (pct) {
+      wkVal = wkVal.replace(pct + ' ', '');
+    } else {
+      pct = '0.5';
+    }
+
+    const lastRParen = wkVal.lastIndexOf(')');
+    if (lastRParen > -1) {
+      wkVal = wkVal.substring(0, lastRParen) + `, ${pct})`;
+    }
+
+    return [
+      [ key, wkVal ],
+      [ key, val ]
+    ];
+  }
+
+  if ((''+val).indexOf('image-set') > -1) {
+    return [
+      [ key, val.replace(/image-set/g, webkit + 'image-set') ],
+      [ key, val ]
+    ];
+  }
+
+  if ((key === 'cursor' && prefixedCursors[val])
+    || (key === 'position' && val === 'sticky')) {
+    return [
+      [ key, webkit + val ],
+      [ key, val ]
+    ];
+  }
+
+  if (intrinsicSizingProps[key] && intrinsicSizingVals[val]) {
+    return [
+      [ key, webkit + val ],
+      [ key, moz + val ],
       [ key, val ]
     ];
   }
