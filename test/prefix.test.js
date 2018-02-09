@@ -2,11 +2,10 @@ import { rule, css, reset } from '../src/turnstyle';
 
 const expectCss = (...rules) => {
   rules.forEach(rule => {
-    expect(css()).toContain(
-      rule.replace(/[ ]*\n[ ]*/g, '')
-        .replace(/[ ]\{/g, '{')
-        .replace(/:[ ]/g, ':'));
-  })
+    expect(css()).toContain(rule.replace(/[ ]*\n[ ]*/g, '')
+      .replace(/[ ]\{/g, '{')
+      .replace(/:[ ]/g, ':'));
+  });
 };
 
 beforeEach(() => {
@@ -14,6 +13,24 @@ beforeEach(() => {
 });
 
 describe('vendor prefixing', () => {
+  test('prefixing dynamic rules', () => {
+    const r0 = rule({ display: props => props.isFlex ? 'flex' : 'block' });
+
+    r0({ isFlex: true });
+    r0({ isFlex: false });
+
+    expectCss(
+      `.cls_0 {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+      }`,
+      `.cls_1 {
+        display: block;
+      }`
+    );
+  });
+
   test('display: flex / inline-flex', () => {
     rule({ display: 'flex' });
     rule({ display: 'inline-flex' });
@@ -32,7 +49,8 @@ describe('vendor prefixing', () => {
       }`,
       `.cls_2 {
         display: block;
-      }`);
+      }`
+    );
   });
 
   test('flex', () => {
@@ -79,7 +97,8 @@ describe('vendor prefixing', () => {
         -webkit-box-flex: initial;
         -ms-flex: initial;
         flex: initial;
-      }`);
+      }`
+    );
   });
 
   test('align-content', () => {
@@ -109,7 +128,8 @@ describe('vendor prefixing', () => {
       `.cls_4 {
         -ms-flex-line-pack: center;
         align-content: center;
-      }`);
+      }`
+    );
   });
 
   test('justify-content', () => {
@@ -143,7 +163,8 @@ describe('vendor prefixing', () => {
         -webkit-box-pack: center;
         -ms-flex-pack: center;
         justify-content: center;
-      }`);
+      }`
+    );
   });
 
   test('align-self', () => {
@@ -175,7 +196,8 @@ describe('vendor prefixing', () => {
         -ms-flex-item-align: auto;
         -ms-grid-row-align: auto;
         align-self: auto;
-      }`);
+      }`
+    );
   });
 
   test('align-items', () => {
@@ -210,7 +232,8 @@ describe('vendor prefixing', () => {
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-      }`);
+      }`
+    );
   });
 
   test('flex-basis', () => {
@@ -230,7 +253,8 @@ describe('vendor prefixing', () => {
       `.cls_2 {
         -ms-flex-preferred-size: 47px;
         flex-basis: 47px;
-      }`);
+      }`
+    );
   });
 
   test('flex-direction', () => {
@@ -270,7 +294,8 @@ describe('vendor prefixing', () => {
         -webkit-box-direction: reverse;
         -ms-flex-direction: column-reverse;
         flex-direction: column-reverse;
-      }`);
+      }`
+    );
   });
 
   test('flex-wrap', () => {
@@ -290,7 +315,8 @@ describe('vendor prefixing', () => {
       `.cls_2 {
         -ms-flex-wrap: wrap-reverse;
         flex-wrap: wrap-reverse;
-      }`);
+      }`
+    );
   });
 
   test('flex-grow', () => {
@@ -307,7 +333,8 @@ describe('vendor prefixing', () => {
         -webkit-box-flex: 1;
         -ms-flex-positive: 1;
         flex-grow: 1;
-      }`);
+      }`
+    );
   });
 
   test('flex-shrink', () => {
@@ -322,7 +349,8 @@ describe('vendor prefixing', () => {
       `.cls_1 {
         -ms-flex-negative: 1;
         flex-shrink: 1;
-      }`);
+      }`
+    );
   });
 
   test('flex-flow', () => {
@@ -411,7 +439,8 @@ describe('vendor prefixing', () => {
         -webkit-box-direction: reverse;
         -ms-flex-flow: column-reverse wrap-reverse;
         flex-flow: column-reverse wrap-reverse;
-      }`);
+      }`
+    );
   });
 
   test('order', () => {
@@ -434,7 +463,8 @@ describe('vendor prefixing', () => {
         -webkit-box-ordinal-group: initial;
         -ms-flex-order: initial;
         order: initial;
-      }`);
+      }`
+    );
   });
 
   test('appearance', () => {
@@ -451,7 +481,8 @@ describe('vendor prefixing', () => {
         -webkit-appearance: text-field;
         -moz-appearance: text-field;
         appearance: text-field;
-      }`);
+      }`
+    );
   });
 
   test('writing-mode', () => {
@@ -474,13 +505,12 @@ describe('vendor prefixing', () => {
         -webkit-writing-mode: vertical-rl;
         -ms-writing-mode: tb-rl;
         writing-mode: vertical-rl;
-      }`);
+      }`
+    );
   });
 
   test('animation-*', () => {
-    rule({
-      animation: 'myanimation 5s infinite'
-    });
+    rule({ animation: 'myanimation 5s infinite' });
 
     rule({
       animationDelay: '2s',
@@ -515,13 +545,12 @@ describe('vendor prefixing', () => {
         animation-play-state: paused;
         -webkit-animation-timing-function: linear;
         animation-timing-function: linear;
-      }`);
+      }`
+    );
   });
 
   test('text-emphasis-*', () => {
-    rule({
-      textEmphasis: 'filled purple'
-    });
+    rule({ textEmphasis: 'filled purple' });
 
     rule({
       textEmphasisStyle: 'filled',
@@ -541,13 +570,12 @@ describe('vendor prefixing', () => {
         text-emphasis-color: purple;
         -webkit-text-emphasis-position: over right;
         text-emphasis-position: over right;
-      }`);
+      }`
+    );
   });
 
   test('mask-border-*', () => {
-    rule({
-      maskBorder: 'none'
-    });
+    rule({ maskBorder: 'none' });
 
     rule({
       maskBorderOutset: 'none',
@@ -576,13 +604,12 @@ describe('vendor prefixing', () => {
         mask-border-width: none;
         -webkit-mask-box-image-repeat: none;
         mask-border-repeat: none;
-      }`);
+      }`
+    );
   });
 
   test('mask-*', () => {
-    rule({
-      mask: 'none'
-    });
+    rule({ mask: 'none' });
 
     rule({
       maskImage: 'none',
@@ -620,7 +647,8 @@ describe('vendor prefixing', () => {
         mask-composite: none;
         -webkit-mask-type: none;
         mask-type: none;
-      }`);
+      }`
+    );
   });
 
   test('2D/3D transforms', () => {
@@ -661,16 +689,14 @@ describe('vendor prefixing', () => {
         transform-style: preserve-3d;
         -webkit-transform-origin-z: 30%;
         transform-origin-z: 30%;
-      }`);
+      }`
+    );
   });
 
   test('box-decoration-break', () => {
-    rule({
-      'box-decoration-break': 'slice'
-    });
+    rule({ 'box-decoration-break': 'slice' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-box-decoration-break: slice;
         box-decoration-break: slice;
       }`);
@@ -684,8 +710,7 @@ describe('vendor prefixing', () => {
       textDecorationSkip: 'ink'
     });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-text-decoration-line: overline;
         text-decoration-line: overline;
         -webkit-text-decoration-style: wavy;
@@ -698,12 +723,9 @@ describe('vendor prefixing', () => {
   });
 
   test('user-select', () => {
-    rule({
-      userSelect: 'none'
-    });
+    rule({ userSelect: 'none' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
@@ -712,24 +734,18 @@ describe('vendor prefixing', () => {
   });
 
   test('shape-image-*', () => {
-    rule({
-      shapeImageThreshold: '0.7'
-    });
+    rule({ shapeImageThreshold: '0.7' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-shape-image-threshold: 0.7;
         shape-image-threshold: 0.7;
       }`);
   });
 
   test('font-feature-settings', () => {
-    rule({
-      fontFeatureSettings: '"smcp" on'
-    });
+    rule({ fontFeatureSettings: '"smcp" on' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-font-feature-settings: "smcp" on;
         font-feature-settings: "smcp" on;
       }`);
@@ -752,16 +768,14 @@ describe('vendor prefixing', () => {
       columnSpan: 'all'
     });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-columns: 12em auto;
         columns: 12em auto;
         -webkit-column-rule: 1em solid black;
         column-rule: 1em solid black;
       }`);
 
-    expectCss(
-      `.cls_1 {
+    expectCss(`.cls_1 {
         -webkit-column-width: 45px;
         column-width: 45px;
         -webkit-column-gap: 0;
@@ -782,24 +796,18 @@ describe('vendor prefixing', () => {
   });
 
   test('tab-size', () => {
-    rule({
-      tabSize: '16'
-    });
+    rule({ tabSize: '16' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -moz-tab-size: 16;
         tab-size: 16;
       }`);
   });
 
   test('hyphens', () => {
-    rule({
-      hyphens: 'auto'
-    });
+    rule({ hyphens: 'auto' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-hyphens: auto;
         -ms-hyphens: auto;
         hyphens: auto;
@@ -807,12 +815,9 @@ describe('vendor prefixing', () => {
   });
 
   test('text-orientation', () => {
-    rule({
-      textOrientation: 'mixed'
-    });
+    rule({ textOrientation: 'mixed' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-text-orientation: mixed;
         text-orientation: mixed;
       }`);
@@ -829,8 +834,7 @@ describe('vendor prefixing', () => {
     });
 
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-flow-into: main;
         -ms-flow-into: main;
         flow-into: main;
@@ -871,12 +875,9 @@ describe('vendor prefixing', () => {
   });
 
   test('text-size-adjust', () => {
-    rule({
-      textSizeAdjust: 'none'
-    });
+    rule({ textSizeAdjust: 'none' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-text-size-adjust: none;
         -moz-text-size-adjust: none;
         -ms-text-size-adjust: none;
@@ -885,36 +886,27 @@ describe('vendor prefixing', () => {
   });
 
   test('clip-path', () => {
-    rule({
-      clipPath: 'none'
-    });
+    rule({ clipPath: 'none' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-clip-path: none;
         clip-path: none;
       }`);
   });
 
   test('filter', () => {
-    rule({
-      filter: 'blur(10px)'
-    });
+    rule({ filter: 'blur(10px)' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-filter: blur(10px);
         filter: blur(10px);
       }`);
   });
 
   test('scroll-snap-*', () => {
-    rule({
-      scrollSnapType: 'mandatory'
-    });
+    rule({ scrollSnapType: 'mandatory' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-scroll-snap-type: mandatory;
         -ms-scroll-snap-type: mandatory;
         scroll-snap-type: mandatory;
@@ -922,41 +914,29 @@ describe('vendor prefixing', () => {
   });
 
   test('backdrop-filter', () => {
-    rule({
-      backdropFilter: 'grayscale'
-    });
+    rule({ backdropFilter: 'grayscale' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-backdrop-filter: grayscale;
         backdrop-filter: grayscale;
       }`);
   });
 
   test('font-kerning', () => {
-    rule({
-      fontKerning: 'normal'
-    });
+    rule({ fontKerning: 'normal' });
 
-    expectCss(
-      `.cls_0 {
+    expectCss(`.cls_0 {
         -webkit-font-kerning: normal;
         font-kerning: normal;
       }`);
   });
 
   test('cross-fade', () => {
-    rule({
-      background: 'cross-fade(url(test.png))'
-    });
+    rule({ background: 'cross-fade(url(test.png))' });
 
-    rule({
-      background: 'cross-fade(47% url(test.png))'
-    });
+    rule({ background: 'cross-fade(47% url(test.png))' });
 
-    rule({
-      background: 'cross-fade(47% url(test.png) url(test2.png))'
-    });
+    rule({ background: 'cross-fade(47% url(test.png) url(test2.png))' });
 
     expectCss(
       `.cls_0 {
@@ -970,29 +950,20 @@ describe('vendor prefixing', () => {
       `.cls_2 {
         background: -webkit-cross-fade(url(test.png) url(test2.png), 47%);
         background: cross-fade(47% url(test.png) url(test2.png));
-      }`);
+      }`
+    );
   });
 
   test('cursor', () => {
-    rule({
-      cursor: 'pointer'
-    });
+    rule({ cursor: 'pointer' });
 
-    rule({
-      cursor: 'grab'
-    });
+    rule({ cursor: 'grab' });
 
-    rule({
-      cursor: 'grabbing'
-    });
+    rule({ cursor: 'grabbing' });
 
-    rule({
-      cursor: 'zoom-in'
-    });
+    rule({ cursor: 'zoom-in' });
 
-    rule({
-      cursor: 'zoom-out'
-    });
+    rule({ cursor: 'zoom-out' });
 
     expectCss(
       `.cls_0 {
@@ -1013,13 +984,12 @@ describe('vendor prefixing', () => {
       `.cls_4 {
         cursor: -webkit-zoom-out;
         cursor: zoom-out;
-      }`);
+      }`
+    );
   });
 
   test('image-set', () => {
-    rule({
-      background: 'image-set(url(test.jpg) 1x, url(test2.jpg) 2x)'
-    });
+    rule({ background: 'image-set(url(test.jpg) 1x, url(test2.jpg) 2x)' });
 
     expectCss(`
       .cls_0 {
@@ -1029,9 +999,7 @@ describe('vendor prefixing', () => {
   });
 
   test('position: sticky', () => {
-    rule({
-      position: 'sticky'
-    });
+    rule({ position: 'sticky' });
 
     expectCss(`
       .cls_0 {
@@ -1070,11 +1038,7 @@ describe('vendor prefixing', () => {
   });
 
   test(':fullscreen', () => {
-    rule({
-      '&:fullscreen': {
-        color: 'green'
-      }
-    });
+    rule({ '&:fullscreen': { color: 'green' } });
 
     expectCss(
       `.cls_0:-webkit-full-screen {
@@ -1088,15 +1052,12 @@ describe('vendor prefixing', () => {
       }`,
       `.cls_0:fullscreen {
         color: green;
-      }`);
+      }`
+    );
   });
 
   test('::placeholder', () => {
-    rule({
-      '&::placeholder': {
-        color: 'purple'
-      }
-    });
+    rule({ '&::placeholder': { color: 'purple' } });
 
     expectCss(
       `.cls_0::-webkit-input-placeholder {
@@ -1110,6 +1071,7 @@ describe('vendor prefixing', () => {
       }`,
       `.cls_0::placeholder {
         color: purple;
-      }`);
+      }`
+    );
   });
 });

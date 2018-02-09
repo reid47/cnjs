@@ -25,7 +25,10 @@ export const collectDefs = (obj, defs, level) => {
       const type = typeof pVal;
       if (type === 'function') {
         st = false;
-        defs[level].push(props => cssKey + ':' + pVal(props) + ';');
+        defs[level].push(props => {
+          const dynamicPrefixed = prefix(cssKey, pVal(props));
+          return dynamicPrefixed.map(pair => pair.join(':')).join(';') + ';';
+        });
         ck += key + ':<fn>;';
       } else if (type === 'object') {
         const { st: st2, ck: ck2 } = collectDefs(pVal, defs, mergeKey(level, pKey));
