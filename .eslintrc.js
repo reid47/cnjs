@@ -1,37 +1,32 @@
 module.exports = {
-  'env': {
-    'browser': true,
-    'commonjs': true,
-    'es6': true,
+  env: {
+    browser: true,
+    commonjs: true,
+    es6: true,
     'jest/globals': true
   },
-  'extends': [
-    'eslint:recommended',
-    'plugin:jest/recommended'
-  ],
-  'parserOptions': {
-    'sourceType': 'module'
+  extends: ['eslint:recommended', 'plugin:jest/recommended'],
+  parserOptions: {
+    sourceType: 'module'
   },
-  'plugins': [
-    'jest'
-  ],
-  'rules': {
-    'array-bracket-newline': [ 'error', { 'multiline': true } ],
-    'array-bracket-spacing': [ 'error', 'always' ],
+  plugins: ['jest'],
+  rules: {
+    'array-bracket-newline': ['error', { multiline: true }],
+    'array-bracket-spacing': ['error', 'always'],
     'arrow-body-style': 'error',
-    'arrow-parens': [ 'error', 'as-needed' ],
+    'arrow-parens': ['error', 'as-needed'],
     'brace-style': 'error',
-    'camelcase': 'error',
+    camelcase: 'error',
     'comma-dangle': 'error',
     'comma-spacing': 'error',
     'comma-style': 'error',
     'computed-property-spacing': 'error',
-    'curly': 'error',
+    curly: 'error',
     'eol-last': 'error',
-    'eqeqeq': 'error',
+    eqeqeq: 'error',
     'func-call-spacing': 'error',
     'function-paren-newline': 'error',
-    'indent': [ 'error', 2 ],
+    indent: ['error', 2],
     'jsx-quotes': 'error',
     'key-spacing': 'error',
     'no-extra-bind': 'error',
@@ -46,17 +41,17 @@ module.exports = {
     'no-useless-concat': 'error',
     'no-useless-return': 'error',
     'no-whitespace-before-property': 'error',
-    'object-curly-newline': 'error',
-    'object-curly-spacing': [ 'error', 'always' ],
+    'object-curly-newline': ['error', { multiline: true }],
+    'object-curly-spacing': ['error', 'always'],
     'object-property-newline': 'error',
-    'operator-linebreak': [ 'error', 'before' ],
-    'padded-blocks': [ 'error', 'never' ],
-    'quote-props': [ 'error', 'as-needed', { 'numbers': true } ],
+    'operator-linebreak': ['error', 'before'],
+    'padded-blocks': ['error', 'never'],
+    'quote-props': ['error', 'as-needed', { numbers: true }],
     'require-await': 'error',
-    'semi': [ 'error', 'always' ],
+    semi: ['error', 'always'],
     'space-in-parens': 'error',
     'space-infix-ops': 'error',
     'space-unary-ops': 'error',
-    'quotes': [ 'error', 'single' ],
+    quotes: ['error', 'single']
   }
 };
