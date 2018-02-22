@@ -13,16 +13,10 @@ export default {
     name: 'turnstyle'
   },
   plugins: [
-    replace({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    }),
-    babel({
-      exclude: 'node_modules/**/'
-    }),
+    replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
+    babel({ exclude: 'node_modules/**/' }),
     resolve(),
-    commonjs({
-      include: 'node_modules/**'
-    }),
+    commonjs({ include: 'node_modules/**' }),
     uglify(),
     fileSize()
   ]
