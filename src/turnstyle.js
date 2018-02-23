@@ -94,8 +94,7 @@ export const reset = () => {
 };
 
 if (typeof document !== 'undefined') {
-  const d = document;
-  const sheet = d.head.appendChild(d.createElement('style')).sheet;
+  const { sheet } = document.head.appendChild(document.createElement('style'));
   addRule = rule => {
     rules.push(rule);
     sheet.insertRule(rule, sheet.cssRules.length);
