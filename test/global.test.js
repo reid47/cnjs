@@ -2,7 +2,9 @@ import { global, css, reset } from '../src/turnstyle';
 
 const expectCss = (...rules) => {
   rules.forEach(rule => {
-    expect(css()).toContain(rule.replace(/[ ]*\n[ ]*/g, '').replace(/[ ]\{/g, '{'));
+    expect(css()).toContain(
+      rule.replace(/[ ]*\n[ ]*/g, '').replace(/[ ]\{/g, '{')
+    );
   });
 };
 

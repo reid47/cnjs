@@ -40,11 +40,15 @@ export const rule = obj => {
   const ruleGenerators = [];
   for (let key in defs) {
     if (key.indexOf('@') > -1) {
-      ruleGenerators.push((cn, props) => `${key}{.${cn}{${formatValues(defs[key], props)}}}`);
+      ruleGenerators.push(
+        (cn, props) => `${key}{.${cn}{${formatValues(defs[key], props)}}}`
+      );
       continue;
     }
 
-    ruleGenerators.push((cn, props) => `.${cn}${key}{${formatValues(defs[key], props)}}`);
+    ruleGenerators.push(
+      (cn, props) => `.${cn}${key}{${formatValues(defs[key], props)}}`
+    );
   }
 
   return props => {
@@ -89,8 +93,8 @@ export const reset = () => {
   cache = {};
 };
 
-const d = document;
-if (typeof d !== 'undefined') {
+if (typeof document !== 'undefined') {
+  const d = document;
   const sheet = d.head.appendChild(d.createElement('style')).sheet;
   addRule = rule => {
     rules.push(rule);

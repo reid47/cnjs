@@ -2,9 +2,12 @@ import { rule, css, reset } from '../src/turnstyle';
 
 const expectCss = (...rules) => {
   rules.forEach(rule => {
-    expect(css()).toContain(rule.replace(/[ ]*\n[ ]*/g, '')
-      .replace(/[ ]\{/g, '{')
-      .replace(/:[ ]/g, ':'));
+    expect(css()).toContain(
+      rule
+        .replace(/[ ]*\n[ ]*/g, '')
+        .replace(/[ ]\{/g, '{')
+        .replace(/:[ ]/g, ':')
+    );
   });
 };
 
@@ -14,7 +17,7 @@ beforeEach(() => {
 
 describe('vendor prefixing', () => {
   test('prefixing dynamic rules', () => {
-    const r0 = rule({ display: props => props.isFlex ? 'flex' : 'block' });
+    const r0 = rule({ display: props => (props.isFlex ? 'flex' : 'block') });
 
     r0({ isFlex: true });
     r0({ isFlex: false });
@@ -832,7 +835,6 @@ describe('vendor prefixing', () => {
       breakInside: 'avoid',
       regionFragment: 'break'
     });
-
 
     expectCss(`.cls_0 {
         -webkit-flow-into: main;

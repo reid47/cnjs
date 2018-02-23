@@ -33,74 +33,66 @@ const intrinsicSizingVals = {
   'contain-floats': 1
 };
 
-const addWebkit = (key, val) => [
-  [ webkit + key, val ],
-  [ key, val ]
-];
+const addWebkit = (key, val) => [[webkit + key, val], [key, val]];
 
-const addWebkitVal = (key, val) => [
-  [ key, webkit + val ],
-  [ key, val ]
-];
+const addWebkitVal = (key, val) => [[key, webkit + val], [key, val]];
 
-const addMoz = (key, val) => [
-  [ moz + key, val ],
-  [ key, val ]
-];
+const addMoz = (key, val) => [[moz + key, val], [key, val]];
 
-const addMs = (key, val) => [
-  [ ms + key, val ],
-  [ key, val ]
-];
+const addMs = (key, val) => [[ms + key, val], [key, val]];
 
 const addWebkitMoz = (key, val) => [
-  [ webkit + key, val ],
-  [ moz + key, val ],
-  [ key, val ]
+  [webkit + key, val],
+  [moz + key, val],
+  [key, val]
 ];
 
 const addWebkitMozMs = (key, val) => [
-  [ webkit + key, val ],
-  [ moz + key, val ],
-  [ ms + key, val ],
-  [ key, val ]
+  [webkit + key, val],
+  [moz + key, val],
+  [ms + key, val],
+  [key, val]
 ];
 
 const addWebkitMs = (key, val) => [
-  [ webkit + key, val ],
-  [ ms + key, val ],
-  [ key, val ]
+  [webkit + key, val],
+  [ms + key, val],
+  [key, val]
 ];
 
 const prefixMaskBorder = (key, val) => [
-  [ webkit + key.replace('border', 'box-image'), val ],
-  [ key, val ]
+  [webkit + key.replace('border', 'box-image'), val],
+  [key, val]
 ];
 
 const prefixDisplayFlex = (key, val) => {
   const infix = val === 'inline-flex' ? 'inline-' : '';
   return [
-    [ key, webkit + infix + 'box' ],
-    [ key, ms + infix + 'flexbox' ],
-    [ key, val ]
+    [key, webkit + infix + 'box'],
+    [key, ms + infix + 'flexbox'],
+    [key, val]
   ];
 };
 
 const cases = {
   'align-content': (key, val) => [
-    [ ms + 'flex-line-pack', oldFlexAlignment[val] || val ],
-    [ key, val ]
+    [ms + 'flex-line-pack', oldFlexAlignment[val] || val],
+    [key, val]
   ],
   'align-items': (key, val) => [
-    [ webkit + 'box-align', oldFlexAlignment[val] || val ],
-    [ ms + 'flex-align', oldFlexAlignment[val] || val ],
-    [ key, val ]
+    [webkit + 'box-align', oldFlexAlignment[val] || val],
+    [ms + 'flex-align', oldFlexAlignment[val] || val],
+    [key, val]
   ],
   'align-self': (key, val) => [
-    [ ms + 'flex-item-align', oldFlexAlignment[val] || val ],
-    val !== 'flex-start' && val !== 'flex-end' && val !== 'baseline'
-        && [ ms + 'grid-row-align', oldFlexAlignment[val] || val ],
-    [ key, val ]
+    [ms + 'flex-item-align', oldFlexAlignment[val] || val],
+    val !== 'flex-start' &&
+      val !== 'flex-end' &&
+      val !== 'baseline' && [
+        ms + 'grid-row-align',
+        oldFlexAlignment[val] || val
+      ],
+    [key, val]
   ],
   appearance: addWebkitMoz,
   cursor: {
@@ -116,45 +108,50 @@ const cases = {
   flex: (key, val) => {
     const parts = ('' + val).split(' ');
     const wkFlex = parts[0] === 'none' ? 0 : parts[0] === 'auto' ? 1 : parts[0];
-    const msFlex = (parts.length === 3 && parts[2] === '0') ? val + 'px' : val;
-    return [
-      [ webkit + 'box-' + key, wkFlex ],
-      [ ms + key, msFlex ],
-      [ key, val ]
-    ];
+    const msFlex = parts.length === 3 && parts[2] === '0' ? val + 'px' : val;
+    return [[webkit + 'box-' + key, wkFlex], [ms + key, msFlex], [key, val]];
   },
-  'flex-basis': (key, val) => [
-    [ ms + 'flex-preferred-size', val ],
-    [ key, val ]
-  ],
+  'flex-basis': (key, val) => [[ms + 'flex-preferred-size', val], [key, val]],
   'flex-direction': (key, val) => [
-    [ webkit + 'box-orient', val.indexOf('row') > -1 ? 'horizontal' : 'vertical' ],
-    [ webkit + 'box-direction', val.indexOf('reverse') > -1 ? 'reverse' : 'normal' ],
-    [ ms + key, val ],
-    [ key, val ]
+    [
+      webkit + 'box-orient',
+      val.indexOf('row') > -1 ? 'horizontal' : 'vertical'
+    ],
+    [
+      webkit + 'box-direction',
+      val.indexOf('reverse') > -1 ? 'reverse' : 'normal'
+    ],
+    [ms + key, val],
+    [key, val]
   ],
   'flex-flow': (key, val) => {
     const v0 = (val + '').split(' ')[0] || '';
     return [
-      [ webkit + 'box-orient', v0.indexOf('row') > -1 ? 'horizontal' : 'vertical' ],
-      [ webkit + 'box-direction', v0.indexOf('reverse') > -1 ? 'reverse' : 'normal' ],
-      [ ms + key, val ],
-      [ key, val ]
+      [
+        webkit + 'box-orient',
+        v0.indexOf('row') > -1 ? 'horizontal' : 'vertical'
+      ],
+      [
+        webkit + 'box-direction',
+        v0.indexOf('reverse') > -1 ? 'reverse' : 'normal'
+      ],
+      [ms + key, val],
+      [key, val]
     ];
   },
   'flex-grow': (key, val) => [
-    [ webkit + 'box-flex', val ],
-    [ ms + 'flex-positive', val ],
-    [ key, val ]
+    [webkit + 'box-flex', val],
+    [ms + 'flex-positive', val],
+    [key, val]
   ],
-  'flex-shrink': (key, val) => [
-    [ ms + 'flex-negative', val ],
-    [ key, val ]
-  ],
+  'flex-shrink': (key, val) => [[ms + 'flex-negative', val], [key, val]],
   'justify-content': (key, val) => [
-    val !== 'space-around' && [ webkit + 'box-pack', oldFlexAlignment[val] || val ],
-    [ ms + 'flex-pack', oldFlexAlignment[val] || val ],
-    [ key, val ]
+    val !== 'space-around' && [
+      webkit + 'box-pack',
+      oldFlexAlignment[val] || val
+    ],
+    [ms + 'flex-pack', oldFlexAlignment[val] || val],
+    [key, val]
   ],
   'tab-size': addMoz,
   hyphens: addWebkitMs,
@@ -183,9 +180,9 @@ const cases = {
   order: (key, val) => {
     const v0 = /[0-9]/.test(val) ? (+val || 0) + 1 : val;
     return [
-      [ webkit + 'box-ordinal-group', v0 ],
-      [ ms + 'flex-order', val ],
-      [ key, val ]
+      [webkit + 'box-ordinal-group', v0],
+      [ms + 'flex-order', val],
+      [key, val]
     ];
   },
   'backface-visibility': addWebkit,
@@ -202,21 +199,21 @@ const cases = {
   'text-size-adjust': addWebkitMozMs,
   'user-select': addWebkitMozMs,
   'writing-mode': (key, val) => [
-    [ webkit + key, val ],
-    [ ms + key, writingMode[val] || val ],
-    [ key, val ]
+    [webkit + key, val],
+    [ms + key, writingMode[val] || val],
+    [key, val]
   ],
   '&:fullscreen': (key, val) => [
-    [ '&:' + webkit + 'full-screen', val ],
-    [ '&:' + moz + 'full-screen', val ],
-    [ '&:' + ms + 'fullscreen', val ],
-    [ key, val ]
+    ['&:' + webkit + 'full-screen', val],
+    ['&:' + moz + 'full-screen', val],
+    ['&:' + ms + 'fullscreen', val],
+    [key, val]
   ],
   '&::placeholder': (key, val) => [
-    [ '&::' + webkit + 'input-placeholder', val ],
-    [ '&:' + ms + 'input-placeholder', val ],
-    [ '&::' + ms + 'input-placeholder', val ],
-    [ key, val ]
+    ['&::' + webkit + 'input-placeholder', val],
+    ['&:' + ms + 'input-placeholder', val],
+    ['&::' + ms + 'input-placeholder', val],
+    [key, val]
   ]
 };
 
@@ -226,10 +223,17 @@ export const prefix = (key, val) => {
   if (cases.hasOwnProperty(key)) {
     if (typeof cases[key] === 'function') {
       ret = cases[key](key, val);
-    } else if (typeof cases[key] === 'object' && typeof cases[key][val] === 'function') {
+    } else if (
+      typeof cases[key] === 'object' &&
+      typeof cases[key][val] === 'function'
+    ) {
       ret = cases[key][val](key, val);
     }
-  } else if (/^(transform|animation|column|text-emphasis|text-decoration-|mask|wrap-)/.test(key)) {
+  } else if (
+    /^(transform|animation|column|text-emphasis|text-decoration-|mask|wrap-)/.test(
+      key
+    )
+  ) {
     ret = addWebkit(key, val);
   } else if (/^cross-fade/.test(val)) {
     let pct = (val.match(/\(([\d]+%)/) || [])[1] || '';
@@ -245,22 +249,12 @@ export const prefix = (key, val) => {
       wkVal = wkVal.substring(0, lastRParen) + `, ${pct})`;
     }
 
-    ret = [
-      [ key, wkVal ],
-      [ key, val ]
-    ];
+    ret = [[key, wkVal], [key, val]];
   } else if (('' + val).indexOf(imageSet) > -1) {
-    ret = [
-      [ key, val.replace(imageSet, webkit + imageSet) ],
-      [ key, val ]
-    ];
+    ret = [[key, val.replace(imageSet, webkit + imageSet)], [key, val]];
   } else if (intrinsicSizingProps[key] && intrinsicSizingVals[val]) {
-    ret = [
-      [ key, webkit + val ],
-      [ key, moz + val ],
-      [ key, val ]
-    ];
+    ret = [[key, webkit + val], [key, moz + val], [key, val]];
   }
 
-  return ret || [ [ key, val ] ];
+  return ret || [[key, val]];
 };
