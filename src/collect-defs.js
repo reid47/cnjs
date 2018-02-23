@@ -21,6 +21,7 @@ const collectDefs = (obj, defs, level) => {
     for (let i = 0; i < prefixed.length; i++) {
       const pKey = prefixed[i][0],
         pVal = prefixed[i][1];
+
       if (!pKey) {
         continue;
       }
