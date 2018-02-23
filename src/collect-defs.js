@@ -8,7 +8,7 @@ const mergeKey = (oldKey, newKey) =>
     ? newKey.replace(m, ' and')
     : newKey.replace(/&/g, ''));
 
-export const collectDefs = (obj, defs, level) => {
+const collectDefs = (obj, defs, level) => {
   defs[level] = defs[level] || [];
   let st = true,
     ck = '';
@@ -54,3 +54,5 @@ export const collectDefs = (obj, defs, level) => {
     ck
   };
 };
+
+export { collectDefs };

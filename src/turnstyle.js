@@ -1,4 +1,5 @@
 import { collectDefs } from './collect-defs';
+import { rehydrate } from './rehydration';
 
 let rules = [];
 let cache = {};
@@ -10,7 +11,7 @@ const callMeMaybe = (f, arg) => (typeof f === 'function' ? f(arg) : f);
 const formatValues = (vals, props) =>
   vals.map(val => callMeMaybe(val, props)).join('');
 
-export const rule = obj => {
+const rule = obj => {
   if (!obj) {
     return '';
   }
@@ -68,7 +69,7 @@ export const rule = obj => {
   };
 };
 
-export const global = (selector, obj) => {
+const global = (selector, obj) => {
   if (!obj) {
     return '';
   }
@@ -86,9 +87,9 @@ export const global = (selector, obj) => {
   }
 };
 
-export const css = () => rules.sort().join('\n');
+const css = () => rules.sort().join('\n');
 
-export const reset = () => {
+const reset = () => {
   rules = [];
   cache = {};
 };
@@ -100,3 +101,5 @@ if (typeof document !== 'undefined') {
     sheet.insertRule(rule, sheet.cssRules.length);
   };
 }
+
+export { rule, global, rehydrate, css, reset };

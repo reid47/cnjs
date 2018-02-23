@@ -217,7 +217,7 @@ const cases = {
   ]
 };
 
-export const prefix = (key, val) => {
+const prefix = (key, val) => {
   let ret;
 
   if (cases.hasOwnProperty(key)) {
@@ -258,3 +258,5 @@ export const prefix = (key, val) => {
 
   return ret || [[key, val]];
 };
+
+export { prefix };
