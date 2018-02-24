@@ -17,7 +17,9 @@ beforeEach(() => {
 
 describe('vendor prefixing', () => {
   test('prefixing dynamic rules', () => {
-    const r0 = rule({ display: props => (props.isFlex ? 'flex' : 'block') });
+    const r0 = rule(props => ({
+      display: props.isFlex ? 'flex' : 'block'
+    }));
 
     r0({ isFlex: true });
     r0({ isFlex: false });
@@ -1040,38 +1042,42 @@ describe('vendor prefixing', () => {
   });
 
   test(':fullscreen', () => {
-    rule({ '&:fullscreen': { color: 'green' } });
+    const cn = rule({ '&:fullscreen': { color: 'green' } });
+
+    expect(cn).toBe('cls_0 cls_1 cls_2 cls_3');
 
     expectCss(
       `.cls_0:-webkit-full-screen {
         color: green;
       }`,
-      `.cls_0:-moz-full-screen {
+      `.cls_1:-moz-full-screen {
         color: green;
       }`,
-      `.cls_0:-ms-fullscreen {
+      `.cls_2:-ms-fullscreen {
         color: green;
       }`,
-      `.cls_0:fullscreen {
+      `.cls_3:fullscreen {
         color: green;
       }`
     );
   });
 
   test('::placeholder', () => {
-    rule({ '&::placeholder': { color: 'purple' } });
+    const cn = rule({ '&::placeholder': { color: 'purple' } });
+
+    expect(cn).toBe('cls_0 cls_1 cls_2 cls_3');
 
     expectCss(
       `.cls_0::-webkit-input-placeholder {
         color: purple;
       }`,
-      `.cls_0:-ms-input-placeholder {
+      `.cls_1:-ms-input-placeholder {
         color: purple;
       }`,
-      `.cls_0::-ms-input-placeholder {
+      `.cls_2::-ms-input-placeholder {
         color: purple;
       }`,
-      `.cls_0::placeholder {
+      `.cls_3::placeholder {
         color: purple;
       }`
     );

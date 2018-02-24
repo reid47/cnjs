@@ -78,6 +78,103 @@ styled-components          | 1,437 ops/sec
 
 :turtle: **slowest:** styled-components
 
+### suite: simple-button-static
+*timestamp: Fri Feb 23 2018 00:07:14 GMT-0800 (Pacific Standard Time)*
+
+name                      | ops/sec
+------------------------- | -------
+react (unstyled)           | 2,023 ops/sec
+turnstyle                  | 1,731 ops/sec
+fela                       | 1,587 ops/sec
+fela (prefixed)            | 1,530 ops/sec
+emotion                    | 1,228 ops/sec
+cxs                        | 1,065 ops/sec
+react (with inline styles) | 1,036 ops/sec
+glamorous                  |   883 ops/sec
+styled-components          |   814 ops/sec
+
+:rocket: **fastest:** react (unstyled)
+
+:turtle: **slowest:** styled-components
+
+### suite: simple-button-static
+*timestamp: Fri Feb 23 2018 00:09:45 GMT-0800 (Pacific Standard Time)*
+
+name                      | ops/sec
+------------------------- | -------
+react (unstyled)           | 1,970 ops/sec
+turnstyle                  | 1,660 ops/sec
+fela                       | 1,455 ops/sec
+fela (prefixed)            | 1,445 ops/sec
+emotion                    | 1,176 ops/sec
+react (with inline styles) | 1,072 ops/sec
+cxs                        | 1,046 ops/sec
+glamorous                  |   945 ops/sec
+styled-components          |   807 ops/sec
+
+:rocket: **fastest:** react (unstyled)
+
+:turtle: **slowest:** styled-components
+
+### suite: simple-button-static
+*timestamp: Fri Feb 23 2018 13:07:09 GMT-0800 (Pacific Standard Time)*
+
+name                      | ops/sec
+------------------------- | -------
+react (unstyled)           | 3,984 ops/sec
+turnstyle                  | 3,223 ops/sec
+fela (prefixed)            | 3,061 ops/sec
+fela                       | 3,018 ops/sec
+emotion                    | 2,401 ops/sec
+react (with inline styles) | 2,030 ops/sec
+glamorous                  | 1,811 ops/sec
+cxs                        | 1,659 ops/sec
+styled-components          | 1,518 ops/sec
+
+:rocket: **fastest:** react (unstyled)
+
+:turtle: **slowest:** cxs, emotion
+
+<!--RESULTS_PLACEHOLDER-->
+### suite: simple-button-dynamic
+*timestamp: Fri Feb 23 2018 00:10:35 GMT-0800 (Pacific Standard Time)*
+
+name                      | ops/sec
+------------------------- | -------
+react (unstyled)           | 1,984 ops/sec
+fela                       | 1,873 ops/sec
+fela (prefixed)            | 1,656 ops/sec
+turnstyle                  | 1,615 ops/sec
+cxs                        | 1,577 ops/sec
+emotion                    | 1,276 ops/sec
+react (with inline styles) | 1,138 ops/sec
+glamorous                  | 1,060 ops/sec
+styled-components          |   793 ops/sec
+
+:rocket: **fastest:** react (unstyled)
+
+:turtle: **slowest:** styled-components
+
+<!--RESULTS_PLACEHOLDER-->
+### suite: simple-button-dynamic
+*timestamp: Fri Feb 23 2018 00:08:04 GMT-0800 (Pacific Standard Time)*
+
+name                      | ops/sec
+------------------------- | -------
+fela                       | 2,101 ops/sec
+cxs                        | 1,899 ops/sec
+react (unstyled)           | 1,811 ops/sec
+fela (prefixed)            | 1,745 ops/sec
+emotion                    | 1,352 ops/sec
+react (with inline styles) | 1,097 ops/sec
+glamorous                  | 1,045 ops/sec
+styled-components          |   819 ops/sec
+turnstyle                  |     0 ops/sec
+
+:rocket: **fastest:** fela, react (unstyled)
+
+:turtle: **slowest:** styled-components
+
 <!--RESULTS_PLACEHOLDER-->
 ### suite: simple-button-dynamic
 *timestamp: Thu Feb 08 2018 22:24:02 GMT-0800 (Pacific Standard Time)*
@@ -141,6 +238,28 @@ styled-components          |   979 ops/sec
 ## Acknowledgements
 
 The initial set of tests was borrowed from jxnblk's benchmarks [here](https://github.com/jxnblk/cxs/tree/master/benchmarks).
+
+name                      | ops/sec
+------------------------- | -------
+react (unstyled)           | 2,787 ops/sec
+fela                       | 2,235 ops/sec
+cxs                        | 2,085 ops/sec
+turnstyle                  | 2,016 ops/sec
+emotion                    | 1,834 ops/sec
+react (with inline styles) | 1,589 ops/sec
+glamorous                  | 1,379 ops/sec
+styled-components          |   979 ops/sec
+
+:rocket: **fastest:** react (unstyled)
+
+:turtle: **slowest:** styled-components
+
+<!--RESULTS_PLACEHOLDER-->
+
+## Acknowledgements
+
+The initial set of tests was borrowed from jxnblk's benchmarks [here](https://github.com/jxnblk/cxs/tree/master/benchmarks).
+rks).
 
 name                      | ops/sec
 ------------------------- | -------

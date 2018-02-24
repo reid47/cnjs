@@ -7,74 +7,40 @@ let cache = {};
 let addRule = rule => rules.push(rule);
 const newClassName = () => 'cls_' + rules.length.toString(36);
 
-const callMeMaybe = (f, arg) => (typeof f === 'function' ? f(arg) : f);
-const formatValues = (vals, props) =>
-  vals.map(val => callMeMaybe(val, props)).join('');
+const generateClasses = obj => {
+  const defs = collectDefs(obj, {}, '');
+  const cns = [];
 
-const rule = obj => {
-  if (!obj) {
-    return '';
-  }
-
-  const { defs, st, ck } = collectDefs(obj, {}, '');
-
-  if (cache[ck]) {
-    return cache[ck];
-  }
-
-  if (st) {
-    const cn = (cache[ck] = newClassName());
-
-    for (let key in defs) {
-      const values = defs[key].join('');
-
-      if (key.indexOf('@') > -1) {
-        addRule(`${key}{.${cn}{${values}}}`);
-      } else {
-        addRule(`.${cn}${key}{${values}}`);
-      }
-    }
-
-    return cn;
-  }
-
-  const ruleGenerators = [];
   for (let key in defs) {
+    const values = defs[key].join('');
+    if (!values.length) continue;
+
+    const cacheKey = key + values;
+    if (cache[cacheKey]) return cache[values];
+    const cn = (cache[cacheKey] = newClassName());
+
     if (key.indexOf('@') > -1) {
-      ruleGenerators.push(
-        (cn, props) => `${key}{.${cn}{${formatValues(defs[key], props)}}}`
-      );
-      continue;
+      addRule(`${key}{.${cn}{${values}}}`);
+    } else {
+      addRule(`.${cn}${key}{${values}}`);
     }
 
-    ruleGenerators.push(
-      (cn, props) => `.${cn}${key}{${formatValues(defs[key], props)}}`
-    );
+    cns.push(cn);
   }
 
-  return props => {
-    const dynamicCacheKey = ck + JSON.stringify(props);
+  return cns.join(' ');
+};
 
-    if (cache[dynamicCacheKey]) {
-      return cache[dynamicCacheKey];
-    }
-
-    const cn = (cache[dynamicCacheKey] = newClassName());
-
-    for (let i in ruleGenerators) {
-      addRule(ruleGenerators[i](cn, props));
-    }
-
-    return cn;
-  };
+const rule = ruleDef => {
+  if (!ruleDef) return '';
+  if (typeof ruleDef !== 'function') return generateClasses(ruleDef);
+  return props => generateClasses(ruleDef(props));
 };
 
 const global = (selector, obj) => {
-  if (!obj) {
-    return '';
-  }
+  if (!obj) return '';
 
-  const { defs } = collectDefs(obj, {}, '');
+  const defs = collectDefs(obj, {}, '');
 
   for (let key in defs) {
     const values = defs[key].join('');

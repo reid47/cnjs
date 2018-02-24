@@ -5,7 +5,7 @@ const app = document.createElement('div');
 const { rule } = require('../../dist/turnstyle');
 
 module.exports['simple-button-dynamic'] = () => {
-  const fn = rule({
+  const fn = rule(props => ({
     fontFamily: 'inherit',
     fontSize: 'inherit',
     display: 'inline-block',
@@ -14,12 +14,12 @@ module.exports['simple-button-dynamic'] = () => {
     border: 0,
     borderRadius: 4,
     color: 'white',
-    backgroundColor: props => props.color,
+    backgroundColor: props.color,
     appearance: 'none',
     ':hover': {
       backgroundColor: 'black'
     }
-  });
+  }));
 
   const Button = props => {
     return createElement('button', {
@@ -58,8 +58,5 @@ module.exports['simple-button-static'] = () => {
     });
   };
 
-  const button = render(
-    createElement(Button, null, 'Hello'),
-    app
-  );
-}
+  const button = render(createElement(Button, null, 'Hello'), app);
+};

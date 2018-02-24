@@ -38,15 +38,15 @@ test('static rules', () => {
 });
 
 test('dynamic rules', () => {
-  const rule0 = rule({
+  const rule0 = rule(p => ({
     color: 'green',
-    width: p => p.width + '%'
-  });
+    width: p.width + '%'
+  }));
 
-  const rule1 = rule({
+  const rule1 = rule(p => ({
     left: '47px',
-    backgroundColor: p => p.color
-  });
+    backgroundColor: p.color
+  }));
 
   expect(typeof rule0).toBe('function');
   expect(typeof rule1).toBe('function');
@@ -70,37 +70,37 @@ test('static nested rules w/pseudoselectors', () => {
     '&:focus': { '&:before': { color: 'blue' } }
   });
 
-  expect(cn0).toBe('cls_0');
+  expect(cn0).toBe('cls_0 cls_1 cls_2');
   expectCss(
     '.cls_0{color:red;}',
-    '.cls_0:hover{color:green;}',
-    '.cls_0:focus:before{color:blue;}'
+    '.cls_1:hover{color:green;}',
+    '.cls_2:focus:before{color:blue;}'
   );
 });
 
 test('dynamic nested rules w/pseudoselectors', () => {
-  const rule0 = rule({
+  const rule0 = rule(props => ({
     color: 'red',
-    width: props => props.size + '%',
+    width: props.size + '%',
     '&:hover': { color: 'green' },
     '&:focus': {
       '&:before': {
         color: 'blue',
-        background: props => props.bg
+        background: props.bg
       }
     }
-  });
+  }));
 
   const cn0 = rule0({
     bg: 'purple',
     size: 47
   });
 
-  expect(cn0).toBe('cls_0');
+  expect(cn0).toBe('cls_0 cls_1 cls_2');
   expectCss(
     '.cls_0{color:red;width:47%;}',
-    '.cls_0:hover{color:green;}',
-    '.cls_0:focus:before{color:blue;background:purple;}'
+    '.cls_1:hover{color:green;}',
+    '.cls_2:focus:before{color:blue;background:purple;}'
   );
 });
 
@@ -118,29 +118,29 @@ test('static nested rules w/ media queries', () => {
     }
   });
 
-  expect(cn0).toBe('cls_0');
+  expect(cn0).toBe('cls_0 cls_1 cls_2 cls_3');
 
   expectCss(
     '.cls_0{color:green;font-size:10px;}',
-    '@media print{.cls_0{color:red;}}',
-    '@media (max-width: 99px){.cls_0{color:blue;width:47%;}}',
-    '@media print and (max-width: 28px){.cls_0{color:yellow;}}'
+    '@media (max-width: 99px){.cls_1{color:blue;width:47%;}}',
+    '@media print{.cls_2{color:red;}}',
+    '@media print and (max-width: 28px){.cls_3{color:yellow;}}'
   );
 });
 
 test('dynamic nested rules w/ media queries', () => {
-  const rule0 = rule({
-    color: props => props.defaultColor,
+  const rule0 = rule(props => ({
+    color: props.defaultColor,
     fontSize: '10px',
     '@media (max-width: 99px)': {
-      color: props => props.minWidthColor,
+      color: props.minWidthColor,
       width: '47%'
     },
     '@media print': {
       color: 'red',
-      '@media (max-width: 28px)': { color: props => props.smallWidthColor }
+      '@media (max-width: 28px)': { color: props.smallWidthColor }
     }
-  });
+  }));
 
   const cn0 = rule0({
     defaultColor: 'purple',
@@ -148,13 +148,13 @@ test('dynamic nested rules w/ media queries', () => {
     smallWidthColor: 'teal'
   });
 
-  expect(cn0).toBe('cls_0');
+  expect(cn0).toBe('cls_0 cls_1 cls_2 cls_3');
 
   expectCss(
     '.cls_0{color:purple;font-size:10px;}',
-    '@media print{.cls_0{color:red;}}',
-    '@media (max-width: 99px){.cls_0{color:orange;width:47%;}}',
-    '@media print and (max-width: 28px){.cls_0{color:teal;}}'
+    '@media (max-width: 99px){.cls_1{color:orange;width:47%;}}',
+    '@media print{.cls_2{color:red;}}',
+    '@media print and (max-width: 28px){.cls_3{color:teal;}}'
   );
 });
 
@@ -165,11 +165,11 @@ test('attribute selectors', () => {
     '&[type="text"]': { color: 'green' }
   });
 
-  expect(cn).toBe('cls_0');
+  expect(cn).toBe('cls_0 cls_1 cls_2');
   expectCss(
     '.cls_0{color:purple;}',
-    '.cls_0[disabled]{color:yellow;}',
-    '.cls_0[type="text"]{color:green;}'
+    '.cls_1[disabled]{color:yellow;}',
+    '.cls_2[type="text"]{color:green;}'
   );
 });
 

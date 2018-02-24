@@ -50,15 +50,15 @@ describe('browser', () => {
   });
 
   test('dynamic rules insert CSS into stylesheet', () => {
-    const rule0 = window.turnstyle.rule({
+    const rule0 = window.turnstyle.rule(p => ({
       color: 'green',
-      width: p => p.width + '%'
-    });
+      width: p.width + '%'
+    }));
 
-    const rule1 = window.turnstyle.rule({
+    const rule1 = window.turnstyle.rule(p => ({
       left: '47px',
-      backgroundColor: p => p.color
-    });
+      backgroundColor: p.color
+    }));
 
     expect(typeof rule0).toBe('function');
     expect(typeof rule1).toBe('function');
