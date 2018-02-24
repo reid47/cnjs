@@ -16,6 +16,7 @@ const generateClasses = obj => {
     if (!values.length) continue;
 
     const cacheKey = key + values;
+    console.log({ cacheKey });
     if (cache[cacheKey]) return cache[values];
     const cn = (cache[cacheKey] = newClassName());
 
