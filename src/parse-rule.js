@@ -1,7 +1,7 @@
 const basicRuleRegex = /^()\.([a-z0-9_-]+)([\:a-z\[\]]*)[ ]*{(.*)}/i;
 const atRuleRegex = /^(.*){\.([a-z0-9_-]+)([\:a-z\[\]]*)[ ]*{(.*)}}/i;
 
-const parseRule = (ruleString, ruleType = 1) => {
+const parseRule = (ruleString, ruleType) => {
   const parts = ruleString.match(ruleType === 1 ? basicRuleRegex : atRuleRegex);
   if (!ruleString || !parts) return { valid: false };
 

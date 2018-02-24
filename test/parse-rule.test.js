@@ -2,7 +2,7 @@ import { parseRule } from '../src/parse-rule';
 
 test('parses simple rules', () => {
   const ruleText = '.cls_0 {font-size: 47px; color: purple;}';
-  expect(parseRule(ruleText)).toEqual({
+  expect(parseRule(ruleText, 1)).toEqual({
     valid: true,
     className: 'cls_0',
     at: '',
@@ -13,7 +13,7 @@ test('parses simple rules', () => {
 
 test('parses simple rules 2', () => {
   const ruleText = '.cls_1 {width: 100px; box-sizing: border-box;}';
-  expect(parseRule(ruleText)).toEqual({
+  expect(parseRule(ruleText, 1)).toEqual({
     valid: true,
     className: 'cls_1',
     at: '',
@@ -24,7 +24,7 @@ test('parses simple rules 2', () => {
 
 test('parses rules with a pseudoselector', () => {
   const ruleText = '.cls_4:hover {color: red;}';
-  expect(parseRule(ruleText)).toEqual({
+  expect(parseRule(ruleText, 1)).toEqual({
     valid: true,
     className: 'cls_4',
     at: '',
@@ -35,7 +35,7 @@ test('parses rules with a pseudoselector', () => {
 
 test('parses rules with multiple pseudoselectors', () => {
   const ruleText = '.cls_5:hover:focus {color: orange;}';
-  expect(parseRule(ruleText)).toEqual({
+  expect(parseRule(ruleText, 1)).toEqual({
     valid: true,
     className: 'cls_5',
     at: '',
@@ -68,6 +68,6 @@ test('parses rules with media queries and pseudoselectors', () => {
 });
 
 test('handles invalid rules', () => {
-  expect(parseRule('')).toEqual({ valid: false });
-  expect(parseRule('.hmm.test{color:blue;}')).toEqual({ valid: false });
+  expect(parseRule('', 1)).toEqual({ valid: false });
+  expect(parseRule('.hmm.test{color:blue;}', 1)).toEqual({ valid: false });
 });
