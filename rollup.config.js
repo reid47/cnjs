@@ -6,7 +6,7 @@ import fileSize from 'rollup-plugin-filesize';
 import replace from 'rollup-plugin-replace';
 
 export default {
-  input: 'src/turnstyle.js',
+  input: 'src/index.js',
   output: {
     file: 'dist/turnstyle.js',
     format: 'umd',
