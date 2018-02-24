@@ -7,7 +7,7 @@ test('parses simple rules', () => {
     className: 'cls_0',
     at: '',
     pseudo: '',
-    ruleText: 'font-size: 47px;color: purple;'
+    ruleText: 'font-size:47px;color:purple;'
   });
 });
 
@@ -18,7 +18,7 @@ test('parses simple rules 2', () => {
     className: 'cls_1',
     at: '',
     pseudo: '',
-    ruleText: 'width: 100px;box-sizing: border-box;'
+    ruleText: 'width:100px;box-sizing:border-box;'
   });
 });
 
@@ -29,7 +29,7 @@ test('parses rules with a pseudoselector', () => {
     className: 'cls_4',
     at: '',
     pseudo: ':hover',
-    ruleText: 'color: red;'
+    ruleText: 'color:red;'
   });
 });
 
@@ -40,29 +40,34 @@ test('parses rules with multiple pseudoselectors', () => {
     className: 'cls_5',
     at: '',
     pseudo: ':hover:focus',
-    ruleText: 'color: orange;'
+    ruleText: 'color:orange;'
   });
 });
 
 test('parses rules with media queries', () => {
   const ruleText = '@media (max-width: 1000px) {.cls_2 {width: 50%;}}';
-  expect(parseRule(ruleText)).toEqual({
+  expect(parseRule(ruleText, 4)).toEqual({
     valid: true,
     className: 'cls_2',
     at: '@media (max-width: 1000px)',
     pseudo: '',
-    ruleText: 'width: 50%;'
+    ruleText: 'width:50%;'
   });
 });
 
 test('parses rules with media queries and pseudoselectors', () => {
   const ruleText =
     '@media (max-width: 1000px) {.cls_6:hover {font-size: 50px;}}';
-  expect(parseRule(ruleText)).toEqual({
+  expect(parseRule(ruleText, 4)).toEqual({
     valid: true,
     className: 'cls_6',
     at: '@media (max-width: 1000px)',
     pseudo: ':hover',
-    ruleText: 'font-size: 50px;'
+    ruleText: 'font-size:50px;'
   });
+});
+
+test('handles invalid rules', () => {
+  expect(parseRule('')).toEqual({ valid: false });
+  expect(parseRule('.hmm.test{color:blue;}')).toEqual({ valid: false });
 });

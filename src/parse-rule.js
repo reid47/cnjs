@@ -1,24 +1,16 @@
-// const regex = /\.(lol)?([a-zA-Z0-9_-]+)([\:a-zA-Z\[\]]*)[ ]*{(.*)}/;
-const regex = new RegExp(
-  '.' + '(@[a-z]+)?' + '([a-z0-9_-]+)' + '([:a-z[]]*)' + '[ ]*{(.*)}',
-  'i'
-);
+const basicRuleRegex = /^()\.([a-z0-9_-]+)([\:a-z\[\]]*)[ ]*{(.*)}/i;
+const atRuleRegex = /^(.*){\.([a-z0-9_-]+)([\:a-z\[\]]*)[ ]*{(.*)}}/i;
 
-const parseRule = ruleString => {
-  const parts = ruleString.match(regex);
-  // console.log({ parts });
-
-  const at = parts[1];
-  const className = parts[2];
-  const pseudo = parts[3];
-  const ruleText = parts[4].replace(/;[ ]+/, ';');
+const parseRule = (ruleString, ruleType = 1) => {
+  const parts = ruleString.match(ruleType === 1 ? basicRuleRegex : atRuleRegex);
+  if (!ruleString || !parts) return { valid: false };
 
   return {
     valid: true,
-    at: '',
-    className,
-    pseudo,
-    ruleText
+    at: parts[1].trim(),
+    className: parts[2],
+    pseudo: parts[3],
+    ruleText: parts[4].replace(/; /g, ';').replace(/: /g, ':')
   };
 };
 

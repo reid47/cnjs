@@ -26,7 +26,7 @@
     "test-coverage": "jest --coverage",
     "test-ci": "npm run prettier && npm run test-coverage",
     "prepublish": "npm run build",
-    "publish-minor": "release-it minor --github.release"
+    "publish-minor": "npm run build && release-it minor --github.release"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

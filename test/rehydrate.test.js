@@ -1,4 +1,4 @@
-import { rule, rehydrate, css, reset } from '../src/turnstyle';
+import { rule, rehydrate, css, reset } from '../src/index';
 
 test('temp', () => expect(true).toBeTruthy());
 beforeEach(() => {
@@ -79,6 +79,9 @@ test('actual rehydration', () => {
     [
       '.cls_0{font-size:47px;color:purple;}',
       '.cls_1{width:100px;box-sizing:border-box;}',
+      '.cls_3{color:purple;}',
+      '.cls_4:hover{color:red;}',
+      '.cls_5:hover:focus{color:orange;}',
       '@media (max-width: 1000px){.cls_2{width:50%;}}'
     ].join('\n')
   );

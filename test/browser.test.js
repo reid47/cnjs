@@ -4,6 +4,7 @@ const turnstyle = fs.readFileSync('./dist/turnstyle.js', 'UTF-8');
 
 describe('browser', () => {
   let window;
+
   beforeEach(() => {
     window = new JSDOM('', { runScripts: 'dangerously' }).window;
     const scriptEl = window.document.createElement('script');

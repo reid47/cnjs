@@ -1,4 +1,4 @@
-import { global, css, reset } from '../src/turnstyle';
+import { global, css, reset } from '../src/index';
 
 const expectCss = (...rules) => {
   rules.forEach(rule => {

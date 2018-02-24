@@ -1,11 +1,7 @@
 import { collectDefs } from './collect-defs';
-import { rehydrate } from './rehydration';
-
-let rules = [];
-let cache = {};
-
-let addRule = rule => rules.push(rule);
-const newClassName = () => 'cls_' + rules.length.toString(36);
+import { get, set, clear } from './cache';
+import { addRule, clearRules, newClassName } from './rules';
+import { formatRule } from './format-rule';
 
 const generateClasses = obj => {
   const defs = collectDefs(obj, {}, '');
@@ -16,16 +12,12 @@ const generateClasses = obj => {
     if (!values.length) continue;
 
     const cacheKey = key + values;
-    console.log({ cacheKey });
-    if (cache[cacheKey]) return cache[values];
-    const cn = (cache[cacheKey] = newClassName());
+    const cacheEntry = get(cacheKey);
+    if (cacheEntry) return cacheEntry;
 
-    if (key.indexOf('@') > -1) {
-      addRule(`${key}{.${cn}{${values}}}`);
-    } else {
-      addRule(`.${cn}${key}{${values}}`);
-    }
-
+    const cn = newClassName();
+    set(cacheKey, cn);
+    addRule(formatRule(key, '.' + cn, values));
     cns.push(cn);
   }
 
@@ -40,33 +32,12 @@ const rule = ruleDef => {
 
 const global = (selector, obj) => {
   if (!obj) return '';
-
   const defs = collectDefs(obj, {}, '');
 
   for (let key in defs) {
     const values = defs[key].join('');
-
-    if (key.indexOf('@') > -1) {
-      addRule(`${key}{${selector}{${values}}}`);
-    } else {
-      addRule(`${selector}${key}{${values}}`);
-    }
+    addRule(formatRule(key, selector, values));
   }
 };
 
-const css = () => rules.sort().join('\n');
-
-const reset = () => {
-  rules = [];
-  cache = {};
-};
-
-if (typeof document !== 'undefined') {
-  const { sheet } = document.head.appendChild(document.createElement('style'));
-  addRule = rule => {
-    rules.push(rule);
-    sheet.insertRule(rule, sheet.cssRules.length);
-  };
-}
-
-export { rule, global, rehydrate, css, reset };
+export { rule, global };
