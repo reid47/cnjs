@@ -259,4 +259,5 @@ const prefix = (key, val) => {
   return ret || [[key, val]];
 };
 
+module.exports = { prefix };
 export { prefix };
