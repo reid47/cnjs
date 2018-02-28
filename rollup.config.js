@@ -35,7 +35,7 @@ export default [
       babel({ exclude: 'node_modules/**/' }),
       resolve(),
       commonjs({ include: 'node_modules/**' }),
-      uglify(),
+      uglify({ mangle: { toplevel: true } }),
       fileSize()
     ]
   }

@@ -1,1 +1,309 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var webkit="-webkit-",moz="-moz-",ms="-ms-",imageSet="image-set",oldFlexAlignment={"flex-start":"start","flex-end":"end","space-between":"justify","space-around":"distribute"},_writingMode={"horizontal-tb":"lr-tb","vertical-lr":"tb-lr","vertical-rl":"tb-rl"},intrinsicSizingProps={"max-height":1,"max-width":1,width:1,height:1,"min-width":1,"min-height":1},intrinsicSizingVals={"min-content":1,"max-content":1,"fill-available":1,"fit-content":1,"contain-floats":1},addWebkit=function(e,i){return[[webkit+e,i],[e,i]]},addWebkitVal=function(e,i){return[[e,webkit+i],[e,i]]},addMoz=function(e,i){return[[moz+e,i],[e,i]]},addMs=function(e,i){return[[ms+e,i],[e,i]]},addWebkitMoz=function(e,i){return[[webkit+e,i],[moz+e,i],[e,i]]},addWebkitMozMs=function(e,i){return[[webkit+e,i],[moz+e,i],[ms+e,i],[e,i]]},addWebkitMs=function(e,i){return[[webkit+e,i],[ms+e,i],[e,i]]},prefixMaskBorder=function(e,i){return[[webkit+e.replace("border","box-image"),i],[e,i]]},prefixDisplayFlex=function(e,i){var t="inline-flex"===i?"inline-":"";return[[e,webkit+t+"box"],[e,ms+t+"flexbox"],[e,i]]},cases={"align-content":function(e,i){return[[ms+"flex-line-pack",oldFlexAlignment[i]||i],[e,i]]},"align-items":function(e,i){return[[webkit+"box-align",oldFlexAlignment[i]||i],[ms+"flex-align",oldFlexAlignment[i]||i],[e,i]]},"align-self":function(e,i){return[[ms+"flex-item-align",oldFlexAlignment[i]||i],"flex-start"!==i&&"flex-end"!==i&&"baseline"!==i&&[ms+"grid-row-align",oldFlexAlignment[i]||i],[e,i]]},appearance:addWebkitMoz,cursor:{"zoom-in":addWebkitVal,"zoom-out":addWebkitVal,grab:addWebkitVal,grabbing:addWebkitVal},display:{flex:prefixDisplayFlex,"inline-flex":prefixDisplayFlex},flex:function(e,i){var t=(""+i).split(" "),r="none"===t[0]?0:"auto"===t[0]?1:t[0],n=3===t.length&&"0"===t[2]?i+"px":i;return[[webkit+"box-"+e,r],[ms+e,n],[e,i]]},"flex-basis":function(e,i){return[[ms+"flex-preferred-size",i],[e,i]]},"flex-direction":function(e,i){return[[webkit+"box-orient",i.indexOf("row")>-1?"horizontal":"vertical"],[webkit+"box-direction",i.indexOf("reverse")>-1?"reverse":"normal"],[ms+e,i],[e,i]]},"flex-flow":function(e,i){var t=(i+"").split(" ")[0]||"";return[[webkit+"box-orient",t.indexOf("row")>-1?"horizontal":"vertical"],[webkit+"box-direction",t.indexOf("reverse")>-1?"reverse":"normal"],[ms+e,i],[e,i]]},"flex-grow":function(e,i){return[[webkit+"box-flex",i],[ms+"flex-positive",i],[e,i]]},"flex-shrink":function(e,i){return[[ms+"flex-negative",i],[e,i]]},"justify-content":function(e,i){return["space-around"!==i&&[webkit+"box-pack",oldFlexAlignment[i]||i],[ms+"flex-pack",oldFlexAlignment[i]||i],[e,i]]},"tab-size":addMoz,hyphens:addWebkitMs,"flex-wrap":addMs,"flow-into":addWebkitMs,"flow-from":addWebkitMs,"box-decoration-break":addWebkit,"break-before":addWebkitMs,"break-after":addWebkitMs,"break-inside":addWebkitMs,"clip-path":addWebkit,"region-fragment":addWebkitMs,"scroll-snap-type":addWebkitMs,"scroll-snap-coordinate":addWebkitMs,"scroll-snap-destination":addWebkitMs,"scroll-snap-points-x":addWebkitMs,"scroll-snap-points-y":addWebkitMs,"font-feature-settings":addWebkit,"mask-border-source":prefixMaskBorder,"mask-border-mode":prefixMaskBorder,"mask-border-slice":prefixMaskBorder,"mask-border-width":prefixMaskBorder,"mask-border-outset":prefixMaskBorder,"mask-border-repeat":prefixMaskBorder,"mask-border":prefixMaskBorder,order:function(e,i){var t=/[0-9]/.test(i)?(+i||0)+1:i;return[[webkit+"box-ordinal-group",t],[ms+"flex-order",i],[e,i]]},"backface-visibility":addWebkit,perspective:addWebkit,"perspective-origin":addWebkit,position:{sticky:addWebkitVal},"text-orientation":addWebkit,"backdrop-filter":addWebkit,"font-kerning":addWebkit,filter:addWebkit,"shape-image-threshold":addWebkit,"shape-margin":addWebkit,"shape-outside":addWebkit,"text-size-adjust":addWebkitMozMs,"user-select":addWebkitMozMs,"writing-mode":function(e,i){return[[webkit+e,i],[ms+e,_writingMode[i]||i],[e,i]]},"&:fullscreen":function(e,i){return[["&:"+webkit+"full-screen",i],["&:"+moz+"full-screen",i],["&:"+ms+"fullscreen",i],[e,i]]},"&::placeholder":function(e,i){return[["&::"+webkit+"input-placeholder",i],["&:"+ms+"input-placeholder",i],["&::"+ms+"input-placeholder",i],[e,i]]}},prefix=function(e,i){var t=void 0;if(cases.hasOwnProperty(e))"function"==typeof cases[e]?t=cases[e](e,i):"object"==typeof cases[e]&&"function"==typeof cases[e][i]&&(t=cases[e][i](e,i));else if(/^(transform|animation|column|text-emphasis|text-decoration-|mask|wrap-)/.test(e))t=addWebkit(e,i);else if(/^cross-fade/.test(i)){var r=(i.match(/\(([\d]+%)/)||[])[1]||"",n=i.replace("cross-fade","-webkit-cross-fade");r?n=n.replace(r+" ",""):r="0.5";var a=n.lastIndexOf(")");a>-1&&(n=n.substring(0,a)+", "+r+")"),t=[[e,n],[e,i]]}else(""+i).indexOf(imageSet)>-1?t=[[e,i.replace(imageSet,webkit+imageSet)],[e,i]]:intrinsicSizingProps[e]&&intrinsicSizingVals[i]&&(t=[[e,webkit+i],[e,moz+i],[e,i]]);return t||[[e,i]]};module.exports={prefix:prefix};var makeRule=function(e,i,t){var r=[];i.forEach(function(e){prefix(e[0],e[1]).forEach(function(e){r.push(e[0]+":"+e[1]+";")})});var n=e+"{"+r.join("")+"}";return t&&(n=t+"{"+n+"}"),n},preprocess=function(e,i){for(var t=[],r={"":[]},n="",a=!0,s=[],o=!1,d=!1,l=!1,c=[],f=[],b=!1,k=!1,p=0;p<i.length;p++){var u=i.charAt(p);if(!k||"\n"===u)switch(u){case"/":"/"===i.charAt(p+1)&&(k=!0);break;case"\n":a=!0,b=!1,k=!1;break;case":":b?c.push(u):o&&(o=!1,l=!0);break;case";":d&&(r[n].push([c.join(""),f.join("")]),f=[],c=[],d=!1);break;case" ":case"\t":o?c.push(" "):d&&f.push(" ");break;case"\r":break;case"{":s.push(n);var x=c.join("").trim();n="@"===x.charAt(0)?x:(n+x.replace(/&:/g,":").replace(/&(?!:)/g,e)).replace(/^:/,e+":"),r[n]=[],c=[],o=!1;break;case"}":n=s.pop();break;case"&":case"@":b=!0;default:a&&(o=!0,a=!1),l&&(l=!1,d=!0),d?f.push(u):o&&c.push(u)}}return Object.keys(r).forEach(function(i){if(r[i].length){var n="@"===i.charAt(0),a=i&&!n?i.replace(/&/,e):e;t.push(makeRule(a,r[i],n?i:""))}}),t};exports.preprocess=preprocess;
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: !0 });
+var e = '-webkit-',
+  r = '-moz-',
+  n = '-ms-',
+  t = 'image-set',
+  o = {
+    'flex-start': 'start',
+    'flex-end': 'end',
+    'space-between': 'justify',
+    'space-around': 'distribute'
+  },
+  i = {
+    'horizontal-tb': 'lr-tb',
+    'vertical-lr': 'tb-lr',
+    'vertical-rl': 'tb-rl'
+  },
+  a = {
+    'max-height': 1,
+    'max-width': 1,
+    width: 1,
+    height: 1,
+    'min-width': 1,
+    'min-height': 1
+  },
+  s = {
+    'min-content': 1,
+    'max-content': 1,
+    'fill-available': 1,
+    'fit-content': 1,
+    'contain-floats': 1
+  },
+  l = function(r, n) {
+    return [[e + r, n], [r, n]];
+  },
+  c = function(r, n) {
+    return [[r, e + n], [r, n]];
+  },
+  f = function(e, n) {
+    return [[r + e, n], [e, n]];
+  },
+  u = function(e, r) {
+    return [[n + e, r], [e, r]];
+  },
+  p = function(n, t) {
+    return [[e + n, t], [r + n, t], [n, t]];
+  },
+  d = function(t, o) {
+    return [[e + t, o], [r + t, o], [n + t, o], [t, o]];
+  },
+  x = function(r, t) {
+    return [[e + r, t], [n + r, t], [r, t]];
+  },
+  b = function(r, n) {
+    return [[e + r.replace('border', 'box-image'), n], [r, n]];
+  },
+  h = function(r, t) {
+    var o = 'inline-flex' === t ? 'inline-' : '';
+    return [[r, e + o + 'box'], [r, n + o + 'flexbox'], [r, t]];
+  },
+  m = {
+    'align-content': function(e, r) {
+      return [[n + 'flex-line-pack', o[r] || r], [e, r]];
+    },
+    'align-items': function(r, t) {
+      return [
+        [e + 'box-align', o[t] || t],
+        [n + 'flex-align', o[t] || t],
+        [r, t]
+      ];
+    },
+    'align-self': function(e, r) {
+      return [
+        [n + 'flex-item-align', o[r] || r],
+        'flex-start' !== r &&
+          'flex-end' !== r &&
+          'baseline' !== r && [n + 'grid-row-align', o[r] || r],
+        [e, r]
+      ];
+    },
+    appearance: p,
+    cursor: { 'zoom-in': c, 'zoom-out': c, grab: c, grabbing: c },
+    display: { flex: h, 'inline-flex': h },
+    flex: function(r, t) {
+      var o = ('' + t).split(' '),
+        i = 'none' === o[0] ? 0 : 'auto' === o[0] ? 1 : o[0],
+        a = 3 === o.length && '0' === o[2] ? t + 'px' : t;
+      return [[e + 'box-' + r, i], [n + r, a], [r, t]];
+    },
+    'flex-basis': function(e, r) {
+      return [[n + 'flex-preferred-size', r], [e, r]];
+    },
+    'flex-direction': function(r, t) {
+      return [
+        [e + 'box-orient', t.indexOf('row') > -1 ? 'horizontal' : 'vertical'],
+        [e + 'box-direction', t.indexOf('reverse') > -1 ? 'reverse' : 'normal'],
+        [n + r, t],
+        [r, t]
+      ];
+    },
+    'flex-flow': function(r, t) {
+      var o = (t + '').split(' ')[0] || '';
+      return [
+        [e + 'box-orient', o.indexOf('row') > -1 ? 'horizontal' : 'vertical'],
+        [e + 'box-direction', o.indexOf('reverse') > -1 ? 'reverse' : 'normal'],
+        [n + r, t],
+        [r, t]
+      ];
+    },
+    'flex-grow': function(r, t) {
+      return [[e + 'box-flex', t], [n + 'flex-positive', t], [r, t]];
+    },
+    'flex-shrink': function(e, r) {
+      return [[n + 'flex-negative', r], [e, r]];
+    },
+    'justify-content': function(r, t) {
+      return [
+        'space-around' !== t && [e + 'box-pack', o[t] || t],
+        [n + 'flex-pack', o[t] || t],
+        [r, t]
+      ];
+    },
+    'tab-size': f,
+    hyphens: x,
+    'flex-wrap': u,
+    'flow-into': x,
+    'flow-from': x,
+    'box-decoration-break': l,
+    'break-before': x,
+    'break-after': x,
+    'break-inside': x,
+    'clip-path': l,
+    'region-fragment': x,
+    'scroll-snap-type': x,
+    'scroll-snap-coordinate': x,
+    'scroll-snap-destination': x,
+    'scroll-snap-points-x': x,
+    'scroll-snap-points-y': x,
+    'font-feature-settings': l,
+    'mask-border-source': b,
+    'mask-border-mode': b,
+    'mask-border-slice': b,
+    'mask-border-width': b,
+    'mask-border-outset': b,
+    'mask-border-repeat': b,
+    'mask-border': b,
+    order: function(r, t) {
+      var o = /[0-9]/.test(t) ? (+t || 0) + 1 : t;
+      return [[e + 'box-ordinal-group', o], [n + 'flex-order', t], [r, t]];
+    },
+    'backface-visibility': l,
+    perspective: l,
+    'perspective-origin': l,
+    position: { sticky: c },
+    'text-orientation': l,
+    'backdrop-filter': l,
+    'font-kerning': l,
+    filter: l,
+    'shape-image-threshold': l,
+    'shape-margin': l,
+    'shape-outside': l,
+    'text-size-adjust': d,
+    'user-select': d,
+    'writing-mode': function(r, t) {
+      return [[e + r, t], [n + r, i[t] || t], [r, t]];
+    },
+    '&:fullscreen': function(t, o) {
+      return [
+        ['&:' + e + 'full-screen', o],
+        ['&:' + r + 'full-screen', o],
+        ['&:' + n + 'fullscreen', o],
+        [t, o]
+      ];
+    },
+    '&::placeholder': function(r, t) {
+      return [
+        ['&::' + e + 'input-placeholder', t],
+        ['&:' + n + 'input-placeholder', t],
+        ['&::' + n + 'input-placeholder', t],
+        [r, t]
+      ];
+    }
+  },
+  g = function(n, o) {
+    var i = void 0;
+    if (m.hasOwnProperty(n))
+      'function' == typeof m[n]
+        ? (i = m[n](n, o))
+        : 'object' == typeof m[n] &&
+          'function' == typeof m[n][o] &&
+          (i = m[n][o](n, o));
+    else if (
+      /^(transform|animation|column|text-emphasis|text-decoration-|mask|wrap-)/.test(
+        n
+      )
+    )
+      i = l(n, o);
+    else if (/^cross-fade/.test(o)) {
+      var c = (o.match(/\(([\d]+%)/) || [])[1] || '',
+        f = o.replace('cross-fade', '-webkit-cross-fade');
+      c ? (f = f.replace(c + ' ', '')) : (c = '0.5');
+      var u = f.lastIndexOf(')');
+      u > -1 && (f = f.substring(0, u) + ', ' + c + ')'),
+        (i = [[n, f], [n, o]]);
+    } else
+      ('' + o).indexOf(t) > -1
+        ? (i = [[n, o.replace(t, e + t)], [n, o]])
+        : a[n] && s[o] && (i = [[n, e + o], [n, r + o], [n, o]]);
+    return i || [[n, o]];
+  };
+module.exports = { prefix: g };
+var v = function(e, r, n) {
+    var t = [];
+    r.forEach(function(e) {
+      g(e[0], e[1]).forEach(function(e) {
+        t.push(e[0] + ':' + e[1] + ';');
+      });
+    });
+    var o = e + '{' + t.join('') + '}';
+    return n ? n + '{' + o + '}' : o;
+  },
+  k = function(e, r, n) {
+    console.log({ topLevelSelector: e, parentSelector: r, newSelector: n });
+    var t = '@' === n.charAt(0),
+      o = n.indexOf('&') > -1;
+    return r || t
+      ? o ? r + n.replace(/^&/, '').replace(/&/g, e) : (r ? r + ' ' : '') + n
+      : o ? n.replace(/&/g, e) : e + ' ' + n;
+  },
+  w = function(e, r) {
+    for (
+      var n = [],
+        t = { '': [] },
+        o = '',
+        i = !0,
+        a = [],
+        s = !1,
+        l = !1,
+        c = !1,
+        f = [],
+        u = [],
+        p = !1,
+        d = !1,
+        x = 0;
+      x < r.length;
+      x++
+    ) {
+      var b = r.charAt(x);
+      if (!d || '\n' === b)
+        switch (b) {
+          case '/':
+            '/' === r.charAt(x + 1) && (d = !0);
+            break;
+          case '\n':
+            l || ((i = !0), (p = !1), (d = !1));
+            break;
+          case ':':
+            p ? f.push(b) : s && ((s = !1), (c = !0));
+            break;
+          case ';':
+            l &&
+              (t[o].push([f.join(''), u.join('')]),
+              (u = []),
+              (f = []),
+              (l = !1));
+            break;
+          case ' ':
+          case '\t':
+            s ? f.push(' ') : l && ' ' !== u[u.length - 1] && u.push(' ');
+            break;
+          case '\r':
+            break;
+          case '{':
+            a.push(o);
+            var h = f.join('').trim();
+            (o = h
+              .split(/,[\s]*/)
+              .map(function(r) {
+                return k(e, o, r);
+              })
+              .join(',')),
+              (t[o] = []),
+              (f = []),
+              (s = !1);
+            break;
+          case '}':
+            o = a.pop();
+            break;
+          case '&':
+          case '@':
+            p = !0;
+          default:
+            i && ((s = !0), (i = !1)),
+              c && ((c = !1), (l = !0)),
+              l ? u.push(b) : s && f.push(b);
+        }
+    }
+    return (
+      Object.keys(t).forEach(function(r) {
+        if (t[r].length) {
+          var o = '@' === r.charAt(0),
+            i = r && !o ? r.replace(/&/, e) : e;
+          n.push(v(i, t[r], o ? r : ''));
+        }
+      }),
+      n
+    );
+  };
+exports.preprocess = w;

@@ -38,10 +38,17 @@ const examples = [
       & > .immediate-child {
         color: purple;
       }
+
+      .child1 {
+        .child2 {
+          color: green;
+        }
+      }
     `,
     output: [
       '.test .some-child{color:blue;}',
-      '.test > .immediate-child{color:purple;}'
+      '.test > .immediate-child{color:purple;}',
+      '.test .child1 .child2{color:green;}'
     ]
   },
   {
@@ -60,11 +67,16 @@ const examples = [
           color: aquamarine;
         }
       }
+
+      .box button& {
+        color: purple;
+      }
     `,
     output: [
       '.wrapper .test{color:orange;}',
-      '.container .test{color:teal;}',
-      '.container .test.another-class{color:aquamarine;}'
+      '.test .container{color:teal;}',
+      '.test .container .another-class{color:aquamarine;}',
+      '.box button.test{color:purple;}'
     ]
   },
   {
@@ -73,8 +85,12 @@ const examples = [
       & + & {
         color: blue;
       }
+
+      &&& {
+        color: teal;
+      }
     `,
-    output: ['.test + .test{color:blue;}']
+    output: ['.test + .test{color:blue;}', '.test.test.test{color:teal;}']
   },
   {
     name: 'nesting with pseudoselectors',
@@ -94,17 +110,94 @@ const examples = [
     ]
   },
   {
-    name: 'media queries',
+    // focused: 1,
+    name: 'top-level media queries',
     input: `
       @media (max-width: 100px) {
         color: red;
+
+        div {
+          color: green;
+          &:hover {
+            color: yellow;
+          }
+        }
       }
     `,
-    output: ['@media (max-width: 100px){.test{color:red;}}']
+    output: [
+      '@media (max-width: 100px){.test{color:red;}.test div{color:green;}}.test div:hover{color:yellow;}}'
+    ]
+  }
+  // {
+  //   name: 'nested media queries',
+  //   input: `
+  //     &:hover {
+  //       @media (max-width: 100px) {
+  //         color: red;
+  //       }
+  //     }
+  //   `,
+  //   output: ['@media (max-width: 100px){.test:hover{color:red;}}']
+  // }
+];
+
+const stylisTests = [
+  {
+    name: 'newlines within values',
+    input: `
+      height:calc( 100vh - 1px );
+      height:calc(
+                    100vh -
+                        1px
+                  );
+    `,
+    output: ['.test{height:calc( 100vh - 1px );height:calc( 100vh - 1px );}']
+  },
+  {
+    name: 'multiple comma-separated selectors',
+    input: `
+      span, h1 {
+        color: red;
+      }
+      h1, &:after, &:before {
+        color: red;
+      }
+    `,
+    output: [
+      '.test span,.test h1{color:red;}',
+      '.test h1,.test:after,.test:before{color:red;}'
+    ]
+  },
+  {
+    name: 'control characters',
+    input: `
+      content:"\f\0\v";
+    `,
+    output: ['.test{content:"\f\0\v";}']
+  },
+  {
+    name: 'empty rules',
+    input: `
+      &:hover {
+
+      }
+
+      & .some-class {}
+
+      .hmm {
+        // just a comment in here
+      }
+    `,
+    output: []
   }
 ];
 
-examples.forEach(({ name, input, output }) => {
+examples.push(...stylisTests);
+
+const anyFocused = examples.some(x => x.focused);
+examples.forEach(({ name, input, output, focused }) => {
+  if (anyFocused && !focused) return;
+
   test(name, () => {
     expect(preprocess('.test', input)).toEqual(output);
   });

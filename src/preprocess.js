@@ -9,12 +9,32 @@ const makeRule = (selector, defs, wrapper) => {
     });
   });
 
-  let rule = `${selector}{${d.join('')}}`;
-  if (wrapper) {
-    rule = `${wrapper}{${rule}}`;
+  const rule = `${selector}{${d.join('')}}`;
+  return wrapper ? `${wrapper}{${rule}}` : rule;
+};
+
+const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
+  console.log({ topLevelSelector, parentSelector, newSelector });
+  const isAtRule = newSelector.charAt(0) === '@';
+  const hasAmpersand = newSelector.indexOf('&') > -1;
+
+  if (!parentSelector && !isAtRule) {
+    if (hasAmpersand) {
+      const replaced = newSelector.replace(/&/g, topLevelSelector);
+      return replaced;
+    } else {
+      return topLevelSelector + ' ' + newSelector;
+    }
   }
 
-  return rule;
+  if (hasAmpersand) {
+    return (
+      parentSelector +
+      newSelector.replace(/^&/, '').replace(/&/g, topLevelSelector)
+    );
+  }
+
+  return (parentSelector ? parentSelector + ' ' : '') + newSelector;
 };
 
 const preprocess = (selector, css) => {
@@ -45,9 +65,11 @@ const preprocess = (selector, css) => {
         break;
 
       case '\n':
-        newLine = true;
-        inSpecialLine = false;
-        inLineComment = false;
+        if (!inValue) {
+          newLine = true;
+          inSpecialLine = false;
+          inLineComment = false;
+        }
         break;
 
       case ':':
@@ -73,8 +95,11 @@ const preprocess = (selector, css) => {
 
       case ' ':
       case '\t':
-        if (inProperty) propertyChars.push(' ');
-        else if (inValue) valueChars.push(' ');
+        if (inProperty) {
+          propertyChars.push(' ');
+        } else if (inValue && valueChars[valueChars.length - 1] !== ' ') {
+          valueChars.push(' ');
+        }
         break;
 
       case '\r':
@@ -82,18 +107,11 @@ const preprocess = (selector, css) => {
 
       case '{':
         nestStack.push(currentRule);
-
-        let newRule = propertyChars.join('').trim();
-
-        if (newRule.charAt(0) === '@') {
-          currentRule = newRule;
-        } else {
-          currentRule = (
-            currentRule +
-            newRule.replace(/&:/g, ':').replace(/&(?!:)/g, selector)
-          ).replace(/^:/, selector + ':');
-        }
-
+        const newRule = propertyChars.join('').trim();
+        currentRule = newRule
+          .split(/,[\s]*/)
+          .map(part => joinNestedSelectors(selector, currentRule, part))
+          .join(',');
         nestedDefs[currentRule] = [];
         propertyChars = [];
         inProperty = false;
