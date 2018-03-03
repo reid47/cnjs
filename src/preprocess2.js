@@ -4,7 +4,7 @@ const { prefix } = require('./prefix');
 const closingBraces = str => {
   const closing = [];
   for (let i = 0; i < str.length; i++) {
-    if (str.charAt(i) === '{') closing.push('}');
+    if (str[i] === '{') closing.push('}');
   }
   return closing.join('');
 };
@@ -25,7 +25,7 @@ const makeRule = (topLevelSelector, selector, defs) => {
 
 const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
   const hasAmpersand = newSelector.indexOf('&') > -1;
-  const isAtRule = newSelector.charAt(0) === '@';
+  const isAtRule = newSelector[0] === '@';
 
   if (hasAmpersand) {
     if (!parentSelector && !isAtRule) {
@@ -41,7 +41,7 @@ const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
   if (isAtRule) {
     if (!parentSelector) return `${newSelector}{${topLevelSelector}`;
 
-    if (parentSelector.charAt(0) === '@') {
+    if (parentSelector[0] === '@') {
       return `${parentSelector.substr(
         0,
         parentSelector.length - topLevelSelector.length - 1
@@ -55,6 +55,7 @@ const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
 };
 
 const preprocess2 = (selector, css) => {
+  const oneLineAtRules = [];
   const definitions = { '': [] };
   const chars = css.split('');
   const length = chars.length;
@@ -110,7 +111,7 @@ const preprocess2 = (selector, css) => {
           propertyChars = [];
           inValue = false;
         } else if (inProperty && propertyChars[0] === '@') {
-          definitions[propertyChars.join('') + ';'] = null;
+          oneLineAtRules.push(propertyChars.join('') + ';');
           inProperty = false;
           propertyChars = [];
         }
@@ -130,12 +131,14 @@ const preprocess2 = (selector, css) => {
 
       case '{':
         nestedRules.push(currentRule);
+
         currentRule = propertyChars
           .join('')
           .trim()
           .split(/,[\s]*/)
           .map(part => joinNestedSelectors(selector, currentRule, part))
           .join(',');
+
         definitions[currentRule] = definitions[currentRule] || [];
         propertyChars = [];
         inSpecialLine = false;
@@ -165,16 +168,13 @@ const preprocess2 = (selector, css) => {
     }
   }
 
-  const atRules = [];
-  const otherRules = [];
-
+  const rules = [];
   Object.keys(definitions).forEach(key => {
-    if (!definitions[key]) return atRules.push(key);
     if (!definitions[key].length) return;
-    otherRules.push(makeRule(selector, key, definitions[key]));
+    rules.push(makeRule(selector, key, definitions[key]));
   });
 
-  return atRules.concat(otherRules);
+  return oneLineAtRules.concat(rules);
 };
 
 // export { preprocess2 };

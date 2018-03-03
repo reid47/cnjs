@@ -217,10 +217,11 @@ const cases = {
   ]
 };
 
+const hasProp = Object.prototype.hasOwnProperty.bind(cases);
 const prefix = (key, val) => {
   let ret;
 
-  if (cases.hasOwnProperty(key)) {
+  if (hasProp(key)) {
     if (typeof cases[key] === 'function') {
       ret = cases[key](key, val);
     } else if (
