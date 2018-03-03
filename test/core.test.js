@@ -134,7 +134,7 @@ test('static nested rules w/ media queries', () => {
   );
 });
 
-test('dynamic nested rules w/ media queries', () => {
+test.only('dynamic nested rules w/ media queries', () => {
   const rule0 = rule`
     color: ${props => props.defaultColor};
     font-size: 10px;
@@ -147,7 +147,7 @@ test('dynamic nested rules w/ media queries', () => {
     @media print {
       color: red;
 
-      @media (max-width: 28px) {
+      &:hover {
         color: ${props => props.smallWidthColor};
       }
     }
@@ -165,7 +165,7 @@ test('dynamic nested rules w/ media queries', () => {
     '.cls_0{color:purple;font-size:10px;}',
     '@media (max-width: 99px){.cls_0{color:orange;width:47%;}}',
     '@media print{.cls_0{color:red;}}',
-    '@media print{@media (max-width: 28px){.cls_0{color:teal;}}}'
+    '@media print{.cls_0:hover{color:teal;}}'
   );
 });
 
