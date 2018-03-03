@@ -84,16 +84,17 @@ const cases = {
     [ms + 'flex-align', oldFlexAlignment[val] || val],
     [key, val]
   ],
-  'align-self': (key, val) => [
-    [ms + 'flex-item-align', oldFlexAlignment[val] || val],
-    val !== 'flex-start' &&
-      val !== 'flex-end' &&
-      val !== 'baseline' && [
-        ms + 'grid-row-align',
-        oldFlexAlignment[val] || val
-      ],
-    [key, val]
-  ],
+  'align-self': (key, val) =>
+    [
+      [ms + 'flex-item-align', oldFlexAlignment[val] || val],
+      val !== 'flex-start' &&
+        val !== 'flex-end' &&
+        val !== 'baseline' && [
+          ms + 'grid-row-align',
+          oldFlexAlignment[val] || val
+        ],
+      [key, val]
+    ].filter(i => i),
   appearance: addWebkitMoz,
   cursor: {
     'zoom-in': addWebkitVal,
@@ -145,14 +146,15 @@ const cases = {
     [key, val]
   ],
   'flex-shrink': (key, val) => [[ms + 'flex-negative', val], [key, val]],
-  'justify-content': (key, val) => [
-    val !== 'space-around' && [
-      webkit + 'box-pack',
-      oldFlexAlignment[val] || val
-    ],
-    [ms + 'flex-pack', oldFlexAlignment[val] || val],
-    [key, val]
-  ],
+  'justify-content': (key, val) =>
+    [
+      val !== 'space-around' && [
+        webkit + 'box-pack',
+        oldFlexAlignment[val] || val
+      ],
+      [ms + 'flex-pack', oldFlexAlignment[val] || val],
+      [key, val]
+    ].filter(i => i),
   'tab-size': addMoz,
   hyphens: addWebkitMs,
   'flex-wrap': addMs,
