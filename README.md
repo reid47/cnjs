@@ -2,6 +2,8 @@
 
 a tiny, fast, simple CSS-in-JS library
 
+**NOTE:** Until version 1.0.0 is released on NPM, this library should not be considered stable or ready for real use. Expect breaking changes in minor releases until 1.0.0.
+
 ## :star2: features
 
 * :heavy_check_mark: Automatic vendor prefixing!
