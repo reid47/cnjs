@@ -1,5 +1,4 @@
-// import { prefix } from './prefix';
-const { prefix } = require('./prefix');
+import { prefix } from './prefix';
 
 const closingBraces = str => {
   const closing = [];
@@ -70,18 +69,27 @@ const preprocess = (selector, css) => {
   let valueChars = [];
   let inSpecialLine = false;
   let inLineComment = false;
+  let inBlockComment = false;
   let char, lastChar;
 
   for (let i = 0; i < length; i++) {
     lastChar = char;
     char = chars[i];
 
-    if (inLineComment && char !== '\n') continue;
+    if ((inLineComment && char !== '\n') || (inBlockComment && char !== '/'))
+      continue;
 
     switch (char) {
       case '/':
-        if (chars[i + 1] === '/') {
-          inLineComment = true;
+        if (inBlockComment && lastChar === '*') {
+          inBlockComment = false;
+        } else {
+          const nextChar = chars[i + 1];
+          if (nextChar === '/') {
+            inLineComment = true;
+          } else if (nextChar === '*') {
+            inBlockComment = true;
+          }
         }
         break;
 
@@ -178,5 +186,4 @@ const preprocess = (selector, css) => {
   return rules;
 };
 
-// export { preprocess };
-module.exports = { preprocess };
+export { preprocess };

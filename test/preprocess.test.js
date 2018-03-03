@@ -21,6 +21,18 @@ const examples = [
     output: ['.test{font-size:47px;color:purple;}']
   },
   {
+    name: 'block comments',
+    input: `
+    /* some comment
+    that spans * multiple / lines
+    */
+
+    color: red; /* hello */
+    background: /* world */ green;
+    `,
+    output: ['.test{color:red;background:green;}']
+  },
+  {
     name: 'same-level class names',
     input: `
       &.same-level {
@@ -227,16 +239,26 @@ const examples = [
           color: blue;
         }
       }
+
+      @media (max-width: 768px) {
+        &:hover {
+          border-bottom: 2px solid purple;
+        }
+      }
     `,
     output: [
       '@supports (color: red){@media (max-width: 768px){.test{color:red;}}}',
       '@media print and (min-width: 200px){.test{color:purple;}}',
       '@media print and (min-width: 200px){@supports (hello: world){.test{color:green;}}}',
-      '@media print and (min-width: 200px){@supports (test: this){.test{color:blue;}}}'
+      '@media print and (min-width: 200px){@supports (test: this){.test{color:blue;}}}',
+      '@media (max-width: 768px){.test:hover{border-bottom:2px solid purple;}}'
     ]
   }
 ];
 
+// These next tests were borrowed almost directly from the Stylis
+// tests, found below. Huge thanks to @thysultan for his work on Stylis:
+// https://github.com/thysultan/stylis.js/blob/master/tests/spec.js
 const stylisTests = [
   {
     name: 'newlines within values',
@@ -286,6 +308,41 @@ const stylisTests = [
     `,
     output: []
   }
+  //   {
+  //     name: 'Bootstrap',
+  //     input: `
+  // /*!
+  // * Bootstrap v3.3.7 (http://getbootstrap.com)
+  // * Copyright 2011-2016 Twitter, Inc.
+  // * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  // */
+  // /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+  // html {
+  //   font-family: sans-serif;
+  //   -webkit-text-size-adjust: 100%;
+  //       -ms-text-size-adjust: 100%;
+  // }
+  // body {
+  //   margin: 0;
+  // }
+  // article,
+  // aside,
+  // details,
+  // figcaption,
+  // figure,
+  // footer,
+  // header,
+  // hgroup,
+  // main,
+  // menu,
+  // nav,
+  // section,
+  // summary {
+  //   display: block;
+  // }
+  //     `,
+  //     output: []
+  //   }
 ];
 
 examples.push(...stylisTests);
@@ -297,6 +354,6 @@ examples.forEach(({ name, input, output, focused }) => {
   test(name, () => {
     expect(input.trim()).not.toBe('');
     expect(preprocess('.test', input)).toEqual(output);
-    expect(preprocess2('.test', input)).toEqual(output);
+    // expect(preprocess2('.test', input)).toEqual(output);
   });
 });
