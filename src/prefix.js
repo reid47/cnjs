@@ -218,9 +218,13 @@ const cases = {
 };
 
 const hasProp = Object.prototype.hasOwnProperty.bind(cases);
-const prefix = (key, val) => {
-  let ret;
+const prefixCache = {};
 
+const prefix = (key, val) => {
+  const cacheKey = key + val;
+  if (prefixCache[cacheKey]) return prefixCache[cacheKey];
+
+  let ret;
   if (hasProp(key)) {
     if (typeof cases[key] === 'function') {
       ret = cases[key](key, val);
@@ -257,7 +261,8 @@ const prefix = (key, val) => {
     ret = [[key, webkit + val], [key, moz + val], [key, val]];
   }
 
-  return ret || [[key, val]];
+  ret = prefixCache[cacheKey] = ret || [[key, val]];
+  return ret;
 };
 
 module.exports = { prefix };

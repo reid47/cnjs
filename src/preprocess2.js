@@ -12,12 +12,12 @@ const closingBraces = str => {
 const makeRule = (topLevelSelector, selector, defs) => {
   const d = [];
 
-  defs.forEach(def => {
-    const prefixed = prefix(def[0], def[1]);
-    prefixed.forEach(pair => {
-      d.push(`${pair[0]}:${pair[1]};`);
-    });
-  });
+  for (let i = 0; i < defs.length; i++) {
+    const prefixed = prefix(defs[i][0], defs[i][1]);
+    for (let j = 0; j < prefixed.length; j++) {
+      d.push(`${prefixed[j][0]}:${prefixed[j][1]};`);
+    }
+  }
 
   const suffix = selector ? closingBraces(selector) : '';
   return `${selector || topLevelSelector}{${d.join('')}}${suffix}`;
@@ -55,7 +55,7 @@ const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
 };
 
 const preprocess2 = (selector, css) => {
-  const oneLineAtRules = [];
+  const rules = [];
   const definitions = { '': [] };
   const chars = css.split('');
   const length = chars.length;
@@ -111,7 +111,7 @@ const preprocess2 = (selector, css) => {
           propertyChars = [];
           inValue = false;
         } else if (inProperty && propertyChars[0] === '@') {
-          oneLineAtRules.push(propertyChars.join('') + ';');
+          rules.push(propertyChars.join('') + ';');
           inProperty = false;
           propertyChars = [];
         }
@@ -168,13 +168,14 @@ const preprocess2 = (selector, css) => {
     }
   }
 
-  return Object.keys(definitions).reduce((rules, key) => {
-    if (definitions[key].length) {
-      rules.push(makeRule(selector, key, definitions[key]));
+  const keys = Object.keys(definitions);
+  for (let k = 0; k < keys.length; k++) {
+    if (definitions[keys[k]].length) {
+      rules.push(makeRule(selector, keys[k], definitions[keys[k]]));
     }
+  }
 
-    return rules;
-  }, oneLineAtRules);
+  return rules;
 };
 
 // export { preprocess2 };
