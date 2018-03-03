@@ -5,7 +5,7 @@ import { addRule, clearRules, newClassName, css } from './rules';
 const buildRule = (parts, args) => {
   const isDynamic = args.length && args.some(arg => typeof arg === 'function');
 
-  const fn = props => {
+  const fn = (props, context) => {
     const s = [];
 
     for (let i = 0; i < parts.length; i++) {
@@ -13,7 +13,7 @@ const buildRule = (parts, args) => {
 
       if (i < args.length) {
         if (typeof args[i] === 'function') {
-          s.push(args[i](props));
+          s.push(args[i](props, context));
         } else {
           s.push(args[i]);
         }
@@ -28,7 +28,11 @@ const buildRule = (parts, args) => {
 
     const cn = newClassName();
     set(cacheKey, cn);
-    addRule(preprocess('.' + cn, cacheKey));
+
+    const rules = preprocess('.' + cn, cacheKey);
+    for (let r = 0; r < rules.length; r++) {
+      addRule(rules[r]);
+    }
 
     return cn;
   };

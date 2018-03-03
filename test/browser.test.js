@@ -26,19 +26,19 @@ describe('browser', () => {
   });
 
   test('static rules insert CSS into stylesheet', () => {
-    const cn0 = window.turnstyle.rule({
-      color: 'green',
-      fontSize: '48px'
-    });
+    const cn0 = window.turnstyle.rule`
+      color: green;
+      font-size: 48px;
+    `;
 
-    const cn1 = window.turnstyle.rule({
-      position: 'absolute',
-      left: '47px',
-      top: '470px'
-    });
+    const cn1 = window.turnstyle.rule`
+      position: absolute;
+      left: 47px;
+      top: 470px;
+    `;
 
-    expect(cn0).toBe('cls_0');
-    expect(cn1).toBe('cls_1');
+    expect(cn0()).toBe('cls_0');
+    expect(cn1()).toBe('cls_1');
 
     const styleTag = window.document.head.querySelector('style');
     expect(styleTag.sheet.cssRules).toHaveLength(2);
@@ -51,15 +51,15 @@ describe('browser', () => {
   });
 
   test('dynamic rules insert CSS into stylesheet', () => {
-    const rule0 = window.turnstyle.rule(p => ({
-      color: 'green',
-      width: p.width + '%'
-    }));
+    const rule0 = window.turnstyle.rule`
+      color: green;
+      width: ${p => p.width}%;
+    `;
 
-    const rule1 = window.turnstyle.rule(p => ({
-      left: '47px',
-      backgroundColor: p.color
-    }));
+    const rule1 = window.turnstyle.rule`
+      left: 47px;
+      background-color: ${p => p.color};
+    `;
 
     expect(typeof rule0).toBe('function');
     expect(typeof rule1).toBe('function');
