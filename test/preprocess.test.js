@@ -25,6 +25,7 @@ const examples = [
     input: `
     /* some comment
     that spans * multiple / lines
+    some weird characters: & : / * !
     */
 
     color: red; /* hello */
