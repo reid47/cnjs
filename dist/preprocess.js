@@ -4,13 +4,13 @@ var e = '-webkit-',
   r = '-moz-',
   n = '-ms-',
   t = 'image-set',
-  o = {
+  i = {
     'flex-start': 'start',
     'flex-end': 'end',
     'space-between': 'justify',
     'space-around': 'distribute'
   },
-  i = {
+  o = {
     'horizontal-tb': 'lr-tb',
     'vertical-lr': 'tb-lr',
     'vertical-rl': 'tb-rl'
@@ -45,8 +45,8 @@ var e = '-webkit-',
   p = function(n, t) {
     return [[e + n, t], [r + n, t], [n, t]];
   },
-  d = function(t, o) {
-    return [[e + t, o], [r + t, o], [n + t, o], [t, o]];
+  d = function(t, i) {
+    return [[e + t, i], [r + t, i], [n + t, i], [t, i]];
   },
   x = function(r, t) {
     return [[e + r, t], [n + r, t], [r, t]];
@@ -55,26 +55,26 @@ var e = '-webkit-',
     return [[e + r.replace('border', 'box-image'), n], [r, n]];
   },
   h = function(r, t) {
-    var o = 'inline-flex' === t ? 'inline-' : '';
-    return [[r, e + o + 'box'], [r, n + o + 'flexbox'], [r, t]];
+    var i = 'inline-flex' === t ? 'inline-' : '';
+    return [[r, e + i + 'box'], [r, n + i + 'flexbox'], [r, t]];
   },
   m = {
     'align-content': function(e, r) {
-      return [[n + 'flex-line-pack', o[r] || r], [e, r]];
+      return [[n + 'flex-line-pack', i[r] || r], [e, r]];
     },
     'align-items': function(r, t) {
       return [
-        [e + 'box-align', o[t] || t],
-        [n + 'flex-align', o[t] || t],
+        [e + 'box-align', i[t] || t],
+        [n + 'flex-align', i[t] || t],
         [r, t]
       ];
     },
     'align-self': function(e, r) {
       return [
-        [n + 'flex-item-align', o[r] || r],
+        [n + 'flex-item-align', i[r] || r],
         'flex-start' !== r &&
           'flex-end' !== r &&
-          'baseline' !== r && [n + 'grid-row-align', o[r] || r],
+          'baseline' !== r && [n + 'grid-row-align', i[r] || r],
         [e, r]
       ];
     },
@@ -82,10 +82,10 @@ var e = '-webkit-',
     cursor: { 'zoom-in': c, 'zoom-out': c, grab: c, grabbing: c },
     display: { flex: h, 'inline-flex': h },
     flex: function(r, t) {
-      var o = ('' + t).split(' '),
-        i = 'none' === o[0] ? 0 : 'auto' === o[0] ? 1 : o[0],
-        a = 3 === o.length && '0' === o[2] ? t + 'px' : t;
-      return [[e + 'box-' + r, i], [n + r, a], [r, t]];
+      var i = ('' + t).split(' '),
+        o = 'none' === i[0] ? 0 : 'auto' === i[0] ? 1 : i[0],
+        a = 3 === i.length && '0' === i[2] ? t + 'px' : t;
+      return [[e + 'box-' + r, o], [n + r, a], [r, t]];
     },
     'flex-basis': function(e, r) {
       return [[n + 'flex-preferred-size', r], [e, r]];
@@ -99,10 +99,10 @@ var e = '-webkit-',
       ];
     },
     'flex-flow': function(r, t) {
-      var o = (t + '').split(' ')[0] || '';
+      var i = (t + '').split(' ')[0] || '';
       return [
-        [e + 'box-orient', o.indexOf('row') > -1 ? 'horizontal' : 'vertical'],
-        [e + 'box-direction', o.indexOf('reverse') > -1 ? 'reverse' : 'normal'],
+        [e + 'box-orient', i.indexOf('row') > -1 ? 'horizontal' : 'vertical'],
+        [e + 'box-direction', i.indexOf('reverse') > -1 ? 'reverse' : 'normal'],
         [n + r, t],
         [r, t]
       ];
@@ -115,8 +115,8 @@ var e = '-webkit-',
     },
     'justify-content': function(r, t) {
       return [
-        'space-around' !== t && [e + 'box-pack', o[t] || t],
-        [n + 'flex-pack', o[t] || t],
+        'space-around' !== t && [e + 'box-pack', i[t] || t],
+        [n + 'flex-pack', i[t] || t],
         [r, t]
       ];
     },
@@ -145,8 +145,8 @@ var e = '-webkit-',
     'mask-border-repeat': b,
     'mask-border': b,
     order: function(r, t) {
-      var o = /[0-9]/.test(t) ? (+t || 0) + 1 : t;
-      return [[e + 'box-ordinal-group', o], [n + 'flex-order', t], [r, t]];
+      var i = /[0-9]/.test(t) ? (+t || 0) + 1 : t;
+      return [[e + 'box-ordinal-group', i], [n + 'flex-order', t], [r, t]];
     },
     'backface-visibility': l,
     perspective: l,
@@ -162,14 +162,14 @@ var e = '-webkit-',
     'text-size-adjust': d,
     'user-select': d,
     'writing-mode': function(r, t) {
-      return [[e + r, t], [n + r, i[t] || t], [r, t]];
+      return [[e + r, t], [n + r, o[t] || t], [r, t]];
     },
-    '&:fullscreen': function(t, o) {
+    '&:fullscreen': function(t, i) {
       return [
-        ['&:' + e + 'full-screen', o],
-        ['&:' + r + 'full-screen', o],
-        ['&:' + n + 'fullscreen', o],
-        [t, o]
+        ['&:' + e + 'full-screen', i],
+        ['&:' + r + 'full-screen', i],
+        ['&:' + n + 'fullscreen', i],
+        [t, i]
       ];
     },
     '&::placeholder': function(r, t) {
@@ -181,129 +181,136 @@ var e = '-webkit-',
       ];
     }
   },
-  g = function(n, o) {
-    var i = void 0;
+  g = function(n, i) {
+    var o = void 0;
     if (m.hasOwnProperty(n))
       'function' == typeof m[n]
-        ? (i = m[n](n, o))
+        ? (o = m[n](n, i))
         : 'object' == typeof m[n] &&
-          'function' == typeof m[n][o] &&
-          (i = m[n][o](n, o));
+          'function' == typeof m[n][i] &&
+          (o = m[n][i](n, i));
     else if (
       /^(transform|animation|column|text-emphasis|text-decoration-|mask|wrap-)/.test(
         n
       )
     )
-      i = l(n, o);
-    else if (/^cross-fade/.test(o)) {
-      var c = (o.match(/\(([\d]+%)/) || [])[1] || '',
-        f = o.replace('cross-fade', '-webkit-cross-fade');
+      o = l(n, i);
+    else if (/^cross-fade/.test(i)) {
+      var c = (i.match(/\(([\d]+%)/) || [])[1] || '',
+        f = i.replace('cross-fade', '-webkit-cross-fade');
       c ? (f = f.replace(c + ' ', '')) : (c = '0.5');
       var u = f.lastIndexOf(')');
       u > -1 && (f = f.substring(0, u) + ', ' + c + ')'),
-        (i = [[n, f], [n, o]]);
+        (o = [[n, f], [n, i]]);
     } else
-      ('' + o).indexOf(t) > -1
-        ? (i = [[n, o.replace(t, e + t)], [n, o]])
-        : a[n] && s[o] && (i = [[n, e + o], [n, r + o], [n, o]]);
-    return i || [[n, o]];
+      ('' + i).indexOf(t) > -1
+        ? (o = [[n, i.replace(t, e + t)], [n, i]])
+        : a[n] && s[i] && (o = [[n, e + i], [n, r + i], [n, i]]);
+    return o || [[n, i]];
   };
 module.exports = { prefix: g };
 var v = function(e, r, n) {
     var t = [];
-    r.forEach(function(e) {
-      g(e[0], e[1]).forEach(function(e) {
-        t.push(e[0] + ':' + e[1] + ';');
-      });
+    n.forEach(function(e) {
+      1 !== e.length
+        ? g(e[0], e[1]).forEach(function(e) {
+            t.push(e[0] + ':' + e[1] + ';');
+          })
+        : t.push(e[0]);
     });
-    var o = e + '{' + t.join('') + '}';
-    return n ? n + '{' + o + '}' : o;
+    var i = r && '@' === r.charAt(0) ? '}' : '';
+    return (r || e) + '{' + t.join('') + '}' + i;
   },
   k = function(e, r, n) {
-    console.log({ topLevelSelector: e, parentSelector: r, newSelector: n });
     var t = '@' === n.charAt(0),
-      o = n.indexOf('&') > -1;
+      i = n.indexOf('&') > -1;
     return r || t
-      ? o ? r + n.replace(/^&/, '').replace(/&/g, e) : (r ? r + ' ' : '') + n
-      : o ? n.replace(/&/g, e) : e + ' ' + n;
+      ? i
+        ? r + n.replace(/^&/, '').replace(/&/g, e)
+        : t && !r ? n + '{' + e : (r ? r + ' ' : '') + n
+      : i ? n.replace(/&/g, e) : e + ' ' + n;
   },
   w = function(e, r) {
     for (
-      var n = [],
-        t = { '': [] },
-        o = '',
+      var n = { '': [] },
+        t = '',
         i = !0,
-        a = [],
+        o = [],
+        a = !1,
         s = !1,
         l = !1,
-        c = !1,
+        c = [],
         f = [],
-        u = [],
+        u = !1,
         p = !1,
-        d = !1,
-        x = 0;
-      x < r.length;
-      x++
+        d = 0;
+      d < r.length;
+      d++
     ) {
-      var b = r.charAt(x);
-      if (!d || '\n' === b)
-        switch (b) {
+      var x = r.charAt(d);
+      if (!p || '\n' === x)
+        switch (x) {
           case '/':
-            '/' === r.charAt(x + 1) && (d = !0);
+            '/' === r.charAt(d + 1) && (p = !0);
             break;
           case '\n':
-            l || ((i = !0), (p = !1), (d = !1));
+            s || ((i = !0), (p = !1));
             break;
           case ':':
-            p ? f.push(b) : s && ((s = !1), (c = !0));
+            u ? c.push(x) : a && ((a = !1), (l = !0));
             break;
           case ';':
-            l &&
-              (t[o].push([f.join(''), u.join('')]),
-              (u = []),
-              (f = []),
-              (l = !1));
+            s
+              ? (n[t].push([c.join(''), f.join('')]),
+                (f = []),
+                (c = []),
+                (s = !1))
+              : a &&
+                '@' === c[0] &&
+                ((n[c.join('') + ';'] = !1), (a = !1), (c = []));
             break;
           case ' ':
           case '\t':
-            s ? f.push(' ') : l && ' ' !== u[u.length - 1] && u.push(' ');
+            a && ' ' !== c[c.length - 1]
+              ? c.push(' ')
+              : s && ' ' !== f[f.length - 1] && f.push(' ');
             break;
           case '\r':
             break;
           case '{':
-            a.push(o);
-            var h = f.join('').trim();
-            (o = h
+            o.push(t);
+            var b = c.join('').trim();
+            (t = b
               .split(/,[\s]*/)
               .map(function(r) {
-                return k(e, o, r);
+                return k(e, t, r);
               })
               .join(',')),
-              (t[o] = []),
-              (f = []),
-              (s = !1);
+              (n[t] = n[t] || []),
+              (c = []),
+              (u = !1),
+              (a = !1);
             break;
           case '}':
-            o = a.pop();
+            t = o.pop();
             break;
           case '&':
           case '@':
-            p = !0;
+            u = !0;
           default:
-            i && ((s = !0), (i = !1)),
-              c && ((c = !1), (l = !0)),
-              l ? u.push(b) : s && f.push(b);
+            i && ((a = !0), (i = !1)),
+              l && ((l = !1), (s = !0)),
+              s ? f.push(x) : a && c.push(x);
         }
     }
+    var h = [],
+      m = [];
     return (
-      Object.keys(t).forEach(function(r) {
-        if (t[r].length) {
-          var o = '@' === r.charAt(0),
-            i = r && !o ? r.replace(/&/, e) : e;
-          n.push(v(i, t[r], o ? r : ''));
-        }
+      Object.keys(n).forEach(function(r) {
+        if (!n[r]) return h.push(r);
+        n[r].length && m.push(v(e, r, n[r]));
       }),
-      n
+      h.concat(m)
     );
   };
 exports.preprocess = w;

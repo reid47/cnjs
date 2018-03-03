@@ -11,6 +11,7 @@ const closingBraces = str => {
 
 const makeRule = (topLevelSelector, selector, defs) => {
   const d = [];
+
   defs.forEach(def => {
     if (def.length === 1) {
       d.push(def[0]);
@@ -60,7 +61,7 @@ const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
   return (parentSelector ? parentSelector + ' ' : '') + newSelector;
 };
 
-const preprocess = (selector, css) => {
+const preprocess2 = (selector, css) => {
   const nestedDefs = { '': [] };
 
   let currentRule = '';
@@ -74,7 +75,7 @@ const preprocess = (selector, css) => {
   let inSpecialLine = false;
   let inLineComment = false;
 
-  for (let i = 0; i < css.length; i++) {
+  for (let i = 0, len = css.length; i < len; i++) {
     const char = css.charAt(i);
 
     if (inLineComment && char !== '\n') continue;
@@ -179,5 +180,5 @@ const preprocess = (selector, css) => {
   return atRules.concat(otherRules);
 };
 
-// export { preprocess };
-module.exports = { preprocess };
+// export { preprocess2 };
+module.exports = { preprocess2 };

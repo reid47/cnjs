@@ -1,4 +1,5 @@
 import { preprocess } from '../src/preprocess';
+import { preprocess2 } from '../src/preprocess2';
 
 const examples = [
   {
@@ -29,6 +30,37 @@ const examples = [
     output: ['.test.same-level{color:blue;}']
   },
   {
+    name: 'fancy selectors',
+    input: `
+      &[id="some-id"] {
+        color: green;
+      }
+
+      [id="some-other-id"] {
+        color: blue;
+      }
+
+      * {
+        margin: 0;
+      }
+
+      &:not(.some-class):first-child {
+        color: red;
+      }
+
+      &:not([disabled]) {
+        color: purple;
+      }
+    `,
+    output: [
+      '.test[id="some-id"]{color:green;}',
+      '.test [id="some-other-id"]{color:blue;}',
+      '.test *{margin:0;}',
+      '.test:not(.some-class):first-child{color:red;}',
+      '.test:not([disabled]){color:purple;}'
+    ]
+  },
+  {
     name: 'child class names',
     input: `
       & .some-child {
@@ -52,6 +84,19 @@ const examples = [
     ]
   },
   {
+    name: 'merging identical selectors',
+    input: `
+      &.testing {
+        color: blue;
+      }
+
+      &.testing {
+        background: yellow;
+      }
+    `,
+    output: ['.test.testing{color:blue;background:yellow;}']
+  },
+  {
     name: 'nesting &',
     input: `
       .wrapper & {
@@ -71,12 +116,19 @@ const examples = [
       .box button& {
         color: purple;
       }
+
+      &.class-a {
+        &.class-b {
+          color: green;
+        }
+      }
     `,
     output: [
       '.wrapper .test{color:orange;}',
       '.test .container{color:teal;}',
       '.test .container .another-class{color:aquamarine;}',
-      '.box button.test{color:purple;}'
+      '.box button.test{color:purple;}',
+      '.test.class-a.class-b{color:green;}'
     ]
   },
   {
@@ -110,35 +162,79 @@ const examples = [
     ]
   },
   {
-    // focused: 1,
-    name: 'top-level media queries',
+    name: 'at-rules without braces',
     input: `
-      @media (max-width: 100px) {
-        color: red;
+      @import 'global.css';
 
-        div {
+      @charset "UTF-8";
+    `,
+    output: ["@import 'global.css';", '@charset "UTF-8";']
+  },
+  {
+    name: 'at-rules with braces',
+    input: `
+      @media screen and (max-width: 768px) {
+        color: purple;
+      }
+
+      @page {
+        size: A4 landscape;
+      }
+
+      @supports (color: red) {
+        color: red;
+      }
+
+      @supports (color: red) {
+        background: green;
+      }
+
+      @supports not (display: table-cell) and ((display: list-item) or (display:run-in)) {
+        color: green;
+      }
+
+      @supports not (display: grid)
+        and ((display: list-item)
+          or (display:run-in)) {
+        color: yellow;
+      }
+    `,
+    output: [
+      '@media screen and (max-width: 768px){.test{color:purple;}}',
+      '@page{.test{size:A4 landscape;}}',
+      '@supports (color: red){.test{color:red;background:green;}}',
+      '@supports not (display: table-cell) and ((display: list-item) or (display:run-in)){.test{color:green;}}',
+      '@supports not (display: grid) and ((display: list-item) or (display:run-in)){.test{color:yellow;}}'
+    ]
+  },
+  {
+    name: 'nested at-rules',
+    input: `
+      @supports (color: red) {
+        @media (max-width: 768px) {
+          color: red;
+        }
+      }
+
+      @media print and (min-width: 200px) {
+        color: purple;
+
+        @supports (hello: world) {
           color: green;
-          &:hover {
-            color: yellow;
-          }
+        }
+
+        @supports (test: this) {
+          color: blue;
         }
       }
     `,
     output: [
-      '@media (max-width: 100px){.test{color:red;}.test div{color:green;}}.test div:hover{color:yellow;}}'
+      '@supports (color: red){@media (max-width: 768px){.test{color:red;}}}',
+      '@media print and (min-width: 200px){.test{color:purple;}}',
+      '@media print and (min-width: 200px){@supports (hello: world){.test{color:green;}}}',
+      '@media print and (min-width: 200px){@supports (test: this){.test{color:blue;}}}'
     ]
   }
-  // {
-  //   name: 'nested media queries',
-  //   input: `
-  //     &:hover {
-  //       @media (max-width: 100px) {
-  //         color: red;
-  //       }
-  //     }
-  //   `,
-  //   output: ['@media (max-width: 100px){.test:hover{color:red;}}']
-  // }
 ];
 
 const stylisTests = [
@@ -199,6 +295,8 @@ examples.forEach(({ name, input, output, focused }) => {
   if (anyFocused && !focused) return;
 
   test(name, () => {
+    expect(input.trim()).not.toBe('');
     expect(preprocess('.test', input)).toEqual(output);
+    expect(preprocess2('.test', input)).toEqual(output);
   });
 });

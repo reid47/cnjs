@@ -260,4 +260,4 @@ const prefix = (key, val) => {
 };
 
 module.exports = { prefix };
-export { prefix };
+// export { prefix };
