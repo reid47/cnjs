@@ -81,15 +81,16 @@ const preprocess = (selector, css) => {
 
     switch (char) {
       case '/':
-        if (inBlockComment && lastChar === '*') {
-          inBlockComment = false;
-        } else {
-          const nextChar = chars[i + 1];
-          if (nextChar === '/') {
-            inLineComment = true;
-          } else if (nextChar === '*') {
-            inBlockComment = true;
-          }
+        if (inBlockComment) {
+          if (lastChar === '*') inBlockComment = false;
+          break;
+        }
+
+        const nextChar = chars[i + 1];
+        if (nextChar === '/') {
+          inLineComment = true;
+        } else if (nextChar === '*') {
+          inBlockComment = true;
         }
         break;
 

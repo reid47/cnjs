@@ -1,5 +1,4 @@
 import { preprocess } from '../src/preprocess';
-import { preprocess2 } from '../src/preprocess2';
 
 const examples = [
   {
@@ -23,6 +22,10 @@ const examples = [
   {
     name: 'block comments',
     input: `
+/*
+ * Licensed under MIT (https://github.com/hello)
+ */
+
     /* some comment
     that spans * multiple / lines
     some weird characters: & : / * !
@@ -309,41 +312,6 @@ const stylisTests = [
     `,
     output: []
   }
-  //   {
-  //     name: 'Bootstrap',
-  //     input: `
-  // /*!
-  // * Bootstrap v3.3.7 (http://getbootstrap.com)
-  // * Copyright 2011-2016 Twitter, Inc.
-  // * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
-  // */
-  // /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-  // html {
-  //   font-family: sans-serif;
-  //   -webkit-text-size-adjust: 100%;
-  //       -ms-text-size-adjust: 100%;
-  // }
-  // body {
-  //   margin: 0;
-  // }
-  // article,
-  // aside,
-  // details,
-  // figcaption,
-  // figure,
-  // footer,
-  // header,
-  // hgroup,
-  // main,
-  // menu,
-  // nav,
-  // section,
-  // summary {
-  //   display: block;
-  // }
-  //     `,
-  //     output: []
-  //   }
 ];
 
 examples.push(...stylisTests);
@@ -355,6 +323,5 @@ examples.forEach(({ name, input, output, focused }) => {
   test(name, () => {
     expect(input.trim()).not.toBe('');
     expect(preprocess('.test', input)).toEqual(output);
-    // expect(preprocess2('.test', input)).toEqual(output);
   });
 });
