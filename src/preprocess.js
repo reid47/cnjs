@@ -11,12 +11,8 @@ const closingBraces = str => {
 
 const makeRule = (topLevelSelector, selector, defs) => {
   const d = [];
-  defs.forEach(def => {
-    if (def.length === 1) {
-      d.push(def[0]);
-      return;
-    }
 
+  defs.forEach(def => {
     const prefixed = prefix(def[0], def[1]);
     prefixed.forEach(pair => {
       d.push(`${pair[0]}:${pair[1]};`);
@@ -28,44 +24,44 @@ const makeRule = (topLevelSelector, selector, defs) => {
 };
 
 const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
-  const isAtRule = newSelector.charAt(0) === '@';
   const hasAmpersand = newSelector.indexOf('&') > -1;
+  const isAtRule = newSelector.charAt(0) === '@';
 
-  if (!parentSelector && !isAtRule) {
-    if (hasAmpersand) return newSelector.replace(/&/g, topLevelSelector);
-    return topLevelSelector + ' ' + newSelector;
-  }
+  if (hasAmpersand) {
+    if (!parentSelector && !isAtRule) {
+      return newSelector.replace(/&/g, topLevelSelector);
+    }
 
-  if (hasAmpersand)
     return (
       parentSelector +
       newSelector.replace(/^&/, '').replace(/&/g, topLevelSelector)
     );
-
-  if (isAtRule && !parentSelector) return newSelector + '{' + topLevelSelector;
-
-  if (isAtRule && parentSelector.charAt(0) === '@') {
-    return (
-      parentSelector.substr(
-        0,
-        parentSelector.length - topLevelSelector.length - 1
-      ) +
-      '{' +
-      newSelector +
-      '{' +
-      topLevelSelector
-    );
   }
 
-  return (parentSelector ? parentSelector + ' ' : '') + newSelector;
+  if (isAtRule) {
+    if (!parentSelector) return `${newSelector}{${topLevelSelector}`;
+
+    if (parentSelector.charAt(0) === '@') {
+      return `${parentSelector.substr(
+        0,
+        parentSelector.length - topLevelSelector.length - 1
+      )}{${newSelector}{${topLevelSelector}`;
+    }
+  } else if (!parentSelector) {
+    return `${topLevelSelector} ${newSelector}`;
+  }
+
+  return `${parentSelector ? parentSelector + ' ' : ''}${newSelector}`;
 };
 
 const preprocess = (selector, css) => {
-  const nestedDefs = { '': [] };
+  const definitions = { '': [] };
+  const chars = css.split('');
+  const length = chars.length;
 
   let currentRule = '';
   let newLine = true;
-  let nestStack = [];
+  let nestedRules = [];
   let inProperty = false;
   let inValue = false;
   let anticipateValue = false;
@@ -73,15 +69,17 @@ const preprocess = (selector, css) => {
   let valueChars = [];
   let inSpecialLine = false;
   let inLineComment = false;
+  let char, lastChar;
 
-  for (let i = 0; i < css.length; i++) {
-    const char = css.charAt(i);
+  for (let i = 0; i < length; i++) {
+    lastChar = char;
+    char = chars[i];
 
     if (inLineComment && char !== '\n') continue;
 
     switch (char) {
       case '/':
-        if (css.charAt(i + 1) === '/') {
+        if (chars[i + 1] === '/') {
           inLineComment = true;
         }
         break;
@@ -104,7 +102,7 @@ const preprocess = (selector, css) => {
 
       case ';':
         if (inValue) {
-          nestedDefs[currentRule].push([
+          definitions[currentRule].push([
             propertyChars.join(''),
             valueChars.join('')
           ]);
@@ -112,7 +110,7 @@ const preprocess = (selector, css) => {
           propertyChars = [];
           inValue = false;
         } else if (inProperty && propertyChars[0] === '@') {
-          nestedDefs[propertyChars.join('') + ';'] = false;
+          definitions[propertyChars.join('') + ';'] = null;
           inProperty = false;
           propertyChars = [];
         }
@@ -120,9 +118,9 @@ const preprocess = (selector, css) => {
 
       case ' ':
       case '\t':
-        if (inProperty && propertyChars[propertyChars.length - 1] !== ' ') {
+        if (inProperty && lastChar !== ' ') {
           propertyChars.push(' ');
-        } else if (inValue && valueChars[valueChars.length - 1] !== ' ') {
+        } else if (inValue && lastChar !== ' ') {
           valueChars.push(' ');
         }
         break;
@@ -131,21 +129,21 @@ const preprocess = (selector, css) => {
         break;
 
       case '{':
-        nestStack.push(currentRule);
+        nestedRules.push(currentRule);
         currentRule = propertyChars
           .join('')
           .trim()
           .split(/,[\s]*/)
           .map(part => joinNestedSelectors(selector, currentRule, part))
           .join(',');
-        nestedDefs[currentRule] = nestedDefs[currentRule] || [];
+        definitions[currentRule] = definitions[currentRule] || [];
         propertyChars = [];
         inSpecialLine = false;
         inProperty = false;
         break;
 
       case '}':
-        currentRule = nestStack.pop();
+        currentRule = nestedRules.pop();
         break;
 
       case '&':
@@ -170,10 +168,10 @@ const preprocess = (selector, css) => {
   const atRules = [];
   const otherRules = [];
 
-  Object.keys(nestedDefs).forEach(key => {
-    if (!nestedDefs[key]) return atRules.push(key);
-    if (!nestedDefs[key].length) return;
-    otherRules.push(makeRule(selector, key, nestedDefs[key]));
+  Object.keys(definitions).forEach(key => {
+    if (!definitions[key]) return atRules.push(key);
+    if (!definitions[key].length) return;
+    otherRules.push(makeRule(selector, key, definitions[key]));
   });
 
   return atRules.concat(otherRules);
