@@ -92,11 +92,16 @@ const examples = [
           color: green;
         }
       }
+
+      .child:before {
+        color: yellow;
+      }
     `,
     output: [
       '.test .some-child{color:blue;}',
       '.test > .immediate-child{color:purple;}',
-      '.test .child1 .child2{color:green;}'
+      '.test .child1 .child2{color:green;}',
+      '.test .child:before{color:yellow;}'
     ]
   },
   {
@@ -108,9 +113,10 @@ const examples = [
 
       &.testing {
         background: yellow;
+        color: black;
       }
     `,
-    output: ['.test.testing{color:blue;background:yellow;}']
+    output: ['.test.testing{color:blue;background:yellow;color:black;}']
   },
   {
     name: 'nesting &',
@@ -257,6 +263,15 @@ const examples = [
       '@media print and (min-width: 200px){@supports (test: this){.test{color:blue;}}}',
       '@media (max-width: 768px){.test:hover{border-bottom:2px solid purple;}}'
     ]
+  },
+  {
+    name: '* selectors',
+    input: `
+      *, *:before, *:after {
+        color: yellow;
+      }
+    `,
+    output: ['.test *, .test *:before, .test *:after{color:yellow;}']
   }
 ];
 

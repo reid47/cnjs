@@ -134,7 +134,7 @@ test('static nested rules w/ media queries', () => {
   );
 });
 
-test.only('dynamic nested rules w/ media queries', () => {
+test('dynamic nested rules w/ media queries', () => {
   const rule0 = rule`
     color: ${props => props.defaultColor};
     font-size: 10px;

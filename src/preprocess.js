@@ -56,6 +56,7 @@ const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
 const preprocess = (selector, css) => {
   const rules = [];
   const definitions = { '': [] };
+  const definitionKeys = [''];
   const chars = css.split('');
   const length = chars.length;
 
@@ -148,7 +149,11 @@ const preprocess = (selector, css) => {
           .map(part => joinNestedSelectors(selector, currentRule, part))
           .join(',');
 
-        definitions[currentRule] = definitions[currentRule] || [];
+        if (!definitions[currentRule]) {
+          definitions[currentRule] = [];
+          definitionKeys.push(currentRule);
+        }
+
         propertyChars = [];
         inSpecialLine = false;
         inProperty = false;
@@ -177,10 +182,11 @@ const preprocess = (selector, css) => {
     }
   }
 
-  const keys = Object.keys(definitions);
-  for (let k = 0; k < keys.length; k++) {
-    if (definitions[keys[k]].length) {
-      rules.push(makeRule(selector, keys[k], definitions[keys[k]]));
+  for (let k = 0; k < definitionKeys.length; k++) {
+    if (definitions[definitionKeys[k]].length) {
+      rules.push(
+        makeRule(selector, definitionKeys[k], definitions[definitionKeys[k]])
+      );
     }
   }
 

@@ -22,21 +22,21 @@ export default [
       uglify(),
       fileSize()
     ]
+  },
+  {
+    input: 'src/preprocess.js',
+    output: {
+      file: 'dist/preprocess.js',
+      format: 'cjs'
+    },
+    external: ['react', path.resolve('../index')],
+    plugins: [
+      replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
+      babel({ exclude: 'node_modules/**/' }),
+      resolve(),
+      commonjs({ include: 'node_modules/**' }),
+      uglify({ mangle: { toplevel: true } }),
+      fileSize()
+    ]
   }
-  // {
-  //   input: 'src/preprocess.js',
-  //   output: {
-  //     file: 'dist/preprocess.js',
-  //     format: 'cjs'
-  //   },
-  //   external: ['react', path.resolve('../index')],
-  //   plugins: [
-  //     replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
-  //     babel({ exclude: 'node_modules/**/' }),
-  //     resolve(),
-  //     commonjs({ include: 'node_modules/**' }),
-  //     uglify({ mangle: { toplevel: true } }),
-  //     fileSize()
-  //   ]
-  // }
 ];

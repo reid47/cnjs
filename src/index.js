@@ -2,7 +2,7 @@ import { preprocess } from './preprocess';
 import { get, set, clear } from './cache';
 import { addRule, clearRules, newClassName, css } from './rules';
 
-const buildRule = (parts, args) => {
+const buildRule = (parts, args, global) => {
   const isDynamic = args.length && args.some(arg => typeof arg === 'function');
 
   const fn = (props, context) => {
@@ -20,16 +20,24 @@ const buildRule = (parts, args) => {
       }
     }
 
-    const cacheKey = s.join('');
-    if (!cacheKey) return '';
+    const cssText = s.join('');
+    if (!cssText) return '';
 
-    const cacheEntry = get(cacheKey);
+    if (global) {
+      const rules = preprocess('', cssText);
+      for (let r = 0; r < rules.length; r++) {
+        addRule(rules[r]);
+      }
+      return '';
+    }
+
+    const cacheEntry = get(cssText);
     if (cacheEntry) return cacheEntry;
 
     const cn = newClassName();
-    set(cacheKey, cn);
+    set(cssText, cn);
 
-    const rules = preprocess('.' + cn, cacheKey);
+    const rules = preprocess('.' + cn, cssText);
     for (let r = 0; r < rules.length; r++) {
       addRule(rules[r]);
     }
@@ -47,21 +55,14 @@ const rule = (parts, ...args) => {
   return buildRule(parts, args);
 };
 
+const global = (parts, ...args) => {
+  if (!parts) return () => '';
+  return buildRule(parts, args, true);
+};
+
 const reset = () => {
   clearRules();
   clear();
 };
 
-export { rule, css, reset };
-
-// const global = (selector, obj) => {
-//   if (!obj) return '';
-//   const defs = collectDefs(obj, {}, '');
-
-//   for (let key in defs) {
-//     const values = defs[key].join('');
-//     addRule(formatRule(key, selector, values));
-//   }
-// };
-
-// export { rule, global, reset, css };
+export { rule, global, reset, css };
