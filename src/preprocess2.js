@@ -168,11 +168,11 @@ const preprocess2 = (selector, css) => {
     }
   }
 
-  const rules = [];
-  Object.keys(definitions).forEach(key => {
-    if (!definitions[key].length) return;
-    rules.push(makeRule(selector, key, definitions[key]));
-  });
+  const rules = Object.keys(definitions).reduce((rules, key) => {
+    if (definitions[key].length)
+      rules.push(makeRule(selector, key, definitions[key]));
+    return rules;
+  }, []);
 
   return oneLineAtRules.concat(rules);
 };
