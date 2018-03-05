@@ -1,5 +1,4 @@
 import { preprocess } from '../src/preprocess';
-import { preprocess2 } from '../src/preprocess2';
 
 const examples = [
   {
@@ -305,7 +304,7 @@ const examples = [
 ];
 
 // These next tests were borrowed almost directly from the Stylis
-// tests, found below. Huge thanks to @thysultan for his work on Stylis:
+// tests, found below. Huge thanks to @thysultan for their work on Stylis:
 // https://github.com/thysultan/stylis.js/blob/master/tests/spec.js
 const stylisTests = [
   {
