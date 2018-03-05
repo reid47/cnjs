@@ -1,5 +1,4 @@
-// import { prefix } from './prefix';
-const { prefix } = require('./prefix');
+import { prefix } from './prefix';
 
 const closingBraces = str => {
   const closing = [];
@@ -175,5 +174,4 @@ const preprocess = (selector, css) => {
   return rules;
 };
 
-// export { preprocess };
-module.exports = { preprocess };
+export { preprocess };

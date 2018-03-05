@@ -1,6 +1,7 @@
 import { preprocess } from './preprocess';
 import { get, set, clear } from './cache';
 import { addRule, clearRules, newClassName, css } from './rules';
+const noop = () => '';
 
 const buildRule = (parts, args, global) => {
   const isDynamic = args.length && args.some(arg => typeof arg === 'function');
@@ -51,12 +52,12 @@ const buildRule = (parts, args, global) => {
 };
 
 const rule = (parts, ...args) => {
-  if (!parts) return () => '';
+  if (!parts) return noop;
   return buildRule(parts, args);
 };
 
 const global = (parts, ...args) => {
-  if (!parts) return () => '';
+  if (!parts) return noop;
   return buildRule(parts, args, true);
 };
 
