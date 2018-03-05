@@ -937,41 +937,21 @@ describe('vendor prefixing', () => {
     ]);
   });
 
-  xtest(':fullscreen', () => {
-    // const cn = rule({ '&:fullscreen': { color: 'green' } });
-    // expect(cn).toBe('cls_0 cls_1 cls_2 cls_3');
-    // expectCss(
-    //   `.cls_0:-webkit-full-screen {
-    //     ['color', 'green'],
-    //   }`,
-    //   `.cls_1:-moz-full-screen {
-    //     ['color', 'green'],
-    //   }`,
-    //   `.cls_2:-ms-fullscreen {
-    //     ['color', 'green'],
-    //   }`,
-    //   `.cls_3:fullscreen {
-    //     ['color', 'green'],
-    //   }`
-    // );
+  test(':fullscreen', () => {
+    expect(prefix('&:fullscreen', null)).toEqual([
+      ['&:-webkit-full-screen', null],
+      ['&:-moz-full-screen', null],
+      ['&:-ms-fullscreen', null],
+      ['&:fullscreen', null]
+    ]);
   });
 
-  xtest('::placeholder', () => {
-    // const cn = rule({ '&::placeholder': { color: 'purple' } });
-    // expect(cn).toBe('cls_0 cls_1 cls_2 cls_3');
-    // expectCss(
-    //   `.cls_0::-webkit-input-placeholder {
-    //     ['color', 'purple'],
-    //   }`,
-    //   `.cls_1:-ms-input-placeholder {
-    //     ['color', 'purple'],
-    //   }`,
-    //   `.cls_2::-ms-input-placeholder {
-    //     ['color', 'purple'],
-    //   }`,
-    //   `.cls_3::placeholder {
-    //     ['color', 'purple'],
-    //   }`
-    // );
+  test('::placeholder', () => {
+    expect(prefix('&::placeholder', null)).toEqual([
+      ['&::-webkit-input-placeholder', null],
+      ['&:-ms-input-placeholder', null],
+      ['&::-ms-input-placeholder', null],
+      ['&::placeholder', null]
+    ]);
   });
 });
