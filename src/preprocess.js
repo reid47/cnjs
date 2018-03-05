@@ -1,4 +1,5 @@
-import { prefix } from './prefix';
+// import { prefix } from './prefix';
+const { prefix } = require('./prefix');
 
 const closingBraces = str => {
   const closing = [];
@@ -45,6 +46,8 @@ const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
         0,
         parentSelector.length - topLevelSelector.length - 1
       )}{${newSelector}{${topLevelSelector}`;
+    } else {
+      return `${newSelector}{${parentSelector}`;
     }
   } else if (!parentSelector) {
     return `${topLevelSelector} ${newSelector}`;
@@ -61,17 +64,13 @@ const preprocess = (selector, css) => {
   const length = chars.length;
 
   let currentRule = '';
-  let newLine = true;
   let nestedRules = [];
-  let inProperty = false;
-  let inValue = false;
-  let anticipateValue = false;
-  let propertyChars = [];
-  let valueChars = [];
-  let inSpecialLine = false;
   let inLineComment = false;
   let inBlockComment = false;
   let char, lastChar;
+  let buffer = [];
+  let bufferComma = false;
+  let bufferColonIndex = -1;
 
   for (let i = 0; i < length; i++) {
     lastChar = char;
@@ -96,94 +95,77 @@ const preprocess = (selector, css) => {
         break;
 
       case '\n':
-        if (!inValue) {
-          newLine = true;
-          inLineComment = false;
-        }
-        break;
-
-      case ':':
-        if (inSpecialLine) {
-          propertyChars.push(char);
-        } else if (inProperty) {
-          inProperty = false;
-          anticipateValue = true;
-        }
+        inLineComment = false;
         break;
 
       case ';':
-        if (inValue) {
-          definitions[currentRule].push([
-            propertyChars.join(''),
-            valueChars.join('')
-          ]);
-          valueChars = [];
-          propertyChars = [];
-          inValue = false;
-        } else if (inProperty && propertyChars[0] === '@') {
-          rules.push(propertyChars.join('') + ';');
-          inProperty = false;
-          propertyChars = [];
+        const declaration = buffer.join('');
+        if (bufferColonIndex < 0) {
+          rules.push(declaration.trim() + ';');
+        } else {
+          const prop = declaration.substring(0, bufferColonIndex).trim();
+          const val = declaration.substring(bufferColonIndex + 1).trim();
+          definitions[currentRule].push([prop, val]);
         }
-        break;
 
-      case ' ':
-      case '\t':
-        if (inProperty && lastChar !== ' ') {
-          propertyChars.push(' ');
-        } else if (inValue && lastChar !== ' ') {
-          valueChars.push(' ');
-        }
-        break;
-
-      case '\r':
+        buffer = [];
+        bufferComma = false;
+        bufferColonIndex = -1;
         break;
 
       case '{':
         nestedRules.push(currentRule);
 
-        currentRule = propertyChars
-          .join('')
-          .trim()
-          .split(/,[\s]*/)
-          .map(part => joinNestedSelectors(selector, currentRule, part))
-          .join(',');
+        if (bufferComma) {
+          currentRule = buffer
+            .join('')
+            .split(',')
+            .map(part =>
+              joinNestedSelectors(selector, currentRule, part.trim())
+            )
+            .join(',');
+        } else {
+          currentRule = joinNestedSelectors(
+            selector,
+            currentRule,
+            buffer.join('').trim()
+          );
+        }
 
         if (!definitions[currentRule]) {
           definitions[currentRule] = [];
           definitionKeys.push(currentRule);
         }
 
-        propertyChars = [];
-        inSpecialLine = false;
-        inProperty = false;
+        buffer = [];
+        bufferComma = false;
+        bufferColonIndex = -1;
         break;
 
       case '}':
         currentRule = nestedRules.pop();
         break;
 
-      case '&':
-      case '@':
-        inSpecialLine = true;
+      case ',':
+        bufferComma = true;
+        buffer.push(char);
+        break;
+
+      case ':':
+        if (bufferColonIndex < 0) bufferColonIndex = buffer.length;
+        buffer.push(char);
+        break;
+
+      case ' ':
+        if (lastChar === ' ') break;
+
       default:
-        if (newLine) {
-          inProperty = true;
-          newLine = false;
-        }
-
-        if (anticipateValue) {
-          anticipateValue = false;
-          inValue = true;
-        }
-
-        if (inValue) valueChars.push(char);
-        else if (inProperty) propertyChars.push(char);
+        buffer.push(char);
     }
   }
 
   for (let k = 0; k < definitionKeys.length; k++) {
-    if (definitions[definitionKeys[k]].length) {
+    if (definitions[definitionKeys[k]].length > 0) {
       rules.push(
         makeRule(selector, definitionKeys[k], definitions[definitionKeys[k]])
       );
@@ -193,4 +175,5 @@ const preprocess = (selector, css) => {
   return rules;
 };
 
-export { preprocess };
+// export { preprocess };
+module.exports = { preprocess };

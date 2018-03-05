@@ -1,4 +1,5 @@
 import { preprocess } from '../src/preprocess';
+import { preprocess2 } from '../src/preprocess2';
 
 const examples = [
   {
@@ -255,13 +256,20 @@ const examples = [
           border-bottom: 2px solid purple;
         }
       }
+
+      .some-class {
+        @media only screen and (max-width: 800px) {
+          color: yellow;
+        }
+      }
     `,
     output: [
       '@supports (color: red){@media (max-width: 768px){.test{color:red;}}}',
       '@media print and (min-width: 200px){.test{color:purple;}}',
       '@media print and (min-width: 200px){@supports (hello: world){.test{color:green;}}}',
       '@media print and (min-width: 200px){@supports (test: this){.test{color:blue;}}}',
-      '@media (max-width: 768px){.test:hover{border-bottom:2px solid purple;}}'
+      '@media (max-width: 768px){.test:hover{border-bottom:2px solid purple;}}',
+      '@media only screen and (max-width: 800px){.test .some-class{color:yellow;}}'
     ]
   },
   {
@@ -271,7 +279,28 @@ const examples = [
         color: yellow;
       }
     `,
-    output: ['.test *, .test *:before, .test *:after{color:yellow;}']
+    output: ['.test *,.test *:before,.test *:after{color:yellow;}']
+  },
+  {
+    name: 'tricky parsing examples',
+    input: `
+      hello: world;
+      hello2:world2;
+
+      h1:before {
+        nested:property;
+      }
+
+      linebreak:one, linebreak:two,
+      linebreak:three {
+        nested: again;
+      }
+    `,
+    output: [
+      '.test{hello:world;hello2:world2;}',
+      '.test h1:before{nested:property;}',
+      '.test linebreak:one,.test linebreak:two,.test linebreak:three{nested:again;}'
+    ]
   }
 ];
 

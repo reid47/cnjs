@@ -55,6 +55,6 @@ test('global rules with media queries', () => {
 
   expectCss(
     '.some-global-class{font-size:47px;}',
-    '@media (max-width: 700px){.some-global-class{font-size:100px;}}'
+    '@media (max-width: 700px){ .some-global-class{font-size:100px;}}'
   );
 });
