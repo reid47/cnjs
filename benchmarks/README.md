@@ -1,235 +1,26 @@
 # :watch: benchmarks
 
-A handful of benchmark tests that compare the performance of `turnstyle` to various other CSS-in-JS libraries (currently: `cxs`, `emotion`, `fela`, `glamorous`, `inline-styles`, `styled-components`).
+A handful of benchmark tests that compare the performance of `turnstyle` to various other CSS-in-JS libraries/methods (currently: `cxs`, `emotion`, `fela` (with and without auto-prefixing enabled), `glamorous`, `styled-components`, React with inline styles). The tests also include plain, unstyled React as a control; this should always be the fastest out of all of them.
 
 ## Latest results
 
 ### suite: simple-button-static
-*timestamp: Sat Feb 03 2018 20:20:41 GMT-0800 (Pacific Standard Time)*
 
-name                      | ops/sec
-------------------------- | -------
-react (unstyled)           | 2,912 ops/sec
-turnstyle                  | 1,678 ops/sec
-emotion                    | 1,587 ops/sec
-fela                       | 1,586 ops/sec
-react (with inline styles) | 1,462 ops/sec
-cxs                        | 1,378 ops/sec
-glamorous                  | 1,257 ops/sec
-styled-components          |   931 ops/sec
+_timestamp: Sun Mar 04 2018 21:22:56 GMT-0800 (Pacific Standard Time)_
 
-:rocket: **fastest:** react (unstyled)
+| name                       | ops/sec       |
+| -------------------------- | ------------- |
+| react (unstyled)           | 3,075 ops/sec |
+| turnstyle                  | 3,042 ops/sec |
+| fela                       | 2,790 ops/sec |
+| fela (prefixed)            | 2,585 ops/sec |
+| cxs                        | 2,050 ops/sec |
+| emotion                    | 2,005 ops/sec |
+| react (with inline styles) | 1,671 ops/sec |
+| glamorous                  | 1,550 ops/sec |
+| styled-components          | 1,243 ops/sec |
 
-:turtle: **slowest:** styled-components
-
-### suite: simple-button-static
-*timestamp: Thu Feb 08 2018 22:17:59 GMT-0800 (Pacific Standard Time)*
-
-name                      | ops/sec
-------------------------- | -------
-fela                       | 3,062 ops/sec
-cxs                        | 2,489 ops/sec
-emotion                    | 2,291 ops/sec
-react (unstyled)           | 1,971 ops/sec
-turnstyle                  | 1,717 ops/sec
-glamorous                  | 1,258 ops/sec
-react (with inline styles) | 1,095 ops/sec
-styled-components          |   826 ops/sec
-
-:rocket: **fastest:** fela
-
-:turtle: **slowest:** styled-components
-
-### suite: simple-button-static
-*timestamp: Thu Feb 08 2018 22:23:17 GMT-0800 (Pacific Standard Time)*
-
-name                      | ops/sec
-------------------------- | -------
-react (unstyled)           | 3,652 ops/sec
-turnstyle                  | 2,269 ops/sec
-react (with inline styles) | 2,108 ops/sec
-fela                       | 1,977 ops/sec
-cxs                        | 1,653 ops/sec
-emotion                    | 1,246 ops/sec
-glamorous                  |   971 ops/sec
-styled-components          |   956 ops/sec
-fela (prefixed)            |     0 ops/sec
-
-:rocket: **fastest:** react (unstyled)
-
-:turtle: **slowest:** styled-components, glamorous
-
-### suite: simple-button-static
-*timestamp: Thu Feb 08 2018 22:25:50 GMT-0800 (Pacific Standard Time)*
-
-name                      | ops/sec
-------------------------- | -------
-react (unstyled)           | 3,515 ops/sec
-fela (prefixed)            | 3,000 ops/sec
-fela                       | 2,857 ops/sec
-turnstyle                  | 2,744 ops/sec
-cxs                        | 2,343 ops/sec
-emotion                    | 2,236 ops/sec
-react (with inline styles) | 1,919 ops/sec
-glamorous                  | 1,638 ops/sec
-styled-components          | 1,437 ops/sec
-
-:rocket: **fastest:** react (unstyled)
-
-:turtle: **slowest:** styled-components
-
-### suite: simple-button-static
-*timestamp: Fri Feb 23 2018 00:07:14 GMT-0800 (Pacific Standard Time)*
-
-name                      | ops/sec
-------------------------- | -------
-react (unstyled)           | 2,023 ops/sec
-turnstyle                  | 1,731 ops/sec
-fela                       | 1,587 ops/sec
-fela (prefixed)            | 1,530 ops/sec
-emotion                    | 1,228 ops/sec
-cxs                        | 1,065 ops/sec
-react (with inline styles) | 1,036 ops/sec
-glamorous                  |   883 ops/sec
-styled-components          |   814 ops/sec
-
-:rocket: **fastest:** react (unstyled)
-
-:turtle: **slowest:** styled-components
-
-### suite: simple-button-static
-*timestamp: Fri Feb 23 2018 00:09:45 GMT-0800 (Pacific Standard Time)*
-
-name                      | ops/sec
-------------------------- | -------
-react (unstyled)           | 1,970 ops/sec
-turnstyle                  | 1,660 ops/sec
-fela                       | 1,455 ops/sec
-fela (prefixed)            | 1,445 ops/sec
-emotion                    | 1,176 ops/sec
-react (with inline styles) | 1,072 ops/sec
-cxs                        | 1,046 ops/sec
-glamorous                  |   945 ops/sec
-styled-components          |   807 ops/sec
-
-:rocket: **fastest:** react (unstyled)
-
-:turtle: **slowest:** styled-components
-
-### suite: simple-button-static
-*timestamp: Fri Feb 23 2018 13:07:09 GMT-0800 (Pacific Standard Time)*
-
-name                      | ops/sec
-------------------------- | -------
-react (unstyled)           | 3,984 ops/sec
-turnstyle                  | 3,223 ops/sec
-fela (prefixed)            | 3,061 ops/sec
-fela                       | 3,018 ops/sec
-emotion                    | 2,401 ops/sec
-react (with inline styles) | 2,030 ops/sec
-glamorous                  | 1,811 ops/sec
-cxs                        | 1,659 ops/sec
-styled-components          | 1,518 ops/sec
-
-:rocket: **fastest:** react (unstyled)
-
-:turtle: **slowest:** cxs, emotion
-
-<!--RESULTS_PLACEHOLDER-->
-### suite: simple-button-dynamic
-*timestamp: Fri Feb 23 2018 00:10:35 GMT-0800 (Pacific Standard Time)*
-
-name                      | ops/sec
-------------------------- | -------
-react (unstyled)           | 1,984 ops/sec
-fela                       | 1,873 ops/sec
-fela (prefixed)            | 1,656 ops/sec
-turnstyle                  | 1,615 ops/sec
-cxs                        | 1,577 ops/sec
-emotion                    | 1,276 ops/sec
-react (with inline styles) | 1,138 ops/sec
-glamorous                  | 1,060 ops/sec
-styled-components          |   793 ops/sec
-
-:rocket: **fastest:** react (unstyled)
-
-:turtle: **slowest:** styled-components
-
-<!--RESULTS_PLACEHOLDER-->
-### suite: simple-button-dynamic
-*timestamp: Fri Feb 23 2018 00:08:04 GMT-0800 (Pacific Standard Time)*
-
-name                      | ops/sec
-------------------------- | -------
-fela                       | 2,101 ops/sec
-cxs                        | 1,899 ops/sec
-react (unstyled)           | 1,811 ops/sec
-fela (prefixed)            | 1,745 ops/sec
-emotion                    | 1,352 ops/sec
-react (with inline styles) | 1,097 ops/sec
-glamorous                  | 1,045 ops/sec
-styled-components          |   819 ops/sec
-turnstyle                  |     0 ops/sec
-
-:rocket: **fastest:** fela, react (unstyled)
-
-:turtle: **slowest:** styled-components
-
-<!--RESULTS_PLACEHOLDER-->
-### suite: simple-button-dynamic
-*timestamp: Thu Feb 08 2018 22:24:02 GMT-0800 (Pacific Standard Time)*
-
-name                      | ops/sec
-------------------------- | -------
-fela                       | 3,267 ops/sec
-cxs                        | 2,830 ops/sec
-react (unstyled)           | 2,424 ops/sec
-emotion                    | 2,241 ops/sec
-react (with inline styles) | 1,792 ops/sec
-turnstyle                  | 1,579 ops/sec
-glamorous                  | 1,521 ops/sec
-styled-components          |   878 ops/sec
-fela (prefixed)            |     0 ops/sec
-
-:rocket: **fastest:** fela
-
-:turtle: **slowest:** styled-components
-
-<!--RESULTS_PLACEHOLDER-->
-### suite: simple-button-dynamic
-*timestamp: Thu Feb 08 2018 22:18:45 GMT-0800 (Pacific Standard Time)*
-
-name                      | ops/sec
-------------------------- | -------
-react (unstyled)           | 2,103 ops/sec
-fela                       | 1,950 ops/sec
-cxs                        | 1,646 ops/sec
-turnstyle                  | 1,582 ops/sec
-emotion                    | 1,368 ops/sec
-react (with inline styles) | 1,208 ops/sec
-glamorous                  | 1,049 ops/sec
-styled-components          |   818 ops/sec
-
-:rocket: **fastest:** react (unstyled)
-
-:turtle: **slowest:** styled-components
-
-<!--RESULTS_PLACEHOLDER-->
-### suite: simple-button-dynamic
-*timestamp: Sat Feb 03 2018 20:21:25 GMT-0800 (Pacific Standard Time)*
-
-name                      | ops/sec
-------------------------- | -------
-react (unstyled)           | 2,787 ops/sec
-fela                       | 2,235 ops/sec
-cxs                        | 2,085 ops/sec
-turnstyle                  | 2,016 ops/sec
-emotion                    | 1,834 ops/sec
-react (with inline styles) | 1,589 ops/sec
-glamorous                  | 1,379 ops/sec
-styled-components          |   979 ops/sec
-
-:rocket: **fastest:** react (unstyled)
+:rocket: **fastest:** react (unstyled), turnstyle
 
 :turtle: **slowest:** styled-components
 
@@ -238,41 +29,18 @@ styled-components          |   979 ops/sec
 ## Acknowledgements
 
 The initial set of tests was borrowed from jxnblk's benchmarks [here](https://github.com/jxnblk/cxs/tree/master/benchmarks).
+-------------- | -------
+fela | 2,941 ops/sec
+react (unstyled) | 2,938 ops/sec
+fela (prefixed) | 2,914 ops/sec
+turnstyle | 2,907 ops/sec
+cxs | 2,525 ops/sec
+emotion | 2,211 ops/sec
+react (with inline styles) | 1,631 ops/sec
+glamorous | 1,609 ops/sec
+styled-components | 1,238 ops/sec
 
-name                      | ops/sec
-------------------------- | -------
-react (unstyled)           | 2,787 ops/sec
-fela                       | 2,235 ops/sec
-cxs                        | 2,085 ops/sec
-turnstyle                  | 2,016 ops/sec
-emotion                    | 1,834 ops/sec
-react (with inline styles) | 1,589 ops/sec
-glamorous                  | 1,379 ops/sec
-styled-components          |   979 ops/sec
-
-:rocket: **fastest:** react (unstyled)
-
-:turtle: **slowest:** styled-components
-
-<!--RESULTS_PLACEHOLDER-->
-
-## Acknowledgements
-
-The initial set of tests was borrowed from jxnblk's benchmarks [here](https://github.com/jxnblk/cxs/tree/master/benchmarks).
-rks).
-
-name                      | ops/sec
-------------------------- | -------
-react (unstyled)           | 2,787 ops/sec
-fela                       | 2,235 ops/sec
-cxs                        | 2,085 ops/sec
-turnstyle                  | 2,016 ops/sec
-emotion                    | 1,834 ops/sec
-react (with inline styles) | 1,589 ops/sec
-glamorous                  | 1,379 ops/sec
-styled-components          |   979 ops/sec
-
-:rocket: **fastest:** react (unstyled)
+:rocket: **fastest:** fela (prefixed), react (unstyled), turnstyle
 
 :turtle: **slowest:** styled-components
 

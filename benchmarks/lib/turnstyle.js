@@ -5,21 +5,21 @@ const app = document.createElement('div');
 const { rule } = require('../../dist/turnstyle');
 
 module.exports['simple-button-dynamic'] = () => {
-  const fn = rule(props => ({
-    fontFamily: 'inherit',
-    fontSize: 'inherit',
-    display: 'inline-block',
-    margin: 0,
-    padding: 16,
-    border: 0,
-    borderRadius: 4,
-    color: 'white',
-    backgroundColor: props.color,
-    appearance: 'none',
-    ':hover': {
-      backgroundColor: 'black'
+  const fn = rule`
+    font-family: inherit;
+    font-size: inherit;
+    display: inline-block;
+    margin: 0;
+    padding: 16px;
+    border: 0;
+    border-radius: 4px;
+    color: white;
+    background-color: ${p => p.color};
+    appearance: none;
+    &:hover {
+      background-color: black;
     }
-  }));
+  `;
 
   const Button = props => {
     return createElement('button', {
@@ -35,26 +35,26 @@ module.exports['simple-button-dynamic'] = () => {
 };
 
 module.exports['simple-button-static'] = () => {
-  const cn = rule({
-    fontFamily: 'inherit',
-    fontSize: 'inherit',
-    display: 'inline-block',
-    margin: 0,
-    padding: 16,
-    border: 0,
-    borderRadius: 4,
-    color: 'white',
-    backgroundColor: 'purple',
-    appearance: 'none',
-    ':hover': {
-      backgroundColor: 'black'
+  const fn = rule`
+    font-family: inherit;
+    font-size: inherit;
+    display: inline-block;
+    margin: 0;
+    padding: 16px;
+    border: 0;
+    border-radius: 4px;
+    color: white;
+    background-color: purple;
+    appearance: none;
+    &:hover {
+      background-color: black;
     }
-  });
+  `;
 
   const Button = props => {
     return createElement('button', {
       ...props,
-      className: cn
+      className: fn()
     });
   };
 
