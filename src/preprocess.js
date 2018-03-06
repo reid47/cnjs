@@ -66,6 +66,8 @@ const preprocess = (selector, css) => {
   let nestedRules = [];
   let inLineComment = false;
   let inBlockComment = false;
+  let inSingleQuotedString = false;
+  let inDoubleQuotedString = false;
   let char, lastChar;
   let buffer = [];
   let bufferComma = false;
@@ -77,6 +79,14 @@ const preprocess = (selector, css) => {
 
     if ((inLineComment && char !== '\n') || (inBlockComment && char !== '/'))
       continue;
+
+    if (
+      (inSingleQuotedString && char !== "'") ||
+      (inDoubleQuotedString && char !== '"')
+    ) {
+      buffer.push(char);
+      continue;
+    }
 
     switch (char) {
       case '/':
@@ -152,6 +162,16 @@ const preprocess = (selector, css) => {
 
       case ':':
         if (bufferColonIndex < 0) bufferColonIndex = buffer.length;
+        buffer.push(char);
+        break;
+
+      case "'":
+        inSingleQuotedString = !inSingleQuotedString;
+        buffer.push(char);
+        break;
+
+      case '"':
+        inDoubleQuotedString = !inDoubleQuotedString;
         buffer.push(char);
         break;
 

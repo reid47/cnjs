@@ -300,6 +300,30 @@ const examples = [
       '.test h1:before{nested:property;}',
       '.test linebreak:one,.test linebreak:two,.test linebreak:three{nested:again;}'
     ]
+  },
+  {
+    name: 'single-quoted strings',
+    input: `
+      content: 'This is a string { with
+        : ; some weird characters* in it';
+      color: blue;
+    `,
+    output: [
+      `.test{content:'This is a string { with
+        : ; some weird characters* in it';color:blue;}`
+    ]
+  },
+  {
+    name: 'double-quoted strings',
+    input: `
+      content: "This is another string { with
+        : ; some weird characters* in it";
+      color: blue;
+    `,
+    output: [
+      `.test{content:"This is another string { with
+        : ; some weird characters* in it";color:blue;}`
+    ]
   }
 ];
 
