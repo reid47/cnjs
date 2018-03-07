@@ -13,10 +13,7 @@ const makeRule = (topLevelSelector, selector, defs) => {
   let d = '';
 
   for (let i = 0; i < defs.length; i++) {
-    const prefixed = prefix(defs[i][0], defs[i][1]);
-    for (let j = 0; j < prefixed.length; j++) {
-      d += `${prefixed[j][0]}:${prefixed[j][1]};`;
-    }
+    d += `${defs[i][0]}:${defs[i][1]};`;
   }
 
   const suffix = selector ? closingBraces(selector) : '';
@@ -113,7 +110,10 @@ const preprocess2 = (selector, css) => {
         } else {
           const prop = buffer.substring(0, bufferColonIndex).trim();
           const val = buffer.substring(bufferColonIndex + 1).trim();
-          definitions[currentRule].push([prop, val]);
+          const prefixed = prefix(prop, val);
+          for (let j = 0; j < prefixed.length; j++) {
+            definitions[currentRule].push([prefixed[j][0], prefixed[j][1]]);
+          }
         }
 
         buffer = '';
