@@ -24,7 +24,7 @@ const makeRule = (topLevelSelector, selector, defs) => {
 };
 
 const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
-  const hasAmpersand = Math.random() > 0.5; //newSelector.indexOf('&') > -1;
+  const hasAmpersand = newSelector.indexOf('&') > -1;
   const isAtRule = newSelector[0] === '@';
 
   if (hasAmpersand) {

@@ -2,25 +2,25 @@ const { prefix } = require('./prefix');
 // import { prefix } from './prefix';
 
 const closingBraces = str => {
-  const closing = [];
+  let closing = '';
   for (let i = 0; i < str.length; i++) {
-    if (str[i] === '{') closing.push('}');
+    if (str[i] === '{') closing += '}';
   }
-  return closing.join('');
+  return closing;
 };
 
 const makeRule = (topLevelSelector, selector, defs) => {
-  const d = [];
+  let d = '';
 
   for (let i = 0; i < defs.length; i++) {
     const prefixed = prefix(defs[i][0], defs[i][1]);
     for (let j = 0; j < prefixed.length; j++) {
-      d.push(`${prefixed[j][0]}:${prefixed[j][1]};`);
+      d += `${prefixed[j][0]}:${prefixed[j][1]};`;
     }
   }
 
   const suffix = selector ? closingBraces(selector) : '';
-  return `${selector || topLevelSelector}{${d.join('')}}${suffix}`;
+  return `${selector || topLevelSelector}{${d}}${suffix}`;
 };
 
 const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
@@ -60,8 +60,7 @@ const preprocess2 = (selector, css) => {
   const rules = [];
   const definitions = { '': [] };
   const definitionKeys = [''];
-  const chars = css.split('');
-  const length = chars.length;
+  const length = css.length;
 
   let char, lastChar;
   let currentRule = '';
@@ -70,13 +69,13 @@ const preprocess2 = (selector, css) => {
   let inBlockComment = 0;
   let inSingleQuotedString = 0;
   let inDoubleQuotedString = 0;
-  let buffer = [];
+  let buffer = '';
   let bufferComma = 0;
   let bufferColonIndex = -1;
 
   for (let i = 0; i < length; i++) {
     lastChar = char;
-    char = chars[i];
+    char = css[i];
 
     if ((inLineComment && char !== '\n') || (inBlockComment && char !== '/'))
       continue;
@@ -85,7 +84,7 @@ const preprocess2 = (selector, css) => {
       (inSingleQuotedString && char !== "'") ||
       (inDoubleQuotedString && char !== '"')
     ) {
-      buffer.push(char);
+      buffer += char;
       continue;
     }
 
@@ -96,7 +95,7 @@ const preprocess2 = (selector, css) => {
           break;
         }
 
-        const nextChar = chars[i + 1];
+        const nextChar = css[i + 1];
         if (nextChar === '/') {
           inLineComment = 1;
         } else if (nextChar === '*') {
@@ -109,16 +108,15 @@ const preprocess2 = (selector, css) => {
         break;
 
       case ';':
-        const declaration = buffer.join('');
         if (bufferColonIndex < 0) {
-          rules.push(declaration.trim() + ';');
+          rules.push(buffer.trim() + ';');
         } else {
-          const prop = declaration.substring(0, bufferColonIndex).trim();
-          const val = declaration.substring(bufferColonIndex + 1).trim();
+          const prop = buffer.substring(0, bufferColonIndex).trim();
+          const val = buffer.substring(bufferColonIndex + 1).trim();
           definitions[currentRule].push([prop, val]);
         }
 
-        buffer = [];
+        buffer = '';
         bufferComma = 0;
         bufferColonIndex = -1;
         break;
@@ -128,7 +126,6 @@ const preprocess2 = (selector, css) => {
 
         if (bufferComma) {
           currentRule = buffer
-            .join('')
             .split(',')
             .map(part =>
               joinNestedSelectors(selector, currentRule, part.trim())
@@ -138,7 +135,7 @@ const preprocess2 = (selector, css) => {
           currentRule = joinNestedSelectors(
             selector,
             currentRule,
-            buffer.join('').trim()
+            buffer.trim()
           );
         }
 
@@ -147,7 +144,7 @@ const preprocess2 = (selector, css) => {
           definitionKeys.push(currentRule);
         }
 
-        buffer = [];
+        buffer = '';
         bufferComma = 0;
         bufferColonIndex = -1;
         break;
@@ -158,37 +155,36 @@ const preprocess2 = (selector, css) => {
 
       case ',':
         bufferComma = 1;
-        buffer.push(char);
+        buffer += char;
         break;
 
       case ':':
         if (bufferColonIndex < 0) bufferColonIndex = buffer.length;
-        buffer.push(char);
+        buffer += char;
         break;
 
       case "'":
-        inSingleQuotedString = !inSingleQuotedString;
-        buffer.push(char);
+        inSingleQuotedString = +!inSingleQuotedString;
+        buffer += char;
         break;
 
       case '"':
-        inDoubleQuotedString = !inDoubleQuotedString;
-        buffer.push(char);
+        inDoubleQuotedString = +!inDoubleQuotedString;
+        buffer += char;
         break;
 
       case ' ':
         if (lastChar === ' ') break;
 
       default:
-        buffer.push(char);
+        buffer += char;
     }
   }
 
   for (let k = 0; k < definitionKeys.length; k++) {
-    if (definitions[definitionKeys[k]].length > 0) {
-      rules.push(
-        makeRule(selector, definitionKeys[k], definitions[definitionKeys[k]])
-      );
+    const defKey = definitionKeys[k];
+    if (definitions[defKey].length > 0) {
+      rules.push(makeRule(selector, defKey, definitions[defKey]));
     }
   }
 
