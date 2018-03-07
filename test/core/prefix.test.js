@@ -1,4 +1,4 @@
-import { prefix } from '../src/prefix';
+import { prefix } from '../../src/core/prefix';
 
 describe('vendor prefixing', () => {
   test('display: flex / inline-flex', () => {

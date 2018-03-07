@@ -1,7 +1,8 @@
-import { preprocess } from './preprocess';
-import { get, set, clear } from './cache';
+import { preprocess } from './core/preprocess';
 import { addRule, clearRules, newClassName, css } from './rules';
+
 const noop = () => '';
+let cache = {};
 
 const buildRule = (parts, args, global) => {
   const isDynamic = args.length && args.some(arg => typeof arg === 'function');
@@ -32,11 +33,11 @@ const buildRule = (parts, args, global) => {
       return '';
     }
 
-    const cacheEntry = get(cssText);
+    const cacheEntry = cache[cssText];
     if (cacheEntry) return cacheEntry;
 
     const cn = newClassName();
-    set(cssText, cn);
+    cache[cssText] = cn;
 
     const rules = preprocess('.' + cn, cssText);
     for (let r = 0; r < rules.length; r++) {
@@ -63,7 +64,7 @@ const global = (parts, ...args) => {
 
 const reset = () => {
   clearRules();
-  clear();
+  cache = {};
 };
 
 export { rule, global, reset, css };

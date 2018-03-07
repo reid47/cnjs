@@ -1,4 +1,4 @@
-import { preprocess } from '../src/preprocess';
+import { preprocess } from '../../src/core/preprocess';
 
 const examples = [
   {
