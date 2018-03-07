@@ -20,37 +20,43 @@ const makeRule = (topLevelSelector, selector, defs) => {
   return `${selector || topLevelSelector}{${d}}${suffix}`;
 };
 
+const selectorCache = {};
 const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
+  const cacheKey = `${topLevelSelector}|${parentSelector}|${newSelector}`;
+  const cached = selectorCache[cacheKey];
+  if (cached) return cached;
+
   const hasAmpersand = newSelector.indexOf('&') > -1;
   const isAtRule = newSelector[0] === '@';
 
+  let returned;
   if (hasAmpersand) {
     if (!parentSelector && !isAtRule) {
-      return newSelector.replace(/&/g, topLevelSelector);
+      returned = newSelector.replace(/&/g, topLevelSelector);
+    } else {
+      returned =
+        parentSelector +
+        newSelector.replace(/^&/, '').replace(/&/g, topLevelSelector);
     }
-
-    return (
-      parentSelector +
-      newSelector.replace(/^&/, '').replace(/&/g, topLevelSelector)
-    );
-  }
-
-  if (isAtRule) {
-    if (!parentSelector) return `${newSelector}{${topLevelSelector}`;
-
-    if (parentSelector[0] === '@') {
-      return `${parentSelector.substr(
+  } else if (isAtRule) {
+    if (!parentSelector) {
+      returned = `${newSelector}{${topLevelSelector}`;
+    } else if (parentSelector[0] === '@') {
+      returned = `${parentSelector.substr(
         0,
         parentSelector.length - topLevelSelector.length - 1
       )}{${newSelector}{${topLevelSelector}`;
     } else {
-      return `${newSelector}{${parentSelector}`;
+      returned = `${newSelector}{${parentSelector}`;
     }
   } else if (!parentSelector) {
-    return `${topLevelSelector} ${newSelector}`;
+    returned = `${topLevelSelector} ${newSelector}`;
+  } else {
+    returned = `${parentSelector} ${newSelector}`;
   }
 
-  return `${parentSelector ? parentSelector + ' ' : ''}${newSelector}`;
+  selectorCache[cacheKey] = returned;
+  return returned;
 };
 
 const preprocess2 = (selector, css) => {
