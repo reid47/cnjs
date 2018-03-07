@@ -267,4 +267,5 @@ const prefix = (key, val) => {
   return ret;
 };
 
-export { prefix };
+// export { prefix };
+module.exports = { prefix };

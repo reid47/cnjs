@@ -1,4 +1,5 @@
 import { preprocess } from '../src/preprocess';
+import { preprocess2 } from '../src/preprocess2';
 
 const examples = [
   {
@@ -230,6 +231,7 @@ const examples = [
     ]
   },
   {
+    // focused: 1,
     name: 'nested at-rules',
     input: `
       @supports (color: red) {
@@ -389,6 +391,7 @@ examples.forEach(({ name, input, output, focused }) => {
 
   test(name, () => {
     expect(input.trim()).not.toBe('');
-    expect(preprocess('.test', input)).toEqual(output);
+    // expect(preprocess('.test', input)).toEqual(output);
+    expect(preprocess2('.test', input)).toEqual(output);
   });
 });

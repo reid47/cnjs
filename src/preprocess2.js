@@ -56,7 +56,7 @@ const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
   return `${parentSelector ? parentSelector + ' ' : ''}${newSelector}`;
 };
 
-const preprocess = (selector, css) => {
+const preprocess2 = (selector, css) => {
   const rules = [];
   const definitions = { '': [] };
   const definitionKeys = [''];
@@ -78,15 +78,12 @@ const preprocess = (selector, css) => {
     lastChar = char;
     char = chars[i];
 
-    if (
-      (inLineComment > 0 && char !== '\n') ||
-      (inBlockComment > 0 && char !== '/')
-    )
+    if ((inLineComment && char !== '\n') || (inBlockComment && char !== '/'))
       continue;
 
     if (
-      (inSingleQuotedString > 0 && char !== "'") ||
-      (inDoubleQuotedString > 0 && char !== '"')
+      (inSingleQuotedString && char !== "'") ||
+      (inDoubleQuotedString && char !== '"')
     ) {
       buffer.push(char);
       continue;
@@ -94,7 +91,7 @@ const preprocess = (selector, css) => {
 
     switch (char) {
       case '/':
-        if (inBlockComment > 0) {
+        if (inBlockComment) {
           if (lastChar === '*') inBlockComment = 0;
           break;
         }
@@ -129,7 +126,7 @@ const preprocess = (selector, css) => {
       case '{':
         nestedRules.push(currentRule);
 
-        if (bufferComma > 0) {
+        if (bufferComma) {
           currentRule = buffer
             .join('')
             .split(',')
@@ -198,5 +195,5 @@ const preprocess = (selector, css) => {
   return rules;
 };
 
-// export { preprocess };
-module.exports = { preprocess };
+// export { preprocess2 };
+module.exports = { preprocess2 };
