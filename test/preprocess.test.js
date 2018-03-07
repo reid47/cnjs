@@ -1,5 +1,4 @@
 import { preprocess } from '../src/preprocess';
-import { preprocess2 } from '../src/preprocess2';
 
 const examples = [
   {
@@ -392,6 +391,5 @@ examples.forEach(({ name, input, output, focused }) => {
   test(name, () => {
     expect(input.trim()).not.toBe('');
     expect(preprocess('.test', input)).toEqual(output);
-    expect(preprocess2('.test', input)).toEqual(output);
   });
 });

@@ -1,5 +1,4 @@
-const { prefix } = require('./prefix');
-// import { prefix } from './prefix';
+import { prefix } from './prefix';
 
 const closingBraces = str => {
   let closing = '';
@@ -7,17 +6,6 @@ const closingBraces = str => {
     if (str[i] === '{') closing += '}';
   }
   return closing;
-};
-
-const makeRule = (topLevelSelector, selector, defs) => {
-  let d = '';
-
-  for (let i = 0; i < defs.length; i++) {
-    d += `${defs[i][0]}:${defs[i][1]};`;
-  }
-
-  const suffix = selector ? closingBraces(selector) : '';
-  return `${selector || topLevelSelector}{${d}}${suffix}`;
 };
 
 const selectorCache = {};
@@ -59,7 +47,7 @@ const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
   return returned;
 };
 
-const preprocess2 = (selector, css) => {
+const preprocess = (selector, css) => {
   const rules = [];
   const definitions = { '': [] };
   const definitionKeys = [''];
@@ -114,7 +102,9 @@ const preprocess2 = (selector, css) => {
           const val = buffer.substring(bufferColonIndex + 1).trim();
           const prefixed = prefix(prop, val);
           for (let j = 0; j < prefixed.length; j++) {
-            definitions[currentRule].push([prefixed[j][0], prefixed[j][1]]);
+            definitions[currentRule].push(
+              `${prefixed[j][0]}:${prefixed[j][1]};`
+            );
           }
         }
 
@@ -185,13 +175,14 @@ const preprocess2 = (selector, css) => {
 
   for (let k = 0; k < definitionKeys.length; k++) {
     const defKey = definitionKeys[k];
-    if (definitions[defKey].length > 0) {
-      rules.push(makeRule(selector, defKey, definitions[defKey]));
+    const defs = definitions[defKey];
+    if (defs.length > 0) {
+      const suffix = defKey ? closingBraces(defKey) : '';
+      rules.push(`${defKey || selector}{${defs.join('')}}${suffix}`);
     }
   }
 
   return rules;
 };
 
-// export { preprocess };
-module.exports = { preprocess };
+export { preprocess };
