@@ -57,11 +57,10 @@ const preprocess2 = (selector, css) => {
   const rules = [];
   const definitions = { '': [] };
   const definitionKeys = [''];
-  const length = css.length;
+  const nestedRules = [];
 
   let char, lastChar;
   let currentRule = '';
-  let nestedRules = [];
   let inLineComment = 0;
   let inBlockComment = 0;
   let inSingleQuotedString = 0;
@@ -70,7 +69,7 @@ const preprocess2 = (selector, css) => {
   let bufferComma = 0;
   let bufferColonIndex = -1;
 
-  for (let i = 0; i < length; i++) {
+  for (let i = 0, length = css.length; i < length; i++) {
     lastChar = char;
     char = css[i];
 
@@ -93,11 +92,8 @@ const preprocess2 = (selector, css) => {
         }
 
         const nextChar = css[i + 1];
-        if (nextChar === '/') {
-          inLineComment = 1;
-        } else if (nextChar === '*') {
-          inBlockComment = 1;
-        }
+        if (nextChar === '/') inLineComment = 1;
+        else if (nextChar === '*') inBlockComment = 1;
         break;
 
       case '\n':
