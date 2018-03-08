@@ -1,3 +1,0 @@
-const rehydration = () => {};
-
-export { rehydration };

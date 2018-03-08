@@ -1,50 +1,52 @@
 import { preprocess } from './core/preprocess';
 import { addRule, clearRules, newClassName, css } from './rules';
+import { cache, renderedCache, clearCache } from './core/rule-cache';
 
 const noop = () => '';
-let cache = {};
 
 const buildRule = (parts, args, global) => {
   const isDynamic = args.length && args.some(arg => typeof arg === 'function');
 
   const fn = (props, context) => {
-    const s = [];
+    let rawText = '';
 
     for (let i = 0; i < parts.length; i++) {
-      s.push(parts[i]);
+      rawText += parts[i];
 
       if (i < args.length) {
         if (typeof args[i] === 'function') {
-          s.push(args[i](props, context));
+          rawText += args[i](props, context);
         } else {
-          s.push(args[i]);
+          rawText += args[i];
         }
       }
     }
 
-    const cssText = s.join('');
-    if (!cssText) return '';
+    if (!rawText) return '';
 
     if (global) {
-      const rules = preprocess('', cssText);
+      const rules = preprocess('', rawText);
       for (let r = 0; r < rules.length; r++) {
         addRule(rules[r]);
       }
       return '';
     }
 
-    const cacheEntry = cache[cssText];
+    const cacheEntry = cache[rawText];
     if (cacheEntry) return cacheEntry;
 
-    const cn = newClassName();
-    cache[cssText] = cn;
+    const className = newClassName();
+    cache[rawText] = className;
 
-    const rules = preprocess('.' + cn, cssText);
+    const rules = preprocess('.' + className, rawText);
     for (let r = 0; r < rules.length; r++) {
-      addRule(rules[r]);
+      const rule = rules[r];
+      console.log({ renderedCache, rule });
+      renderedCache[rule] = className;
+      addRule(rule);
     }
 
-    return cn;
+    return className;
   };
 
   if (isDynamic) return fn;
@@ -64,7 +66,7 @@ const global = (parts, ...args) => {
 
 const reset = () => {
   clearRules();
-  cache = {};
+  clearCache();
 };
 
 export { rule, global, reset, css };

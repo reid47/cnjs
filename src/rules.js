@@ -4,7 +4,7 @@ const newClassName = () => 'cls_' + rules.length.toString(36);
 
 const clearRules = () => (rules = []);
 
-const css = () => rules.sort().join('\n');
+const css = () => rules.join('');
 
 let addRule = rule => rules.push(rule);
 
