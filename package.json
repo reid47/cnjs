@@ -10,7 +10,7 @@
     "styles",
     "stylesheets"
   ],
-  "main": "dist/turnstyle.js",
+  "main": "index.js",
   "author": "Reid Mitchell",
   "license": "MIT",
   "repository": {
