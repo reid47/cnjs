@@ -27,13 +27,13 @@ test('static rules', () => {
     font-size: 47px;
   `;
 
-  expect(cn0()).toBe('cls_0');
-  expect(cn1()).toBe('cls_1');
-  expect(cn2()).toBe('cls_0');
+  expect(cn0()).toBe('_13outeh');
+  expect(cn1()).toBe('_1wmojm0');
+  expect(cn2()).toBe('_13outeh');
 
   expectCss(
-    '.cls_0{color:green;font-size:47px;}',
-    '.cls_1{border:2px solid red;margin-left:16px;display:inline;}'
+    '._13outeh{color:green;font-size:47px;}',
+    '._1wmojm0{border:2px solid red;margin-left:16px;display:inline;}'
   );
 });
 
@@ -48,17 +48,24 @@ test('dynamic rules', () => {
     background-color: ${p => p.color};
   `;
 
+  const rule2 = rule`
+    left: 47px;
+    background-color: red;
+  `;
+
   expectCss('');
 
   const cn0 = rule0({ width: 47 });
   const cn1 = rule1({ color: 'red' });
   const cn2 = rule0({ width: 100 });
   const cn3 = rule1({ color: 'red' });
+  const cn4 = rule2();
 
-  expect(cn0).toBe('cls_0');
-  expect(cn1).toBe('cls_1');
-  expect(cn2).toBe('cls_2');
-  expect(cn3).toBe('cls_1');
+  expect(cn0).toBe('_1bjm10p');
+  expect(cn1).toBe('_1ivo976');
+  expect(cn2).toBe('_154vs2j');
+  expect(cn3).toBe('_1ivo976');
+  expect(cn4).toBe('_1ivo976');
 });
 
 test('static nested rules w/pseudoselectors', () => {
@@ -74,11 +81,11 @@ test('static nested rules w/pseudoselectors', () => {
     }
   `;
 
-  expect(cn0()).toBe('cls_0');
+  expect(cn0()).toBe('_12k1qna');
   expectCss(
-    '.cls_0{color:red;}',
-    '.cls_0:hover{color:green;}',
-    '.cls_0:focus:before{color:blue;}'
+    '._12k1qna{color:red;}',
+    '._12k1qna:hover{color:green;}',
+    '._12k1qna:focus:before{color:blue;}'
   );
 });
 
@@ -102,11 +109,11 @@ test('dynamic nested rules w/pseudoselectors', () => {
     size: 47
   });
 
-  expect(cn0).toBe('cls_0');
+  expect(cn0).toBe('_5zypvq');
   expectCss(
-    '.cls_0{color:red;width:47%;}',
-    '.cls_0:hover{color:green;}',
-    '.cls_0:focus:before{color:blue;background:purple;}'
+    '._5zypvq{color:red;width:47%;}',
+    '._5zypvq:hover{color:green;}',
+    '._5zypvq:focus:before{color:blue;background:purple;}'
   );
 });
 
@@ -125,12 +132,12 @@ test('static nested rules w/ media queries', () => {
     }
   `;
 
-  expect(cn0()).toBe('cls_0');
+  expect(cn0()).toBe('_hrf9cw');
 
   expectCss(
-    '.cls_0{color:green;font-size:10px;}',
-    '@media (max-width: 99px){.cls_0{color:blue;width:47%;}}',
-    '@media print{.cls_0{color:red;}}'
+    '._hrf9cw{color:green;font-size:10px;}',
+    '@media (max-width: 99px){._hrf9cw{color:blue;width:47%;}}',
+    '@media print{._hrf9cw{color:red;}}'
   );
 });
 
@@ -159,13 +166,13 @@ test('dynamic nested rules w/ media queries', () => {
     smallWidthColor: 'teal'
   });
 
-  expect(cn0).toBe('cls_0');
+  expect(cn0).toBe('_kb885j');
 
   expectCss(
-    '.cls_0{color:purple;font-size:10px;}',
-    '@media (max-width: 99px){.cls_0{color:orange;width:47%;}}',
-    '@media print{.cls_0{color:red;}}',
-    '@media print{.cls_0:hover{color:teal;}}'
+    '._kb885j{color:purple;font-size:10px;}',
+    '@media (max-width: 99px){._kb885j{color:orange;width:47%;}}',
+    '@media print{._kb885j{color:red;}}',
+    '@media print{._kb885j:hover{color:teal;}}'
   );
 });
 
@@ -182,11 +189,11 @@ test('attribute selectors', () => {
     }
   `;
 
-  expect(cn()).toBe('cls_0');
+  expect(cn()).toBe('_fbvjfk');
   expectCss(
-    '.cls_0{color:purple;}',
-    '.cls_0[disabled]{color:yellow;}',
-    '.cls_0[type="text"]{color:green;}'
+    '._fbvjfk{color:purple;}',
+    '._fbvjfk[disabled]{color:yellow;}',
+    '._fbvjfk[type="text"]{color:green;}'
   );
 });
 

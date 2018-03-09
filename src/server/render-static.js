@@ -1,13 +1,16 @@
-import { RULE_SEPARATOR } from '../core/constants';
+import { cache } from '../core/rule-cache';
+import { rules } from '../rules';
 
-const renderStatic = (rules, renderedRuleCache) => {
-  return (
-    '<style type="text/css" data-tstyle-rendered>' +
-    rules
-      .map(rule => `/*~${renderedRuleCache[rule]}~*/${rule}`)
-      .join(RULE_SEPARATOR) +
-    '</style>'
-  );
+const renderStatic = () => {
+  const css = rules.join('');
+  const style = '<style type="text/css">' + css + '</style>';
+  const classes = Object.values(cache);
+  const script =
+    '<script>window.Turnstyle.rehydrate([' +
+    classes.map(val => `"${val}"`) +
+    ']);</script>';
+
+  return { script, style, css, classes };
 };
 
 export { renderStatic };

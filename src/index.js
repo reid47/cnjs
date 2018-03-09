@@ -1,6 +1,7 @@
 import { preprocess } from './core/preprocess';
 import { addRule, clearRules, newClassName, css } from './rules';
 import { cache, renderedCache, clearCache } from './core/rule-cache';
+import { hash } from './core/hash';
 
 const noop = () => '';
 
@@ -35,15 +36,14 @@ const buildRule = (parts, args, global) => {
     const cacheEntry = cache[rawText];
     if (cacheEntry) return cacheEntry;
 
-    const className = newClassName();
+    const className = hash(rawText);
     cache[rawText] = className;
 
-    const rules = preprocess('.' + className, rawText);
-    for (let r = 0; r < rules.length; r++) {
-      const rule = rules[r];
-      console.log({ renderedCache, rule });
-      renderedCache[rule] = className;
-      addRule(rule);
+    if (!renderedCache[className]) {
+      const rules = preprocess('.' + className, rawText);
+      for (let r = 0; r < rules.length; r++) {
+        addRule(rules[r]);
+      }
     }
 
     return className;

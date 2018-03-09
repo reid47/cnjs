@@ -1,7 +1,5 @@
 let rules = [];
 
-const newClassName = () => 'cls_' + rules.length.toString(36);
-
 const clearRules = () => (rules = []);
 
 const css = () => rules.join('');
@@ -16,4 +14,4 @@ if (typeof document !== 'undefined') {
   };
 }
 
-export { addRule, clearRules, newClassName, css };
+export { addRule, clearRules, css, rules };

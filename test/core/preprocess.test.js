@@ -230,7 +230,6 @@ const examples = [
     ]
   },
   {
-    // focused: 1,
     name: 'nested at-rules',
     input: `
       @supports (color: red) {

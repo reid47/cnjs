@@ -1,32 +1,39 @@
 import { renderStatic } from '../../src/server/render-static';
+import { rule, reset } from '../../src/index';
 
 describe('static rendering', () => {
+  beforeEach(() => {
+    reset();
+  });
+
   test('renders a style tag', () => {
-    const ruleCache = {
-      '.cls_0{color:green;}': 'cls_0',
-      '.cls_1{color:blue;}': 'cls_1',
-      '.cls_1:hover{color:red;}': 'cls_1'
-    };
+    rule`
+      color: green;
+    `;
 
-    const rendered = renderStatic(
-      [
-        '.cls_0{color:green;}',
-        '.cls_1{color:blue;}',
-        '.cls_1:hover{color:red;}'
-      ],
-      ruleCache
-    );
+    rule`
+      color: blue;
+      &:hover {
+        color: red;
+      }
+    `;
 
-    expect(rendered).toEqual(
-      [
-        '<style type="text/css" data-tstyle-rendered>',
-        '/*~cls_0~*/.cls_0{color:green;}',
-        '/*~*/',
-        '/*~cls_1~*/.cls_1{color:blue;}',
-        '/*~*/',
-        '/*~cls_1~*/.cls_1:hover{color:red;}',
-        '</style>'
-      ].join('')
-    );
+    const rendered = renderStatic();
+
+    expect(rendered).toEqual({
+      script:
+        '<script>window.Turnstyle.rehydrate(["_dt1o82","_awvwfy"]);</script>',
+      css:
+        '._dt1o82{color:green;}' +
+        '._awvwfy{color:blue;}' +
+        '._awvwfy:hover{color:red;}',
+      style:
+        '<style type="text/css">' +
+        '._dt1o82{color:green;}' +
+        '._awvwfy{color:blue;}' +
+        '._awvwfy:hover{color:red;}' +
+        '</style>',
+      classes: ['_dt1o82', '_awvwfy']
+    });
   });
 });
