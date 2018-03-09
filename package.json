@@ -19,14 +19,14 @@
   },
   "scripts": {
     "prettier": "prettier --list-different --write src/**/* test/**/*",
-    "build": "rimraf dist && rollup -c",
+    "build": "rimraf dist/* && rollup -c",
     "build-watch": "rollup -c -w",
     "test": "jest",
     "test-watch": "jest --watch",
     "test-coverage": "jest --coverage",
     "test-ci": "npm run prettier && npm run test-coverage",
     "prepublish": "npm run build",
-    "publish-minor": "npm run build && release-it minor --github.release"
+    "publish-minor": "release-it minor --github.release"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
