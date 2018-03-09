@@ -13,10 +13,10 @@ describe('browser', () => {
   });
 
   test('library added to browser context', () => {
-    expect(window.turnstyle).toBeDefined();
-    expect(typeof window.turnstyle.rule).toBe('function');
-    expect(typeof window.turnstyle.css).toBe('function');
-    expect(typeof window.turnstyle.reset).toBe('function');
+    expect(window.Turnstyle).toBeDefined();
+    expect(typeof window.Turnstyle.rule).toBe('function');
+    expect(typeof window.Turnstyle.css).toBe('function');
+    expect(typeof window.Turnstyle.reset).toBe('function');
   });
 
   test('creates an empty style tag in the document head', () => {
@@ -26,37 +26,37 @@ describe('browser', () => {
   });
 
   test('static rules insert CSS into stylesheet', () => {
-    const cn0 = window.turnstyle.rule`
+    const cn0 = window.Turnstyle.rule`
       color: green;
       font-size: 48px;
     `;
 
-    const cn1 = window.turnstyle.rule`
+    const cn1 = window.Turnstyle.rule`
       position: absolute;
       left: 47px;
       top: 470px;
     `;
 
-    expect(cn0()).toBe('cls_0');
-    expect(cn1()).toBe('cls_1');
+    expect(cn0()).toBe('_gneqt2');
+    expect(cn1()).toBe('_1bw4rre');
 
     const styleTag = window.document.head.querySelector('style');
     expect(styleTag.sheet.cssRules).toHaveLength(2);
     expect(styleTag.sheet.cssRules[0].cssText).toBe(
-      '.cls_0 {color: green; font-size: 48px;}'
+      '._gneqt2 {color: green; font-size: 48px;}'
     );
     expect(styleTag.sheet.cssRules[1].cssText).toBe(
-      '.cls_1 {position: absolute; left: 47px; top: 470px;}'
+      '._1bw4rre {position: absolute; left: 47px; top: 470px;}'
     );
   });
 
   test('dynamic rules insert CSS into stylesheet', () => {
-    const rule0 = window.turnstyle.rule`
+    const rule0 = window.Turnstyle.rule`
       color: green;
       width: ${p => p.width}%;
     `;
 
-    const rule1 = window.turnstyle.rule`
+    const rule1 = window.Turnstyle.rule`
       left: 47px;
       background-color: ${p => p.color};
     `;
@@ -72,20 +72,20 @@ describe('browser', () => {
     const cn2 = rule0({ width: 100 });
     const cn3 = rule1({ color: 'red' });
 
-    expect(cn0).toBe('cls_0');
-    expect(cn1).toBe('cls_1');
-    expect(cn2).toBe('cls_2');
-    expect(cn3).toBe('cls_1');
+    expect(cn0).toBe('_1a663s9');
+    expect(cn1).toBe('_19kl76a');
+    expect(cn2).toBe('_5xs40r');
+    expect(cn3).toBe('_19kl76a');
 
     expect(styleTag.sheet.cssRules).toHaveLength(3);
     expect(styleTag.sheet.cssRules[0].cssText).toBe(
-      '.cls_0 {color: green; width: 47%;}'
+      '._1a663s9 {color: green; width: 47%;}'
     );
     expect(styleTag.sheet.cssRules[1].cssText).toBe(
-      '.cls_1 {left: 47px; background-color: red;}'
+      '._19kl76a {left: 47px; background-color: red;}'
     );
     expect(styleTag.sheet.cssRules[2].cssText).toBe(
-      '.cls_2 {color: green; width: 100%;}'
+      '._5xs40r {color: green; width: 100%;}'
     );
   });
 });
