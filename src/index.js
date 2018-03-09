@@ -4,6 +4,7 @@ import { cache, renderedCache, clearCache } from './core/rule-cache';
 import { hash } from './core/hash';
 
 const buildRule = (parts, args, global) => {
+  if (!parts) return () => '';
   const isDynamic = args.length && args.some(arg => typeof arg === 'function');
 
   const fn = (props, context) => {
@@ -52,15 +53,9 @@ const buildRule = (parts, args, global) => {
   return () => rendered;
 };
 
-const rule = (parts, ...args) => {
-  if (!parts) return () => '';
-  return buildRule(parts, args);
-};
+const rule = (parts, ...args) => buildRule(parts, args);
 
-const global = (parts, ...args) => {
-  if (!parts) return () => '';
-  return buildRule(parts, args, true);
-};
+const global = (parts, ...args) => buildRule(parts, args, true);
 
 const reset = () => {
   clearRules();
