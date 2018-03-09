@@ -1,13 +1,14 @@
-import { rule, css, reset } from '../src/index';
+import { rule } from '../src/index';
+import { rules } from '../src/rules';
 
 const expectCss = (...rules) => {
   rules.forEach(rule => {
-    expect(css()).toContain(rule);
+    expect(rules.join('')).toContain(rule);
   });
 };
 
 beforeEach(() => {
-  reset();
+  while (rules.length) rules.pop();
 });
 
 test('static rules', () => {

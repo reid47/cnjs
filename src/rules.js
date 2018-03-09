@@ -1,9 +1,5 @@
 let rules = [];
 
-const clearRules = () => (rules = []);
-
-const css = () => rules.join('');
-
 let addRule = rule => rules.push(rule);
 
 if (typeof document !== 'undefined') {
@@ -14,4 +10,4 @@ if (typeof document !== 'undefined') {
   };
 }
 
-export { addRule, clearRules, css, rules };
+export { addRule, rules };

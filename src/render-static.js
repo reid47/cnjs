@@ -1,5 +1,5 @@
-import { cache } from '../core/rule-cache';
-import { rules } from '../rules';
+import { cache } from './rule-cache';
+import { rules } from './rules';
 
 const renderStatic = () => {
   const css = rules.join('');

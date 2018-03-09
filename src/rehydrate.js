@@ -1,4 +1,4 @@
-import { renderedCache } from '../core/rule-cache';
+import { renderedCache } from './rule-cache';
 
 const rehydrate = classNames => {
   if (!classNames) return;

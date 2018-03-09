@@ -15,8 +15,7 @@ describe('browser', () => {
   test('library added to browser context', () => {
     expect(window.Turnstyle).toBeDefined();
     expect(typeof window.Turnstyle.rule).toBe('function');
-    expect(typeof window.Turnstyle.css).toBe('function');
-    expect(typeof window.Turnstyle.reset).toBe('function');
+    expect(typeof window.Turnstyle.rehydrate).toBe('function');
   });
 
   test('creates an empty style tag in the document head', () => {

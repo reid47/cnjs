@@ -1,15 +1,16 @@
-import { global, css, reset } from '../src/index';
+import { global } from '../src/index';
+import { rules } from '../src/rules';
 
 const expectCss = (...rules) => {
   rules.forEach(rule => {
-    expect(css()).toContain(
+    expect(rules.join('')).toContain(
       rule.replace(/[ ]*\n[ ]*/g, '').replace(/[ ]\{/g, '{')
     );
   });
 };
 
 beforeEach(() => {
-  reset();
+  while (rules.length) rules.pop();
 });
 
 test('global rules', () => {

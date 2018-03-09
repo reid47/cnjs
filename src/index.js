@@ -1,7 +1,8 @@
-import { preprocess } from './core/preprocess';
-import { addRule, clearRules, css } from './rules';
-import { cache, renderedCache, clearCache } from './core/rule-cache';
-import { hash } from './core/hash';
+import { preprocess } from './preprocess';
+import { addRule } from './rules';
+import { cache, renderedCache } from './rule-cache';
+import { hash } from './hash';
+import { rehydrate } from './rehydrate';
 
 const buildRule = (parts, args, global) => {
   if (!parts) return () => '';
@@ -57,9 +58,4 @@ const rule = (parts, ...args) => buildRule(parts, args);
 
 const global = (parts, ...args) => buildRule(parts, args, true);
 
-const reset = () => {
-  clearRules();
-  clearCache();
-};
-
-export { rule, global, reset, css };
+export { rule, global, rehydrate };

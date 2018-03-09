@@ -1,9 +1,10 @@
-import { renderStatic } from '../../src/server/render-static';
-import { rule, reset } from '../../src/index';
+import { renderStatic } from '../src/render-static';
+import { rule, reset } from '../src/index';
+import { rules } from '../src/rules';
 
 describe('static rendering', () => {
   beforeEach(() => {
-    reset();
+    while (rules.length) rules.pop();
   });
 
   test('renders a style tag', () => {

@@ -1,7 +1,8 @@
-import { rehydrate } from '../../src/client/rehydrate';
-import { rule, css, reset } from '../../src/index';
-import { renderStatic } from '../../src/server/render-static';
-import { renderedCache } from '../../src/core/rule-cache';
+import { rule, rehydrate } from '../src/index';
+import { renderStatic } from '../src/render-static';
+import { renderedCache } from '../src/rule-cache';
+import { rules } from '../src/rules';
+const css = () => rules.join('');
 
 describe('rehydration', () => {
   test('rehydrates successfully', () => {
@@ -28,7 +29,7 @@ describe('rehydration', () => {
     const { classes } = renderStatic();
 
     // Reset the inserted CSS/rules
-    reset();
+    while (rules.length) rules.pop();
     expect(css()).toBe('');
 
     // Make sure we have nothing currently in our rendered cache
@@ -44,7 +45,7 @@ describe('rehydration', () => {
     });
 
     // We still shouldn't have any CSS inserted
-    expect(css());
+    expect(css()).toBe('');
 
     const cn3 = rule`
       color: blue;
@@ -59,6 +60,6 @@ describe('rehydration', () => {
 
     // And still, no CSS, since these rules are identical to
     // ones that were already rendered
-    expect(css());
+    expect(css()).toBe('');
   });
 });

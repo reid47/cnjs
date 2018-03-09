@@ -26,11 +26,7 @@ export default [
     outputFile: 'dist/turnstyle.js'
   }),
   common({
-    inputFile: 'src/server/index.js',
+    inputFile: 'src/server.js',
     outputFile: 'dist/server.js'
-  }),
-  common({
-    inputFile: 'src/client/index.js',
-    outputFile: 'dist/client.js'
   })
 ];
