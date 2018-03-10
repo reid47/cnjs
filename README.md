@@ -1,4 +1,4 @@
-# :cyclone: turnstyle [![npm version](https://badge.fury.io/js/turnstyle.svg)](https://badge.fury.io/js/turnstyle) [![Build Status](https://travis-ci.org/reid47/turnstyle.svg?branch=master)](https://travis-ci.org/reid47/turnstyle) [![Bundle Size](http://img.badgesize.io/reid47/turnstyle/master/dist/turnstyle.js)](https://github.com/reid47/turnstyle/blob/master/dist/turnstyle.js) [![Gzipped Size](http://img.badgesize.io/reid47/turnstyle/master/dist/turnstyle.js?compression=gzip)](https://github.com/reid47/turnstyle/blob/master/dist/turnstyle.js)
+# :cyclone: turnstyle [![npm version](https://badge.fury.io/js/turnstyle.svg)](https://badge.fury.io/js/turnstyle) [![Build Status](https://travis-ci.org/reid47/turnstyle.svg?branch=master)](https://travis-ci.org/reid47/turnstyle)
 
 a tiny, fast, simple CSS-in-JS library
 

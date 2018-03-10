@@ -4,29 +4,54 @@ import commonjs from 'rollup-plugin-commonjs';
 import uglify from 'rollup-plugin-uglify';
 import fileSize from 'rollup-plugin-filesize';
 
-const common = ({ inputFile, outputFile }) => ({
-  input: inputFile,
+const prod = ({ file }) => ({
+  input: `src/${file}.js`,
   output: {
-    file: outputFile,
+    file: `dist/${file}.min.js`,
     format: 'umd',
-    name: 'Turnstyle'
+    name: 'Turnstyle',
+    globals: {
+      react: 'React'
+    }
   },
   plugins: [
     babel({ exclude: 'node_modules/**/' }),
     resolve(),
     commonjs({ include: 'node_modules/**' }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    }),
     uglify(),
     fileSize()
-  ]
+  ],
+  external: ['react']
 });
 
+const dev = ({ file }) => ({
+  input: `src/${file}.js`,
+  output: {
+    file: `dist/${file}.dev.js`,
+    format: 'umd',
+    name: 'Turnstyle',
+    globals: {
+      react: 'React'
+    }
+  },
+  plugins: [
+    babel({ exclude: 'node_modules/**/' }),
+    resolve(),
+    commonjs({ include: 'node_modules/**' }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('development')
+    })
+  ],
+  external: ['react']
+});
+
+const common = options => [dev(options), prod(options)];
+
 export default [
-  common({
-    inputFile: 'src/index.js',
-    outputFile: 'dist/turnstyle.js'
-  }),
-  common({
-    inputFile: 'src/server.js',
-    outputFile: 'dist/server.js'
-  })
+  ...common({ file: 'index' }),
+  ...common({ file: 'server' }),
+  ...common({ file: 'react' })
 ];
