@@ -6,15 +6,14 @@ const withStyle = component => (parts, ...args) => {
   const isDynamic = typeof rule === 'function';
 
   return ({ className, ...props }) => {
-    className =
-      (className ? className + ' ' : '') + isDynamic ? rule(props) : rule;
-
     return React.createElement(component, {
       ...props,
-      className
+      className: `${className ? className + ' ' : ''}${
+        isDynamic ? rule(props) : rule
+      }`
     });
   };
 };
 
 export { withStyle };
-export { rule, global, rehydrate } from './index';
+export * from './index';
