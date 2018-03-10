@@ -36,8 +36,8 @@ describe('browser', () => {
       top: 470px;
     `;
 
-    expect(cn0()).toBe('_gneqt2');
-    expect(cn1()).toBe('_1bw4rre');
+    expect(cn0).toBe('_gneqt2');
+    expect(cn1).toBe('_1bw4rre');
 
     const styleTag = window.document.head.querySelector('style');
     expect(styleTag.sheet.cssRules).toHaveLength(2);

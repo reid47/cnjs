@@ -28,9 +28,13 @@ test('static rules', () => {
     font-size: 47px;
   `;
 
-  expect(cn0()).toBe('_13outeh');
-  expect(cn1()).toBe('_1wmojm0');
-  expect(cn2()).toBe('_13outeh');
+  expect(typeof cn0).toBe('string');
+  expect(typeof cn1).toBe('string');
+  expect(typeof cn2).toBe('string');
+
+  expect(cn0).toBe('_13outeh');
+  expect(cn1).toBe('_1wmojm0');
+  expect(cn2).toBe('_13outeh');
 
   expectCss(
     '._13outeh{color:green;font-size:47px;}',
@@ -60,7 +64,7 @@ test('dynamic rules', () => {
   const cn1 = rule1({ color: 'red' });
   const cn2 = rule0({ width: 100 });
   const cn3 = rule1({ color: 'red' });
-  const cn4 = rule2();
+  const cn4 = rule2;
 
   expect(cn0).toBe('_1bjm10p');
   expect(cn1).toBe('_1ivo976');
@@ -82,7 +86,7 @@ test('static nested rules w/pseudoselectors', () => {
     }
   `;
 
-  expect(cn0()).toBe('_12k1qna');
+  expect(cn0).toBe('_12k1qna');
   expectCss(
     '._12k1qna{color:red;}',
     '._12k1qna:hover{color:green;}',
@@ -133,7 +137,7 @@ test('static nested rules w/ media queries', () => {
     }
   `;
 
-  expect(cn0()).toBe('_hrf9cw');
+  expect(cn0).toBe('_hrf9cw');
 
   expectCss(
     '._hrf9cw{color:green;font-size:10px;}',
@@ -190,7 +194,7 @@ test('attribute selectors', () => {
     }
   `;
 
-  expect(cn()).toBe('_fbvjfk');
+  expect(cn).toBe('_fbvjfk');
   expectCss(
     '._fbvjfk{color:purple;}',
     '._fbvjfk[disabled]{color:yellow;}',
@@ -201,13 +205,13 @@ test('attribute selectors', () => {
 describe('edge cases', () => {
   test('nothing passed to rule function', () => {
     const noRuleGiven = rule();
-    expect(noRuleGiven()).toBe('');
+    expect(noRuleGiven).toBe('');
     expectCss('');
   });
 
   test('empty string passed to rule function', () => {
     const emptyRuleGiven = rule``;
-    expect(emptyRuleGiven()).toBe('');
+    expect(emptyRuleGiven).toBe('');
     expectCss('');
   });
 });

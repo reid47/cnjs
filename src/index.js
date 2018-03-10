@@ -5,7 +5,8 @@ import { hash } from './hash';
 import { rehydrate } from './rehydrate';
 
 const buildRule = (parts, args, global) => {
-  if (!parts) return () => '';
+  if (!parts) return '';
+
   const isDynamic = args.length && args.some(arg => typeof arg === 'function');
 
   const fn = (props, context) => {
@@ -49,9 +50,7 @@ const buildRule = (parts, args, global) => {
     return className;
   };
 
-  if (isDynamic) return fn;
-  const rendered = fn();
-  return () => rendered;
+  return isDynamic ? fn : fn();
 };
 
 const rule = (parts, ...args) => buildRule(parts, args);
