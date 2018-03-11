@@ -1,25 +1,18 @@
 {
   "presets": [
     [
-      "env", {
+      "env",
+      {
         "modules": false,
-        "exclude": [
-          "transform-es2015-typeof-symbol"
-        ]
+        "exclude": ["transform-es2015-typeof-symbol"]
       }
     ]
   ],
-  "plugins": [
-    "transform-object-rest-spread"
-  ],
+  "plugins": ["transform-object-rest-spread", "transform-react-jsx"],
   "env": {
     "test": {
-      "presets": [
-        "env"
-      ],
-      "plugins": [
-        "transform-object-rest-spread"
-      ]
+      "presets": ["env"],
+      "plugins": ["transform-object-rest-spread", "transform-react-jsx"]
     }
   }
 }

@@ -50,4 +50,8 @@ const dev = ({ file }) => ({
 
 const common = options => [dev(options), prod(options)];
 
-export default [...common({ file: 'index' }), ...common({ file: 'react' })];
+export default [
+  ...common({ file: 'index' }),
+  ...common({ file: 'react' }),
+  ...common({ file: 'core' })
+];

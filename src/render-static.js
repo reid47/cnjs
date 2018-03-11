@@ -1,18 +1,21 @@
 import { cache } from './rule-cache';
 import { rules } from './rules';
 
-const defaultRenderCss = css => `<style type="text/css">${css}</style>`;
+const defaultRenderCss = css => `<style>${css}</style>`;
 const defaultRenderJs = js => `<script>${js}</script>`;
-const quote = s => `"${s}"`;
 
 const renderStatic = opts => {
-  opts = opts || {};
+  const renderCss = opts && opts.renderCss ? opts.renderCss : defaultRenderCss;
+  const renderJs = opts && opts.renderJs ? opts.renderJs : defaultRenderJs;
 
   const classes = Object.values(cache);
   const css = rules.join('');
-  const js = `window.Turnstyle.rehydrate([${classes.map(quote)}]);`;
-  const style = opts.renderCss ? opts.renderCss(css) : defaultRenderCss(css);
-  const script = opts.renderJs ? opts.renderJs(js) : defaultRenderJs(js);
+  const js = `window.Turnstyle.rehydrate([${classes
+    .map(c => `"${c}"`)
+    .join(',')}]);`;
+
+  const style = renderCss(css);
+  const script = renderJs(js);
 
   return { classes, css, script, style };
 };

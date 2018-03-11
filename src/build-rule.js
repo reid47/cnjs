@@ -8,7 +8,7 @@ const buildRule = (parts, args, global) => {
 
   const isDynamic = args.length && args.some(arg => typeof arg === 'function');
 
-  const fn = (props, context) => {
+  const fn = props => {
     let rawText = '';
 
     for (let i = 0; i < parts.length; i++) {
@@ -16,7 +16,7 @@ const buildRule = (parts, args, global) => {
 
       if (i < args.length) {
         if (typeof args[i] === 'function') {
-          rawText += args[i](props, context);
+          rawText += args[i](props);
         } else {
           rawText += args[i];
         }

@@ -1,13 +1,13 @@
 import { renderStatic } from '../src/render-static';
-import { rule, reset } from '../src/index';
+import { rule } from '../src/index';
 import { rules } from '../src/rules';
 
-describe('static rendering', () => {
+describe('renderStatic', () => {
   beforeEach(() => {
     while (rules.length) rules.pop();
   });
 
-  test('renders a style tag', () => {
+  test('renders CSS/JS strings', () => {
     rule`
       color: green;
     `;
@@ -21,20 +21,26 @@ describe('static rendering', () => {
 
     const rendered = renderStatic();
 
-    expect(rendered).toEqual({
-      script:
-        '<script>window.Turnstyle.rehydrate(["_dt1o82","_awvwfy"]);</script>',
-      css:
-        '._dt1o82{color:green;}' +
+    expect(rendered.css).toEqual(
+      '._dt1o82{color:green;}' +
         '._awvwfy{color:blue;}' +
-        '._awvwfy:hover{color:red;}',
-      style:
-        '<style type="text/css">' +
+        '._awvwfy:hover{color:red;}'
+    );
+
+    expect(rendered.classes).toEqual(['_dt1o82', '_awvwfy']);
+
+    expect(rendered.script).toEqual(
+      '<script>' +
+        'window.Turnstyle.rehydrate(["_dt1o82","_awvwfy"]);' +
+        '</script>'
+    );
+
+    expect(rendered.style).toEqual(
+      '<style>' +
         '._dt1o82{color:green;}' +
         '._awvwfy{color:blue;}' +
         '._awvwfy:hover{color:red;}' +
-        '</style>',
-      classes: ['_dt1o82', '_awvwfy']
-    });
+        '</style>'
+    );
   });
 });

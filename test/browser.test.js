@@ -1,6 +1,9 @@
 import { JSDOM } from 'jsdom';
 import fs from 'fs';
-const turnstyle = fs.readFileSync('./dist/turnstyle.js', 'UTF-8');
+const turnstyle = fs.readFileSync(
+  './dist/turnstyle.production.min.js',
+  'UTF-8'
+);
 
 describe('browser', () => {
   let window;
