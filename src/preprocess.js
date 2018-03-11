@@ -59,6 +59,7 @@ const preprocess = (selector, css) => {
   let inBlockComment = 0;
   let inSingleQuotedString = 0;
   let inDoubleQuotedString = 0;
+  let inFunctionCall = 0;
   let buffer = '';
   let bufferComma = 0;
   let bufferColonIndex = -1;
@@ -80,6 +81,11 @@ const preprocess = (selector, css) => {
 
     switch (char) {
       case '/':
+        if (inFunctionCall) {
+          buffer += char;
+          break;
+        }
+
         if (inBlockComment) {
           if (lastChar === '*') inBlockComment = 0;
           break;
@@ -162,6 +168,16 @@ const preprocess = (selector, css) => {
 
       case '"':
         inDoubleQuotedString = +!inDoubleQuotedString;
+        buffer += char;
+        break;
+
+      case '(':
+        inFunctionCall = 1;
+        buffer += char;
+        break;
+
+      case ')':
+        inFunctionCall = 0;
         buffer += char;
         break;
 

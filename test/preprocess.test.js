@@ -324,6 +324,13 @@ const examples = [
       `.test{content:"This is another string { with
         : ; some weird characters* in it";color:blue;}`
     ]
+  },
+  {
+    name: 'function calls',
+    input: `
+      background: url(http://test.com//hello) '('; // a comment
+    `,
+    output: [".test{background:url(http://test.com//hello) '(';}"]
   }
 ];
 
@@ -384,11 +391,11 @@ const stylisTests = [
 examples.push(...stylisTests);
 
 const anyFocused = examples.some(x => x.focused);
-examples.forEach(({ name, input, output, focused }) => {
+examples.forEach(({ selector = '.test', name, input, output, focused }) => {
   if (anyFocused && !focused) return;
 
   test(name, () => {
     expect(input.trim()).not.toBe('');
-    expect(preprocess('.test', input)).toEqual(output);
+    expect(preprocess(selector, input)).toEqual(output);
   });
 });
