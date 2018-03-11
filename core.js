@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV === 'production') {
-  module.exports = require('./dist/core.production.min.js');
+  module.exports = require('./dist/turnstyle-core.production.min.js');
 } else {
-  module.exports = require('./dist/core.development.js');
+  module.exports = require('./dist/turnstyle-core.development.js');
 }
