@@ -83,12 +83,12 @@ const preprocess = (selector, css) => {
 
     switch (char) {
       case '/':
-        if (inFunctionCall) {
+        if (inFunctionCall > 0) {
           buffer += char;
           break;
         }
 
-        if (inBlockComment) {
+        if (inBlockComment > 0) {
           if (lastChar === '*') inBlockComment = 0;
           break;
         }
@@ -124,7 +124,7 @@ const preprocess = (selector, css) => {
       case '{':
         nestedRules.push(currentRule);
 
-        if (bufferComma) {
+        if (bufferComma > 0) {
           currentRule = buffer
             .split(',')
             .map(part =>
