@@ -21,12 +21,6 @@ describe('browser', () => {
     expect(typeof window.Turnstyle.rehydrate).toBe('function');
   });
 
-  test('creates an empty style tag in the document head', () => {
-    const styleTag = window.document.head.querySelector('style');
-    expect(styleTag).toBeTruthy();
-    expect(styleTag.sheet.cssRules).toHaveLength(0);
-  });
-
   test('static rules insert CSS into stylesheet', () => {
     const cn0 = window.Turnstyle.rule`
       color: green;
@@ -43,6 +37,7 @@ describe('browser', () => {
     expect(cn1).toBe('_1bw4rre');
 
     const styleTag = window.document.head.querySelector('style');
+    expect(styleTag).toBeTruthy();
     expect(styleTag.sheet.cssRules).toHaveLength(2);
     expect(styleTag.sheet.cssRules[0].cssText).toBe(
       '._gneqt2 {color: green; font-size: 48px;}'
@@ -66,8 +61,7 @@ describe('browser', () => {
     expect(typeof rule0).toBe('function');
     expect(typeof rule1).toBe('function');
 
-    const styleTag = window.document.head.querySelector('style');
-    expect(styleTag.sheet.cssRules).toHaveLength(0);
+    expect(window.document.head.querySelector('style')).toBeNull();
 
     const cn0 = rule0({ width: 47 });
     const cn1 = rule1({ color: 'red' });
@@ -79,6 +73,8 @@ describe('browser', () => {
     expect(cn2).toBe('_5xs40r');
     expect(cn3).toBe('_19kl76a');
 
+    const styleTag = window.document.head.querySelector('style');
+    expect(styleTag).toBeTruthy();
     expect(styleTag.sheet.cssRules).toHaveLength(3);
     expect(styleTag.sheet.cssRules[0].cssText).toBe(
       '._1a663s9 {color: green; width: 47%;}'
