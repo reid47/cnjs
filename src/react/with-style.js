@@ -1,6 +1,5 @@
 import React from 'react';
-import { buildRule } from './build-rule';
-import { renderStatic } from './render-static';
+import { buildRule } from '../build-rule';
 
 const withStyle = (component, interceptedProps) => (parts, ...args) => {
   const rule = buildRule(parts, args);
@@ -22,19 +21,4 @@ const withStyle = (component, interceptedProps) => (parts, ...args) => {
   };
 };
 
-const renderStaticComponents = () =>
-  renderStatic({
-    renderCss: css =>
-      React.createElement('style', {
-        key: 'turnstyle-css',
-        dangerouslySetInnerHTML: { __html: css }
-      }),
-    renderJs: js =>
-      React.createElement('script', {
-        key: 'turnstyle-js',
-        dangerouslySetInnerHTML: { __html: js }
-      })
-  });
-
-export { withStyle, renderStaticComponents };
-export * from './index';
+export { withStyle };

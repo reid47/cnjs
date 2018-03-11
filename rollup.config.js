@@ -5,12 +5,10 @@ import replace from 'rollup-plugin-replace';
 import uglify from 'rollup-plugin-uglify';
 import fileSize from 'rollup-plugin-filesize';
 
-const prod = ({ file }) => ({
-  input: `src/${file}.js`,
+const prod = ({ inFile, outFile }) => ({
+  input: `src/${inFile}.js`,
   output: {
-    file: `dist/turnstyle${
-      file === 'index' ? '' : `-${file}`
-    }.production.min.js`,
+    file: `dist/${outFile}.production.min.js`,
     format: 'umd',
     name: 'Turnstyle',
     globals: {
@@ -28,10 +26,10 @@ const prod = ({ file }) => ({
   external: ['react']
 });
 
-const dev = ({ file }) => ({
-  input: `src/${file}.js`,
+const dev = ({ inFile, outFile }) => ({
+  input: `src/${inFile}.js`,
   output: {
-    file: `dist/turnstyle${file === 'index' ? '' : `-${file}`}.development.js`,
+    file: `dist/${outFile}.development.js`,
     format: 'umd',
     name: 'Turnstyle',
     globals: {
@@ -51,7 +49,7 @@ const dev = ({ file }) => ({
 const common = options => [dev(options), prod(options)];
 
 export default [
-  ...common({ file: 'index' }),
-  ...common({ file: 'react' }),
-  ...common({ file: 'core' })
+  ...common({ inFile: 'index', outFile: 'turnstyle' }),
+  ...common({ inFile: 'react/index', outFile: 'turnstyle-react' }),
+  ...common({ inFile: 'core', outFile: 'turnstyle-core' })
 ];
