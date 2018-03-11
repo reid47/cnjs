@@ -1,5 +1,3 @@
-// @flow
-
 import { prefix } from './prefix';
 
 const closingBraces = str => {
