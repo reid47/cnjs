@@ -202,6 +202,21 @@ test('attribute selectors', () => {
   );
 });
 
+test('static rules with interpolations', () => {
+  const color = 'green';
+
+  const cn0 = rule`
+    color: ${color};
+    font-size: 47px;
+  `;
+
+  expect(typeof cn0).toBe('string');
+
+  expect(cn0).toBe('_13outeh');
+
+  expectCss('._13outeh{color:green;font-size:47px;}');
+});
+
 describe('edge cases', () => {
   test('nothing passed to rule function', () => {
     const noRuleGiven = rule();

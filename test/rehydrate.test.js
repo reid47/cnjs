@@ -1,10 +1,24 @@
 import { rule, rehydrate } from '../src/index';
 import { renderStatic } from '../src/render-static';
-import { renderedCache } from '../src/rule-cache';
+import { renderedCache, cache } from '../src/rule-cache';
 import { rules } from '../src/rules';
 const css = () => rules.join('');
 
 describe('rehydration', () => {
+  beforeEach(() => {
+    while (rules.length) rules.pop();
+    for (let key in cache) {
+      if (cache.hasOwnProperty(key)) {
+        delete cache[key];
+      }
+    }
+    for (let key in renderedCache) {
+      if (renderedCache.hasOwnProperty(key)) {
+        delete renderedCache[key];
+      }
+    }
+  });
+
   test('rehydrates successfully', () => {
     const cn0 = rule`
       color: green;
@@ -61,5 +75,11 @@ describe('rehydration', () => {
     // And still, no CSS, since these rules are identical to
     // ones that were already rendered
     expect(css()).toBe('');
+  });
+
+  test('handles no arguments', () => {
+    expect(renderedCache).toEqual({});
+    rehydrate();
+    expect(renderedCache).toEqual({});
   });
 });
