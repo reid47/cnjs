@@ -1,7 +1,6 @@
 import { rule, rehydrate } from '../src/index';
 import { renderStatic } from '../src/render-static';
-import { renderedCache, cache } from '../src/rule-cache';
-import { rules } from '../src/rules';
+import { rules, renderedCache, cache } from '../src/rule-cache';
 const css = () => rules.join('');
 
 describe('rehydration', () => {

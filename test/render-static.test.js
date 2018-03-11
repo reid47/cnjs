@@ -1,6 +1,6 @@
 import { renderStatic } from '../src/render-static';
 import { rule } from '../src/index';
-import { rules } from '../src/rules';
+import { rules } from '../src/rule-cache';
 
 describe('renderStatic', () => {
   beforeEach(() => {

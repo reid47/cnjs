@@ -1,6 +1,5 @@
 import { preprocess } from './preprocess';
-import { addRule } from './rules';
-import { cache, renderedCache } from './rule-cache';
+import { addRule, cache, renderedCache } from './rule-cache';
 import { hash } from './hash';
 
 const buildRule = (parts, args, global) => {

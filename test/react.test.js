@@ -2,8 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { withStyle, renderStaticComponents } from '../src/react';
 import { rule } from '../src/index';
-import { rules } from '../src/rules';
-import { cache } from '../src/rule-cache';
+import { rules, cache } from '../src/rule-cache';
 
 describe('withStyle', () => {
   it('passes through props and merges class names', () => {

@@ -1,5 +1,5 @@
 import { rule } from '../src/index';
-import { rules } from '../src/rules';
+import { rules } from '../src/rule-cache';
 
 const expectCss = (...rules) => {
   rules.forEach(rule => {

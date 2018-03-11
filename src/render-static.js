@@ -1,5 +1,4 @@
-import { cache } from './rule-cache';
-import { rules } from './rules';
+import { rules, cache } from './rule-cache';
 
 const defaultRenderCss = css => `<style>${css}</style>`;
 const defaultRenderJs = js => `<script>${js}</script>`;
