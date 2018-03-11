@@ -188,9 +188,15 @@ const examples = [
     input: `
       @import 'global.css';
 
+      @import url(//fonts.googleapis.com/css?family=Open+Sans);
+
       @charset "UTF-8";
     `,
-    output: ["@import 'global.css';", '@charset "UTF-8";']
+    output: [
+      "@import 'global.css';",
+      '@import url(//fonts.googleapis.com/css?family=Open+Sans);',
+      '@charset "UTF-8";'
+    ]
   },
   {
     name: 'at-rules with braces',
@@ -331,6 +337,33 @@ const examples = [
       background: url(http://test.com//hello) '('; // a comment
     `,
     output: [".test{background:url(http://test.com//hello) '(';}"]
+  },
+  {
+    name: 'font faces',
+    selector: '',
+    input: `
+      @font-face {
+        font-family: 'Patrick Hand SC';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Patrick Hand SC'),
+          local('PatrickHandSC-Regular'),
+          url(https://fonts.gstatic.com/s/patrickhandsc/v4/OYFWCgfCR-7uHIovjUZXsZ71Uis0Qeb9Gqo8IZV7ckE.woff2)
+            format('woff2');
+        unicode-range: U+0100-024f, U+1-1eff,
+          U+20a0-20ab, U+20ad-20cf, U+2c60-2c7f,
+          U+A720-A7FF;
+      }
+    `,
+    output: [
+      '@font-face{' +
+        "font-family:'Patrick Hand SC';" +
+        'font-style:normal;' +
+        'font-weight:400;' +
+        "src:local('Patrick Hand SC'), local('PatrickHandSC-Regular'), url(https://fonts.gstatic.com/s/patrickhandsc/v4/OYFWCgfCR-7uHIovjUZXsZ71Uis0Qeb9Gqo8IZV7ckE.woff2) format('woff2');" +
+        'unicode-range:U+0100-024f, U+1-1eff, U+20a0-20ab, U+20ad-20cf, U+2c60-2c7f, U+A720-A7FF;' +
+        '}'
+    ]
   }
 ];
 

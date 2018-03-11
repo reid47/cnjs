@@ -28,7 +28,9 @@ const joinNestedSelectors = (topLevelSelector, parentSelector, newSelector) => {
     }
   } else if (isAtRule) {
     if (!parentSelector) {
-      returned = `${newSelector}{${topLevelSelector}`;
+      returned = `${newSelector}${
+        topLevelSelector ? '{' + topLevelSelector : ''
+      }`;
     } else if (parentSelector[0] === '@') {
       returned = `${parentSelector.substr(
         0,
